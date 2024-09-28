@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+    background: url('https://giangvien.dau.edu.vn/Content/login2/img/bg.jpg') center no-repeat;
+    background-size: cover; /* Đảm bảo hình nền bao phủ toàn bộ */
+}
+.content {
+    display: flex;
+}
+.image-side {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex: 1; /* Để hình ảnh chiếm không gian cần thiết */
+    padding: 20px;
+    min-width: 400px; /* Chiều rộng tối thiểu */
+}
+.image-side img {
+    width: 100%; /* Hình ảnh sẽ tự động điều chỉnh theo chiều rộng */
+    height: auto;
+}
+.form-side {
+    flex: 1; /* Cho phép form chiếm không gian cần thiết */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.login-form {
+    width: 400px; /* Chiều rộng của form */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    background-color: white;
+}
+form h2 {
+    font-size: 22px;
+    color: #0B5ED7;
+}
+@media only screen and (max-width: 600px) {
+    header a ~ a img {
+        display: none;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .image-side {
+        display: none;
+    }
+}

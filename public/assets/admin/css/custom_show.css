@@ -1,0 +1,85 @@
+
+.container1{
+    width: 1279px !important;
+}
+body {
+    font-family: 'Arial', sans-serif;
+}
+h1 {
+    color: #005AB7;
+    text-align: center;
+    margin-bottom: 20px;
+}
+table {
+    margin-top: 20px;
+}
+tr th {
+    background-color: #005AB7;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+tr th a{
+    text-decoration: none;
+    color: white;
+}
+tr th a:hover{
+    color: #F7A54A;
+}
+td {
+    text-align: center;
+    background-color: white;
+}
+.btn {
+    background-color: #005AB7;
+    color: white;
+    margin: 5px;
+}
+.btn:hover {
+    background-color: #003d8e;
+    color: white;
+}
+.table-bordered {
+    border: 2px solid #005AB7;
+}
+.back-btn, .add-btn {
+    margin-bottom: 20px;
+}
+#title-contentAdmin {
+    font-weight: 600;
+    color: #024554;
+}
+table thead a{
+    color: black;
+    text-decoration: none;
+}
+/*CSS phân trang */
+.pagination {
+    font-size: 20px; 
+    padding: 10px;
+}
+
+.pagination .page-item .page-link {
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+.pagination .page-item.active .page-link {
+    background-color: #005AB7;
+    color: white;
+    border-color: #005AB7;
+}
+
+.pagination .page-link {
+    color: #007bff; /* Màu chữ của các trang không active */
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef; /* Màu nền khi hover */
+    border-color: #dee2e6; /* Màu viền khi hover */
+}
+/*END CSS phân trang */
+

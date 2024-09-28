@@ -1,0 +1,40 @@
+.navbar-default {
+    position: fixed;
+
+}
+/* Info Admin */
+@keyframes colorChange {
+    0% { color: red; }
+    25% { color: blue; }
+    50% { color: green; }
+    75% { color: yellow; }
+    100% { color: red; }
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.running-text {
+    animation: colorChange 3s infinite; /* Thay đổi màu sắc trong 3 giây, lặp lại vô hạn */
+    font-weight: bold; /* Đậm chữ */
+    font-size: 25px;
+}
+.social-links a{
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.social-links a:hover{
+    background-color: #FED377;
+}
+.highlight {
+    display: inline-block; /* Để áp dụng animation */
+    animation: colorChange 1s linear infinite, blink 2s step-end infinite;
+}
+
+/* trang quản lý sản phẩm */
+.tbody-listsp td{
+    vertical-align: middle;
+    text-align: center;
+}
