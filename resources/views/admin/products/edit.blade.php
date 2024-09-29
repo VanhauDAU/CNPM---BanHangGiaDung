@@ -1,96 +1,150 @@
-
 @extends('layouts.admin')
 
 @section('title')
-    Cập Nhật Sản Phẩm
+    {{$title}}
 @endsection
 
 @section('content-admin')
 <div class="container mt-5">
-    <h1 class="text-center mb-4 fw-bold">{{$title}}</h1>
-
-    <form action="" method="POST">
-        @csrf
-        @if(session('msg'))
-            <div class="alert alert-success">
-                {{ session('msg') }}
-            </div>
-        @endif
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="username">Tên Tài Khoản</label>
-                <input type="text" id="username" name="username" class="form-control" value="{{old('username') ?? $userDetail->username}}">
-                @error('username')
-                    @if($message == 'Tài khoản bắt buộc phải nhập')
-                        <span style="color:red;">{{ $message }}</span>
-                    @elseif($message == 'Tài khoản đã tồn tại trên hệ thống')
-                        <span style="color:red;">{{ $message }}</span>
-                    @elseif($message == 'Tài khoản bắt buộc lớn hơn 4 ký tự')
-                        <span style="color:red;">{{ $message }}</span>
-                    @else
-                        <span style="color:red;">Vui lòng nhập tên tài khoản</span>
-                    @endif
-                @enderror
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="password">Mật Khẩu</label>
-                <input type="password" id="password" name="password" class="form-control" value="{{old('password') ?? $userDetail->mat_khau}}" >
-                @error('password')
-                    <span style="color:red;">Vui lòng nhập mật khẩu</span>
-                @enderror
-            </div>
+    <div class="row justify-content-between mb-3" style="margin-top: -30px">
+        <div class="col-auto">
+            <a href="{{ route('admin.manage_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
+        <div class="col-auto">
+            <h4>{{$title}} CÓ MÃ SP [{{$productDetail->maSP}}]</h4>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="{{-- route('admin.store_product') --}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @if($errors->any())
+                    <div class="alert alert-danger text-center" id="error-message">
+                        @foreach($errors->all() as $error)
+                            <span>{{ $error }}</span><br>
+                        @endforeach
+                        Vui lòng kiểm tra lại dữ liệu
+                    </div>
+                @endif
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="phone">SĐT</label>
-                <input type="text" id="phone" name="phone" class="form-control" value="{{old('phone') ?? $userDetail->so_dien_thoai}}">
-                @error('phone')
-                    @if($message == 'Số điện thoại đã tồn tại trên hệ thống')
-                        <span style="color:red;">{{ $message }}</span>
-                    @elseif($message == 'Số điện thoại không dài quá 12 ký tự')
-                        <span style="color:red;">{{ $message }}</span>
-                    @endif
-                @enderror
-            </div>
+                @if(session('msg'))
+                    <div class="alert alert-success text-center">
+                        {{session('msg')}}
+                    </div>
+                @endif
 
-            <div class="col-md-6 mb-3">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" value="{{old('email') ?? $userDetail->email}}" >
-                @error('email')
-                    <span style="color:red;">Vui lòng nhập email</span>
-                @enderror
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="address">Họ và Tên</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nhập họ và tên..." value="{{old('fullname') ?? $userDetail->ho_ten}}">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="address">Ngày Sinh</label>
-                <input type="date" class="form-control" id="birthday" name="birthday" value="{{old('birthday') ?? $userDetail->ngay_sinh}}">
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="address">Địa Chỉ</label>
-            <textarea id="address" name="address" class="form-control" rows="3">{{ old('address') ?? $userDetail->dia_chi }}</textarea>
-        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="maNSX" class="form-label">Nhà sản xuất:</label>
+                            <select name="maNSX" id="maNSX" class="form-select">
+                                <option value="">Chọn nhà sản xuất</option>
+                                @if(!empty(getAllNSX()))
+                                    @foreach(getAllNSX() as $item)
+                                        <option value="{{ $item->maNSX }}" {{ old('maNSX', $productDetail->maNSX) == $item->maNSX ? 'selected' : '' }}>{{ $item->ten_NSX }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('maNSX')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-        <div class="mb-3">
-            <label for="account_type">Loại Tài Khoản</label>
-            <select id="account_type" name="account_type" class="form-control">
-                <option value="1" {{ old('account_type', $userDetail->loai_tai_khoan) == 1 ? 'selected' : '' }}>Admin</option>
-                <option value="0" {{ old('account_type', $userDetail->loai_tai_khoan) == 0 ? 'selected' : '' }}>Người Dùng</option>
-            </select>
-            
-        </div>
+                        <div class="mb-3">
+                            <label for="id_danh_muc" class="form-label">Danh mục sản phẩm:</label>
+                            <select name="id_danh_muc" id="id_danh_muc" class="form-select">
+                                <option value="">Chọn danh mục sản phẩm</option>
+                                @if(!empty(getAllDanhMucSp()))
+                                    @foreach(getAllDanhMucSp() as $item)
+                                    <option value="{{ $item->id_danh_muc }}" {{ old('id_danh_muc', $productDetail->id_danh_muc) == $item->id_danh_muc ? 'selected' : '' }}>{{ $item->ten_danh_muc }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('id_danh_muc')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Cập Nhật</button>
-            <a href="{{route('admin.manage_user')}}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="don_gia_goc" class="form-label">Giá Gốc(VNĐ):</label>
+                                <input type="number" name="don_gia_goc" id="don_gia_goc" class="form-control" value="{{ old('don_gia_goc', $productDetail->don_gia_goc) }}">
+                                @error('don_gia_goc')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="don_gia" class="form-label">Giá Bán(VNĐ):</label>
+                                <input type="number" name="don_gia" id="don_gia" class="form-control" value="{{ old('don_gia', $productDetail->don_gia) }}">
+                                @error('don_gia')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hinh_anh" class="form-label">Hình ảnh sản phẩm:</label>
+                            <input type="file" name="hinh_anh" id="hinh_anh" class="form-control" accept="image/*" value="{{old('hinh_anh')}}">
+                            @error('hinh_anh')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="ten_san_pham" class="form-label">Tên sản phẩm:</label>
+                            <input type="text" name="ten_san_pham" id="ten_san_pham" class="form-control" value="{{old('ten_san_pham', $productDetail->ten_san_pham)}}">
+                            @error('ten_san_pham')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="so_luong_ton" class="form-label">Số lượng nhập:</label>
+                            <input type="number" name="so_luong_ton" id="so_luong_ton" class="form-control" value="{{old('so_luong_ton', $productDetail->so_luong_ton)}}">
+                            @error('so_luong_ton')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="trong_luong" class="form-label">Trọng lượng (Kilogram):</label>
+                            <input type="number" name="trong_luong" id="trong_luong" class="form-control" value="{{old('trong_luong', $productDetail->trong_luong)}}">
+                            @error('trong_luong')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="sp_noi_bat" class="form-label">Loại sản phẩm</label>
+                            <select name="sp_noi_bat" id="sp_noi_bat" class="form-select">
+                                <option value="0" {{ old('sp_noi_bat', $productDetail->sp_noi_bat) == 0 ? 'selected' : '' }}>Thường</option>
+                                <option value="1" {{ old('sp_noi_bat', $productDetail->sp_noi_bat) == 1 ? 'selected' : '' }}>Nổi Bật</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="mo_ta" class="form-label">Mô tả sản phẩm:</label>
+                            <textarea name="mo_ta" id="mo_ta" class="form-control" rows="4">{{old('mo_ta', $productDetail->mo_ta)}}</textarea>
+                            @error('mo_ta')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Cập Nhật Sản Phẩm</button>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
+@endsection
+@section('js')
+<script>
+    
+</script>
 @endsection

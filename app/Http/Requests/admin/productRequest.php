@@ -22,26 +22,25 @@ class productRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'maSP' => 'required|unique:sanpham,maSP|min:3',
             'maNSX' => 'required',
-            'nhomSP' => 'required',
+            'id_danh_muc' => 'required',
             'ten_san_pham' => 'required|unique:taikhoan,email',
             'don_gia'=>'required|numeric',
+            'don_gia_goc'=>'required|numeric',
             // 'anh'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             
         ];
     }
     public function messages(){
         return [
-            'maSP.required' => 'Mã sản phẩm bắt buộc phải nhập',
-            'maSP.unique' => 'Mã sản phẩm đã tồn tại trên hệ thống',
-            'maSP.min' => 'Mã sản phẩm phải lớn hơn :min ký tự',
             'maNSX.required' => 'Mã NSX bắt buộc phải nhập',
-            'nhomSP.required' => 'Loại sản phẩm bắt buộc phải nhập',
+            'id_danh_muc.required' => 'Loại sản phẩm bắt buộc phải nhập',
             'ten_san_pham.unique' => 'Tên sản phẩm đã tồn tại trên hệ thống',
             'ten_san_pham.required' => 'Tên sản phẩm bắt buộc phải nhập',
             'don_gia.required'=>'Đơn giá bắt buộc phải nhập',
             'don_gia.numeric'=>'Đơn giá bắt buộc phải là số',
+            'don_gia_goc.required'=>'Đơn giá gốc bắt buộc phải nhập',
+            'don_gia_goc.numeric'=>'Đơn giá gốc bắt buộc phải là số',
             // 'anh.required'=>'Vui lòng chọn ảnh sản phẩm',
         ];
     }

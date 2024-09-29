@@ -21,3 +21,19 @@ function isAdminActive($username){
         return false;
     }
 }
+function sanphamnoibat(){
+    $groups = new Groups;
+    return $groups->getSanPhamNoiBat();
+}
+function getChuyenMuc1($id){
+    $groups = new Groups();
+    return $groups->getChuyenMuc1($id);
+}
+function getChuyenMuc2($id){
+    $groups = new Groups();
+    return $groups->getChuyenMuc2($id);
+}
+function getChuyenMuc3($id){
+    $groups = new Groups();
+    return $groups->getChuyenMuc3($id);
+}

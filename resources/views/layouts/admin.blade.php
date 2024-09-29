@@ -40,6 +40,16 @@
         .sidebar {
             min-height: 100vh;
             background-color: #f8f9fa;
+            position: fixed;
+            top: 0;  
+            left: 0;
+            margin-right: 250px;
+            height: 100%;    /* Chiều cao 100% màn hình */
+            width: 250px;    /* Chiều rộng cố định cho sidebar */
+            background-color: #f8f9fa;
+            padding-top: 20px; /* Khoảng cách từ đầu trang tới nội dung trong sidebar */
+            transition: all 0.3s ease;
+            z-index: 1000;   /* Đảm bảo sidebar nằm trên nội dung khác */
         }
         .sidebar .nav-link {
             color: #333;
@@ -75,6 +85,21 @@
         .title-top{
             font-size: 20px;
         }
+        #content {
+            margin-left: 250px; /* Khoảng cách lề trái mặc định */
+            width: calc(100% - 250px); /* Chiều rộng content tương ứng với navbar */
+            transition: all 0.3s ease; /* Hiệu ứng chuyển động mượt */
+            padding: 20px;
+        }
+        /* Khi sidebar ẩn */
+        .sidebar-hidden .sidebar {
+            width: 0;
+            overflow: hidden;
+        }
+        .sidebar-hidden #content {
+            margin-left: 0;
+            width: 100%;
+        }
     </style>
     @yield('stylesheet')
 </head>
@@ -83,7 +108,7 @@
     <!-- Sidebar -->
     @include('admin.blocks.navbar_dashboard')
     <!-- Content -->
-    <div class="content flex-grow-1 p-3">
+    <div class="content flex-grow-1 p-3" id="content">
         @include('admin.blocks.header_nav')
         @yield('content-admin')
     </div>
@@ -95,6 +120,9 @@
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('d-none'); // Thay đổi lớp CSS để ẩn hiện
+        });
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-hidden');
         });
 
         // Hàm ẩn thông báo sau một khoảng thời gian nhất định
@@ -114,16 +142,22 @@
         }
         
         function toggleNavbar() {
-            // Lấy đối tượng của navbar
-            var navbar = document.getElementById('navbar');
-            //id của navbar: navbar
-            // Kiểm tra và thay đổi trạng thái hiển thị của navbar
-            if (navbar.style.display === "none" || navbar.style.display === "") {
-                navbar.style.display = "block"; // Hiển thị navbar nếu đang ẩn
-            } else {
-                navbar.style.display = "none"; // Ẩn navbar nếu đang hiển thị
-            }
+        // Lấy đối tượng của navbar và content
+        var navbar = document.getElementById('navbar');
+        var content = document.getElementById('content');
+
+        // Kiểm tra và thay đổi trạng thái hiển thị của navbar
+        if (navbar.style.display === "none" || navbar.style.display === "") {
+            navbar.style.display = "block"; // Hiển thị navbar nếu đang ẩn
+            content.style.marginLeft = "250px"; // Đặt khoảng cách lề trái tương ứng với chiều rộng navbar
+            content.style.width = "calc(100% - 250px)"; // Chiều rộng content điều chỉnh theo navbar
+        } else {
+            navbar.style.display = "none"; // Ẩn navbar nếu đang hiển thị
+            content.style.marginLeft = "0"; // Không có lề trái khi navbar bị ẩn
+            content.style.width = "100%"; // Chiều rộng content 100% khi navbar bị ẩn
         }
+    }
+
         </script>
         @yield('js')
         

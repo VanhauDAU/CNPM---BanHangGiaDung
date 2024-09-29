@@ -12,7 +12,7 @@
         </div>
         <div class="col-auto">
             <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
-            <button id="btn-add-danh_muc" class="btn btn-danger">Thêm Danh Mục</button>
+            <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
         </div>
     </div>
     
@@ -22,9 +22,9 @@
                 @csrf
                 @if($errors->any())
                     <div class="alert alert-danger text-center" id="error-message">
-                        @foreach($errors->all() as $error)
+                        {{-- @foreach($errors->all() as $error)
                             <span>{{ $error }}</span><br>
-                        @endforeach
+                        @endforeach --}}
                         Vui lòng kiểm tra lại dữ liệu
                     </div>
                 @endif
@@ -37,14 +37,6 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="maSP" class="form-label">Mã sản phẩm:</label>
-                            <input type="text" name="maSP" id="maSP" class="form-control" value="{{ old('maSP') }}">
-                            @error('maSP')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-
                         <div class="mb-3">
                             <label for="maNSX" class="form-label">Nhà sản xuất:</label>
                             <select name="maNSX" id="maNSX" class="form-select">
@@ -61,28 +53,36 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="nhomSP" class="form-label">Loại sản phẩm:</label>
-                            <select name="nhomSP" id="nhomSP" class="form-select">
-                                <option value="">Chọn loại sản phẩm</option>
+                            <label for="id_danh_muc" class="form-label">Danh mục sản phẩm:</label>
+                            <select name="id_danh_muc" id="id_danh_muc" class="form-select">
+                                <option value="">Chọn danh mục sản phẩm</option>
                                 @if(!empty(getAllDanhMucSp()))
                                     @foreach(getAllDanhMucSp() as $item)
-                                        <option value="{{ $item->nhomSP }}" {{ old('nhomSP') == $item->nhomSP ? 'selected' : '' }}>{{ $item->ten_nhom }}</option>
+                                        <option value="{{ $item->id_danh_muc }}" {{ old('id_danh_muc') == $item->id_danh_muc ? 'selected' : '' }}>{{ $item->ten_danh_muc }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            @error('nhomSP')
+                            @error('id_danh_muc')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
-                        <div class="mb-3">
-                            <label for="don_gia" class="form-label">Giá (VNĐ):</label>
-                            <input type="number" name="don_gia" id="don_gia" class="form-control" value="{{ old('don_gia') }}">
-                            @error('don_gia')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                        
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="don_gia_goc" class="form-label">Giá (VNĐ):</label>
+                                <input type="number" name="don_gia_goc" id="don_gia_goc" class="form-control" value="{{ old('don_gia_goc') }}">
+                                @error('don_gia_goc')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="don_gia" class="form-label">Giá (VNĐ):</label>
+                                <input type="number" name="don_gia" id="don_gia" class="form-control" value="{{ old('don_gia') }}">
+                                @error('don_gia')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
-
                         <div class="mb-3">
                             <label for="hinh_anh" class="form-label">Hình ảnh sản phẩm:</label>
                             <input type="file" name="hinh_anh" id="hinh_anh" class="form-control" accept="image/*" value="{{ old('hinh_anh') }}">
@@ -111,13 +111,22 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="trong_luong" class="form-label">Trọng lượng:</label>
+                            <label for="trong_luong" class="form-label">Trọng lượng (Kg):</label>
                             <input type="number" name="trong_luong" id="trong_luong" class="form-control" value="{{ old('trong_luong') }}">
                             @error('trong_luong')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
+                        <div class="mb-3">
+                            <label for="sp_noi_bat" class="form-label">Loại sản phẩm</label>
+                            <select name="sp_noi_bat" id="sp_noi_bat" class="form-select">
+                                <option value="0" {{ old('sp_noi_bat') ==0  ? 'selected' : '' }}>Thường</option>
+                                <option value="1" {{ old('sp_noi_bat') == 1 ? 'selected' : '' }}>Nổi Bật</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
                         <div class="mb-3">
                             <label for="mo_ta" class="form-label">Mô tả sản phẩm:</label>
                             <textarea name="mo_ta" id="mo_ta" class="form-control" rows="4">{{ old('mo_ta') }}</textarea>

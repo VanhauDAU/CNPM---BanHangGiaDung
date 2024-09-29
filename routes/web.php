@@ -50,7 +50,6 @@ Route::prefix('admin')->group(function () {
             Route::post('edit/{id}', [UserController::class, 'post_edit_user'])->name('admin.edit_user');
             Route::delete('delete/{id}', [UserController::class, 'get_delete_user'])->name('getdelete_user');
         });
-
         Route::prefix('quan-ly-san-pham')->group(function () {
             Route::get('', [ProductController::class, 'manage_product'])->name('admin.manage_product');
             Route::get('info_detail/{id}', [ProductController::class, 'get_info_detail'])->name('product.info');
@@ -59,13 +58,13 @@ Route::prefix('admin')->group(function () {
                 Route::post('', [ProductController::class, 'post_add_product'])->name('admin.add_product');
                 Route::get('nha-san-xuat', [ProductController::class, 'get_add_NSX'])->name('getadd_nsx');
                 Route::post('nha-san-xuat', [ProductController::class, 'post_add_NSX'])->name('admin.add_nsx');
+                Route::get('danh-muc', [ProductController::class, 'get_add_DM'])->name('getadd_dm');
+                Route::post('danh-muc', [ProductController::class, 'post_add_DM'])->name('admin.add_dm');
             });
-            
             Route::get('edit/{id}', [ProductController::class, 'get_edit_product'])->name('getedit_product');
             Route::post('edit/{id}', [ProductController::class, 'post_edit_product'])->name('postedit_product');
             Route::delete('delete/{id}', [ProductController::class, 'get_delete_product'])->name('getdelete_product');
         });
-
         Route::prefix('quan-ly-hoa-don')->group(function () {
             Route::get('', [OrderController::class, 'manage_order'])->name('admin.manage_order');
             Route::get('add', [OrderController::class, 'get_add_order'])->name('getadd_order');
@@ -79,13 +78,16 @@ Route::prefix('admin')->group(function () {
         });
     });
 });
-
 //========================user================================
 Route::prefix('/')->name('home.')->group(function(){
     Route::get('',[HomeController::class, 'index'])->name('index');
     Route::prefix('san-pham')->name('products.')->group(function(){
         Route::get('', [ProductControllerUser::class, 'index'])->name('index');
+        Route::get('/{id}', [ProductControllerUser::class, 'show'])->name('sanpham_id');
+        Route::get('/{id_danh_muc}/{id_chuyen_muc}', [ProductControllerUser::class, 'show2'])->name('sanpham_id_id');
+        
     });
+    Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
     Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');

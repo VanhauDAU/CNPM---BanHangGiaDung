@@ -33,6 +33,7 @@
   <script src="
     https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{asset('assets/clients/css/custom_css.css')}}">
     <!-- Custom CSS -->
     <style>
         *{
@@ -74,42 +75,6 @@
         .navbar-brand {
             font-size: 1.5rem;
             font-weight: bold;
-        }
-
-        .hero-section {
-            color: white;
-            height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .hero-section {
-            position: relative;
-            overflow: hidden;
-        }
-        .mascot-section{
-          position: absolute;
-          top: 170px;
-        }
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; 
-        }
-
-        .custom-video {
-            width: 100%; 
-            height: auto;
-            /* object-fit: cover;  */
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            border-bottom-left-radius: 150px; 
-            border-bottom-right-radius: 150px;
         }
         @keyframes colorChange {
             0% { color: red; }
@@ -156,7 +121,28 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
-
+    <script>
+      function setActive(element, value) {
+          var links = document.querySelectorAll('.quick_product a');
+          links.forEach(function(link) {
+              link.classList.remove('active');
+          });
+          element.classList.add('active');
+          localStorage.setItem('activeLink', value);
+      }
+      window.onload = function() {
+          var activeLink = localStorage.getItem('activeLink');
+          if (activeLink) {
+              var links = document.querySelectorAll('.quick_product a');
+              links.forEach(function(link) {
+                  if (link.textContent.trim() === activeLink) {
+                      link.classList.add('active');
+                  }
+              });
+          }
+      }
+      
+    </script>
 </body>
 
 </html>

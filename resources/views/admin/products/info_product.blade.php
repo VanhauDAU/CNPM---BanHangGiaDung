@@ -5,14 +5,20 @@
 @endsection
 
 @section('content-admin')
-<div class="container mt-5">
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <a href="{{ route('admin.manage_product') }}" class="btn btn-danger">Quay Lại</a>
+        <a href="{{ route('getedit_product', ['id' => $productDetail->maSP]) }}" class="btn btn-primary ">Chỉnh Sửa Thông Tin</a>
+    </div>
     <div class="row">
         <div class="col-md-12 d-flex gap-5">
             <!-- Khung thông tin sản phẩm -->
+            
             <div class="card col-md-7">
                 <div class="card-header text-white text-center">
                     <h3 class="card-title running-text m-0">THÔNG TIN SẢN PHẨM</h3>
                 </div>
+                
                 <div class="card-body">
                     <div class="row">
                         <!-- Hình ảnh sản phẩm bên trái -->
@@ -27,7 +33,7 @@
                         <div class="col-md-8">
                             <h4 class="text-primary"><strong>{{ $productDetail->ten_san_pham }}</strong></h4>
                             <p><strong>Mã sản phẩm: </strong>{{ $productDetail->maSP }}</p>
-                            <p><strong>Loại sản phẩm: </strong>{{ $productDetail->ten_nhom }}</p>
+                            <p><strong>Loại sản phẩm: </strong>{{ $productDetail->ten_danh_muc }}</p>
                             <p><strong>Giá: </strong>{{ number_format($productDetail->don_gia, 0, ',', '.') }} VNĐ</p>
                             <p><strong>Trọng lượng: </strong>{{ number_format($productDetail->trong_luong, 2) }} kg</p>
                             <p><strong>Số lượng tồn: </strong>{{ $productDetail->so_luong_ton }}</p>
@@ -58,10 +64,7 @@
             <!-- Nút chỉnh sửa thông tin -->
             
         </div>
-        <div class="text-center mt-3">
-            <a href="{{ route('getedit_product', ['id' => $productDetail->maSP]) }}" class="btn btn-primary btn-sm">Chỉnh Sửa Thông Tin</a>
-            <a href="{{ route('admin.manage_product') }}" class="btn btn-danger btn-sm">Quay Lại</a>
-        </div>
+        
     </div>
 </div>
 @endsection

@@ -40,11 +40,11 @@
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <select class="form-select" name="nhomSP" id="nhomSP">
+                    <select class="form-select" name="id_danh_muc" id="id_danh_muc">
                         <option value="0">Nhóm Sản Phẩm</option>
                         @if(!empty(getAllDanhMucSp()))
                             @foreach(getAllDanhMucSp() as $item)
-                                <option value="{{$item->nhomSP}}" {{request()->nhom_sp == $item->nhomSP ? 'selected' : false }}>{{$item->nhomSP}} - {{$item->ten_nhom}}</option>
+                                <option value="{{$item->id_danh_muc}}" {{request()->nhom_sp == $item->id_danh_muc ? 'selected' : false }}>{{$item->id_danh_muc}} - {{$item->ten_danh_muc}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -60,13 +60,13 @@
 
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th width="3%">STT</th>
-                    <th>Mã SP</th>
+                    <th>Tên Sản Phẩm</th>
                     <th>Mã NSX</th>
                     <th>Loại</th>
-                    <th>Tên</th>
                     <th>Giá</th>
+                    <th>Loại</th>
                     <th width="200px">Chức Năng</th>
                 </tr>
             </thead>
@@ -75,14 +75,20 @@
                     @foreach ($ProductList as $key => $item)
                     <tr>
                         <td>{{$key + 1}}</td>
-                        <td>{{$item->maSP}}</td>
-                        <td>{{$item->maNSX}}</td>
-                        <td>{{$item->ten_nhom}}</td>
                         <td>{{$item->ten_san_pham}}</td>
+                        <td>{{$item->maNSX}}</td>
+                        <td>{{$item->ten_danh_muc}}</td>
                         <td>{{number_format($item->don_gia,0,',','.')}} VNĐ</td>
                         <td>
+                            @if($item->sp_noi_bat == 1)
+                                <h6 class="text-center bg-success p-1 border rounded text-white p-1">Nổi Bật</h6>
+                            @else
+                                <h6 class="text-center bg-light p-1 border rounded text-black p-1">Thường</h6>
+                            @endif
+                        </td>
+                        <td>
                             <a href="{{ route('product.info', ['id'=>$item->maSP]) }}" class="btn btn-primary btn-sm">Xem</a>
-                            <a href="{{-- route('users.edit', $item->id) --}}" class="btn btn-warning btn-sm">Sửa</a>
+                            <a href="{{ route('postedit_product', $item->maSP) }}" class="btn btn-warning btn-sm">Sửa</a>
                             <form action="{{ route('getdelete_product', $item->maSP) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')

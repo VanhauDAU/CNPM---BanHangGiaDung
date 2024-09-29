@@ -16,7 +16,7 @@ class Products extends Model
         $products = DB::table($this->table)
         ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*')
         ->join('nhasanxuat','sanpham.maNSX','=','nhasanxuat.maNSX')
-        ->join('danhmucsanpham','sanpham.nhomSP','=','danhmucsanpham.nhomSP');
+        ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc');
         $orderBy = 'sanpham.created_at';
         $orderType='desc';
         if(!empty($sortArr) & is_array($sortArr)){
@@ -41,9 +41,13 @@ class Products extends Model
         }else{
             $products = $products->get();
         }
-        // $sql = DB::getQueryLog();
-        // dd($sql);
-        // dd($products);
         return $products;
+    }
+    public function getDetail($id){
+        return DB::select('SELECT * FROM '.$this->table.' 
+        INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
+        INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
+        WHERE maSP = ? 
+        ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
 }

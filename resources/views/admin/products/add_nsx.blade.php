@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Thêm Sản Phẩm Mới
+    Thêm Nhà Sản Xuất Mới
 @endsection
 
 @section('content-admin')
@@ -36,23 +36,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="maNSX" class="form-label">Mã nhà sản xuất:</label>
-                            <input type="text" name="maNSX" id="maNSX" class="form-control" value="{{ old('maNSX') }}">
-                            @error('maNSX')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email:</label>
-                            <input type="text" name="email" id="email" class="form-control" value="{{ old('email') }}">
-                            @error('email')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
                             <label for="ten_NSX" class="form-label">Tên nhà sản xuất:</label>
                             <input type="text" name="ten_NSX" id="ten_NSX" class="form-control" value="{{ old('ten_NSX') }}">
                             @error('ten_NSX')
@@ -67,18 +50,30 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        
                     </div>
-                    <div class=" col-md-12 mb-3">  
-                        <label for="dia_chi" class="form-label">Địa chỉ:</label>
-                        <textarea name="dia_chi" id="dia_chi" class="form-control" rows="4">{{ old('dia_chi') }}</textarea>
-                        @error('dia_chi')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="text" name="email" id="email" class="form-control" value="{{ old('email') }}">
+                            @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3">  
+                            <label for="dia_chi" class="form-label">Địa chỉ:</label>
+                            <textarea name="dia_chi" id="dia_chi" class="form-control" rows="4">{{ old('dia_chi') }}</textarea>
+                            @error('dia_chi')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
+                    
                 </div>
                 <button type="submit" class="btn btn-success w-100">Thêm Nhà Sản Xuất</button>
             </form>
         </div>
     </div>
 </div>
+
 @endsection

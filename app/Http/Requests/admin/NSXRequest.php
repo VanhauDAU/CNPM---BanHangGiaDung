@@ -22,24 +22,18 @@ class NSXRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'maNSX'=>'required|not_in',
-            // 'nhomSP'=>'required|not_in',
+            // 'id_danh_muc'=>'required|not_in',
             'ten_NSX'=>'required',
-            'so_dien_thoai'=>'required|digits_between:10,12',
-            'email'=>'required|email'
+            'so_dien_thoai'=>'required|digits_between:10,12'
         ];
     }
     public function messages(){
         return [
-            'maNSX.required'=>'Bạn phải chọn nhà sản xuất',
-            'maNSX.not_in'=>'Bạn phải chọn nhà sản xuất',
-            // 'nhomSP.not_in'=>'Bạn phải chọn loại sản phẩm',
-            // 'nhomSP.required'=>'Bạn phải chọn loại sản phẩm',
+            // 'id_danh_muc.not_in'=>'Bạn phải chọn loại sản phẩm',
+            // 'id_danh_muc.required'=>'Bạn phải chọn loại sản phẩm',
             'ten_NSX.required'=>'Tên nhà sản xuất không được bỏ trống',
             'so_dien_thoai.required'=>'Số điện thoại không được bỏ trống',
-            'so_dien_thoai.digits_between'=>'Số điện thoại phải từ 10-12 ký tự',
-            'email.required'=>'Email không được bỏ trống',
-            'email.email'=>'Email không đúng định dạng'
+            'so_dien_thoai.digits_between'=>'Số điện thoại phải từ 10-12 ký tự'
         ];
     }
     public function withValidator($validator){
