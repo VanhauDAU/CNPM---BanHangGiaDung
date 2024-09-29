@@ -1,79 +1,57 @@
-<nav class="navbar-default navbar-static-side" id="navbar" role="navigation">
-    <div class="sidebar-collapse">
-        <ul class="nav metismenu" id="side-menu">
-            <li class="nav-header">
-                <div class="dropdown profile-element"> <span>
-                        <img alt="image" class="" src="{{asset('assets/general/img/logoShop.png')}}" />
-                         </span>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="{{route('admin.info')}}">
-                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{--Auth::user()->ho_ten--}}</strong>
-                         </span> <span class="text-muted text-xs block">
-                            {{-- Auth::user()->maCV == 1 ? 'Giám Đốc' : (Auth::user()->maCV == 2 ? 'Quản Lý' : 'Nhân Viên') --}}
-
-                            <b class="caret"></b></span> </span> </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="profile.html">Profile</a></li>
-                        <li><a href="contacts.html">Contacts</a></li>
-                        <li><a href="mailbox.html">Mailbox</a></li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="{{ route('admin.logout') }}" 
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng Xuất</a>
-                        </li>
-                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </ul>
-                </div>
-                <div class="logo-element">
-                    IN+
-                </div>
-            </li>
-            <li class="active">
-                <a href="/admin"><i class="fa fa-th-large"></i> <span class="nav-label">Trang Chủ</span></a>
-            </li>
-            <li>
-                <a href="/admin/quan-ly-san-pham"><i class="fa fa-desktop"></i> <span class="nav-label">QL Sản Phẩm</span></a>
-            </li>
-            <li>
-                <a href="/admin/quan-ly-nguoi-dung"><i class="fa-solid fa-person"></i> <span class="nav-label">QL Người Dùng</span>{{--<span class="fa arrow"></span>--}}</a>
-                {{-- <ul class="nav nav-second-level collapse">
-                    <li><a href="graph_flot.html">Flot Charts</a></li>
-                    <li><a href="graph_morris.html">Morris.js Charts</a></li>
-                    <li><a href="graph_rickshaw.html">Rickshaw Charts</a></li>
-                    <li><a href="graph_chartjs.html">Chart.js</a></li>
-                    <li><a href="graph_chartist.html">Chartist</a></li>
-                    <li><a href="c3.html">c3 charts</a></li>
-                    <li><a href="graph_peity.html">Peity Charts</a></li>
-                    <li><a href="graph_sparkline.html">Sparkline Charts</a></li>
-                </ul> --}}
-            </li>
-            <li>
-                <a href="/admin/quan-ly-hoa-don"><i class="fa fa-envelope"></i> <span class="nav-label">QL Hóa Đơn </span><span class="label label-warning pull-right">16/24</span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="mailbox.html">Inbox</a></li>
-                    <li><a href="mail_detail.html">Email view</a></li>
-                    <li><a href="mail_compose.html">Compose email</a></li>
-                    <li><a href="email_template.html">Email templates</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">QL Khuyến Mãi</span>  </a>
-            </li>
-            <li>
-                <a href="widgets.html"><i class="fa fa-flask"></i> <span class="nav-label">QL Giao Diện</span></a>
-            </li>
-            <li class="active">
-                <a href="{{ route('admin.logout') }}" 
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fa fa-edit"></i> 
-                    <span class="nav-label">Đăng Xuất</span>
-                </a>
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </li>
-        </ul>
-
+<nav class="sidebar p-3" id="sidebar" style="min-width:240px">
+    <div class="text-center mb-4">
+        <a href="{{route('home.index')}}"><img src="{{asset('assets/general/img/logoShop_bl.png')}}" alt="Logo" class="img-fluid rounded-circle" width="80"></a>
+        <h4>Trang Admin</h4>
     </div>
+    <ul class="nav flex-column gap-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="/admin">
+                <i class="fas fa-th-large"></i> Trang Chủ
+            </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" href="#" id="accountDropdown" data-bs-toggle="collapse" data-bs-target="#accountSubMenu" aria-expanded="false">
+                <i class="fas fa-users"></i> QL Tài Khoản
+                <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
+            </a>
+            <ul class="collapse" id="accountSubMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.manage_user')}}">Xem - Sửa - Xóa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('getadd_user')}}">Thêm</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#productSubMenu" aria-expanded="false">
+                <i class="fas fa-box"></i> QL Sản Phẩm
+                <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
+            </a>
+            <ul class="collapse" id="productSubMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.manage_product')}}">Xem - Sửa - Xóa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('getadd_product')}}">Thêm Sản Phẩm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('getadd_nsx')}}">Thêm Nhà Sản Xuất</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{--route('getadd_user')--}}">Thêm Danh Mục</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/quan-ly-hoa-don">
+                <i class="fas fa-receipt"></i> QL Hóa Đơn
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
+                <i class="fas fa-tags"></i> QL Khuyến Mãi
+            </a>
+        </li>
+    </ul>
 </nav>

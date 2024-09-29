@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Users;
 use App\Http\Requests\admin\userRequest;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     //
@@ -64,14 +65,14 @@ class UserController extends Controller
     public function post_add_user(userRequest $request){
         $dataInsert=[
             $request->username,
-            $request->password,
+            Hash::make($request->password),
             $request->fullname,
             $request->birthday,
             $request->phone,
             $request->email,
             $request->address,
             $request->account_type,
-            $request->chuc_vu
+            $request->chuc_vu,
         ];  
         $this->users->addUser($dataInsert);
         return redirect()->route('admin.manage_user')->with('msg', 'Thêm mới người dùng thành công');

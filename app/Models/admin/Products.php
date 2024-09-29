@@ -58,14 +58,15 @@ class products extends Model
         $timestamp = now();
         $data[] = $timestamp;
         // dd($data); 
-        DB::insert('INSERT INTO sanpham(maSP, maNSX, nhomSP, anh, ten_san_pham, don_gia, trong_luong, mo_ta, so_luong_ton, created_at) values (?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO sanpham(maSP, maNSX, nhomSP, ten_san_pham, don_gia, trong_luong, mo_ta, so_luong_ton,anh, created_at) values (?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     public function addNSX($data){
         $timestamp = now();
         $data[] = $timestamp;
         DB::insert('INSERT INTO nhasanxuat(maNSX, ten_NSX, dia_chi, email, so_dien_thoai, created_at) values (?,?,?,?,?,?)', $data);
-
     }
-    
+    public function deleteUser($id){
+        return DB::delete("DELETE FROM $this->table WHERE maSP = ? ", [$id]);
+    }
 }

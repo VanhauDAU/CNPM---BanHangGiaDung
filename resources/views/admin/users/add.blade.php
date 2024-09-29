@@ -12,7 +12,7 @@
     <form action="{{-- route('admin.add_user') --}}" method="POST">
         @csrf
         @if($errors->any())
-            <div class="alert alert-danger text-center">
+            <div class="alert alert-danger text-center" id="error-message">
                 Vui lòng kiểm tra lại dữ liệu
             </div>
         @endif
@@ -24,14 +24,14 @@
         
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="username">Tên Tài Khoản</label>
+                <label for="username">Tài Khoản <span style="color: red;">*</span></label>
                 <input type="text" id="username" name="username" class="form-control" placeholder="Nhập tài khoản..." value="{{old('username')}}">
                 @error('username')
                         <span style="color:red;">{{$message}}</span>
                 @enderror
             </div>
             <div class="col-md-6 mb-3">
-                <label for="password">Mật Khẩu</label>
+                <label for="password">Mật Khẩu <span style="color: red;">*</span></label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Nhập mật khẩu..." value="{{ old('password') }}" >
                 @error('password')
                     <span style="color:red;">Vui lòng nhập mật khẩu</span>
@@ -41,7 +41,7 @@
         <input type="hidden" name="daycreate" value="{{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}">
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="phone">SĐT</label>
+                <label for="phone">SĐT <span style="color: red;">*</span></label>
                 <input type="text" id="phone" name="phone" class="form-control" placeholder="Nhập số điện thoại..." value="{{old('phone')}}">
                 @error('phone')
                         <span style="color:red;">{{$message}}</span>
@@ -49,7 +49,7 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="email">Email</label>
+                <label for="email">Email <span style="color: red;">*</span></label>
                 <input type="email" id="email" name="email" class="form-control" placeholder="Nhập email..." value="{{old('email')}}" >
                 @error('email')
                         <span style="color:red;">{{$message}}</span>
@@ -67,10 +67,16 @@
                 <input type="date" class="form-control" id="birthday" name="birthday" value="{{old('birthday')}}">
             </div>
         </div>
-        <div class="mb-3">
+        <div class="row">
+            <div class="col-md-6 mb-3">
                 <label for="address">Địa Chỉ</label>
                 <textarea id="address" name="address" class="form-control" rows="3" placeholder="Nhập địa chỉ..." value="{{old('address')}}"></textarea>
             </div>
+            <div class="col-md-6 mb-3">
+                <label for="anh">Chọn ảnh:</label>
+                <input type="file" name="anh" id="anh" class="form-control" value="{{old('anh')}}">
+            </div>
+        </div>
         
         {{-- <div class="mb-3" style="margin-top:5px">
             <label for="account_type">Loại Tài Khoản</label>

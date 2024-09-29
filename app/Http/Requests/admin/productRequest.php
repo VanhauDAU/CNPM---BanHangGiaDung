@@ -27,11 +27,8 @@ class productRequest extends FormRequest
             'nhomSP' => 'required',
             'ten_san_pham' => 'required|unique:taikhoan,email',
             'don_gia'=>'required|numeric',
-            'maNSX'=>'required|not_in',
-            'nhomSP'=>'required|not_in',
-            'ten_NSX'=>'required',
-            'so_dien_thoai'=>'required|digits_between:10,12',
-            'email'=>'required|email'
+            // 'anh'=>'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            
         ];
     }
     public function messages(){
@@ -45,15 +42,7 @@ class productRequest extends FormRequest
             'ten_san_pham.required' => 'Tên sản phẩm bắt buộc phải nhập',
             'don_gia.required'=>'Đơn giá bắt buộc phải nhập',
             'don_gia.numeric'=>'Đơn giá bắt buộc phải là số',
-            'maNSX.required'=>'Bạn phải chọn nhà sản xuất',
-            'maNSX.not_in'=>'Bạn phải chọn nhà sản xuất',
-            'nhomSP.not_in'=>'Bạn phải chọn loại sản phẩm',
-            'nhomSP.required'=>'Bạn phải chọn loại sản phẩm',
-            'ten_NSX.required'=>'Tên nhà sản xuất không được bỏ trống',
-            'so_dien_thoai.required'=>'Số điện thoại không được bỏ trống',
-            'so_dien_thoai.digits_between'=>'Số điện thoại phải từ 10-12 ký tự',
-            'email.required'=>'Email không được bỏ trống',
-            'email.email'=>'Email không đúng định dạng'
+            // 'anh.required'=>'Vui lòng chọn ảnh sản phẩm',
         ];
     }
     public function withValidator($validator){

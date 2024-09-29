@@ -60,7 +60,7 @@ class Users extends Model
         $timestamp = now();
         $data[] = $timestamp;
         $data[] = $timestamp; 
-        DB::insert('INSERT INTO taikhoan(username, password, ho_ten, ngay_sinh, so_dien_thoai, email, dia_chi, loai_tai_khoan, maCV, created_at, updated_at) values (?,?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO taikhoan(username, password, ho_ten, ngay_sinh, so_dien_thoai, email, dia_chi, loai_tai_khoan, maCV,anh, created_at, updated_at) values (?,?,?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     

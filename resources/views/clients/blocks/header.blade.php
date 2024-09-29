@@ -18,14 +18,42 @@
                     <a class="nav-link text-uppercase" href="{{route('home.products.index')}}">Sản Phẩm</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-uppercase" href="#">Liên Hệ</a>
+                    <a class="nav-link text-uppercase" href="{{route('home.lien-he')}}">Liên Hệ</a>
                 </li>
             </ul>
             <!-- Shopping Cart Icon -->
-            <a href="#" class="btn btn-outline-primary ms-3 rounded-pill">
-                <i class="fas fa-shopping-cart"></i> Giỏ Hàng (0)
-            </a>
-
+            <div class="dropdown">
+                <a href="{{Route('home.gio-hang')}}" class="btn btn-outline-primary ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-shopping-cart"></i> Giỏ Hàng (0)
+                </a>
+                <div class="dropdown-menu p-4" aria-labelledby="cartDropdown" style="position: absolute; left: -100px; top: 57px;border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 500px;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark">
+                                        <img src="{{asset('assets/general/img/login_sidebar.jpg')}}" alt="Sản phẩm 1" style="width: 50px; height: auto;" class="rounded me-3">
+                                        
+                                    </a>
+                                </td>
+                                <td>Sản phẩm 1</td>
+                                <td>100.000đ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row d-flex justify-content-between align-items-center mt-3">
+                        <h5 class="col-6">Tổng tiền: <span>900.000đ</span></h5>
+                        <a class="btn btn-primary col-4" href="{{Route('home.gio-hang')}}">Xem Giỏ Hàng</a>
+                    </div>
+                </div>
+            </div>
             <!-- User Icon Dropdown -->
             <div class="dropdown ms-3">
                 <a href="#" class="btn user-dropdown-btn" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -64,23 +92,25 @@
         border:4px solid red;
         border-bottom-color: red;
     }
-  .navbar.fixed-top {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 999; 
-  }
-  #userDropdown {
-      font-size: 1.25rem;
-      padding: 0.5rem 1rem;
-  }
+    .navbar.fixed-top {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999; 
+    }
+    #userDropdown {
+        font-size: 1.25rem;
+        padding: 0.5rem 1rem;
+    }
 
-  .dropdown-menu {
-      min-width: 200px;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
 
+    .menu-giohang{
+        position: relative;
+    }
+    .submenu-giohang {
+        
+    }
+    
 </style>
 @endsection
 @section('js')

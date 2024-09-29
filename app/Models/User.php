@@ -14,7 +14,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'taikhoan';
-    protected $primaryKey = 'username';
+    protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
      *

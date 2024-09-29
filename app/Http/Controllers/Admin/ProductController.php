@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Products;
 use App\Http\Requests\Admin\productRequest;
+use App\Http\Requests\admin\NSXRequest;
 class ProductController extends Controller
 {
     //
@@ -75,21 +76,34 @@ class ProductController extends Controller
         return view('admin.products.add', $this->data);
     }
     public function post_add_product(productRequest $request){
+        $fileName = null;
+        if ($request->has('hinh_anh')) {
+            $file = $request->hinh_anh;  
+            $ext = $file->getClientOriginalExtension();  
+            $fileName = time().'-'.$ext;
+            $file->move(public_path('storage/products/img'), $fileName);
+            // $anh = 'storage/products/img'.$file;
+        }
         $dataInsert=[
             $request->maSP,
             $request->maNSX,
             $request->nhomSP,
-            $request->hinh_anh,
             $request->ten_san_pham,
             $request->don_gia,
             $request->trong_luong,
             $request->mo_ta,
-            $request->so_luong_ton
+            $request->so_luong_ton,
+            $fileName
         ];  
         $this->products->addProduct($dataInsert);
         return redirect()->route('admin.manage_product')->with('msg', 'Thêm mới sản phẩm thành công');
     }
-    public function post_add_NSX(Request $request){
+    public function get_add_NSX(){
+        $this->data['title'] = 'THÊM NHÀ SẢN XUẤT';
+        $this->data['massage'] = 'Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
+        return view('admin.products.add_nsx', $this->data);
+    }
+    public function post_add_NSX(NSXRequest $request){
         $dataInsert=[
             $request->maNSX,
             $request->ten_NSX,
@@ -115,7 +129,23 @@ class ProductController extends Controller
 
     }
     public function get_delete_product($id){
-
+        if(!empty($id)){
+            $productDetail = $this->products->getDetail($id);
+            // dd($userDetail[0]);
+            if(!empty($productDetail[0])){
+                $deleteproduct = $this->products->deleteUser($id);
+                if($deleteproduct){
+                    $msg = 'Xóa sản phẩm thành công';
+                }else{
+                    $msg = 'Bạn không thể xóa sản phẩm lúc này, vui lòng thử lại sau!';
+                }
+            }else{
+                $msg ='Sản phẩm không tồn tại!';
+            }
+        }else{
+            $msg = 'Liên kết không tồn tại';
+        }
+        return redirect()->route('admin.manage_product')->with('msg',$msg);
     }
     //======================KẾT THÚC QUẢN LÝ SẢN PHẨM=======================
 }

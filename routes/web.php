@@ -11,15 +11,15 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\StaffController;
 // use App\Http\Controllers\Admin\LoginController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\IndexController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Admin\Auth\LoginController;
 // user
 use App\Http\Controllers\Clients\LoginController as UserLoginController;
+use App\Http\Controllers\Clients\ShoppingCartController;
 use App\Http\Controllers\PostController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
-
+use App\Http\Controllers\Clients\ContactController;
 //product user
 use App\Http\Controllers\Clients\ProductController as ProductControllerUser;
 /*
@@ -32,20 +32,15 @@ use App\Http\Controllers\Clients\ProductController as ProductControllerUser;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
-// Route::get('/admin/dang-nhap',[LoginController::class,'login'])->name('admin.login');
-// Route::post('/admin/dang-nhap',[LoginController::class,'post_login'])->name('admin.post.login');
-//->middleware(['auth', 'checkRole:1'])
 Route::prefix('admin')->group(function () {
-    Route::get('/', [IndexController::class, 'index'])->middleware('guest:admin')->name('admin.dashboard');
     Route::get('login', [LoginController::class, 'login'])->middleware('guest:admin')->name('admin.login');
     Route::post('login', [LoginController::class, 'post_login'])->middleware('guest:admin');
     Route::post('logout', function () {
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
     })->name('admin.logout');
-    Route::middleware('guest:admin')->group(function () {
+    Route::middleware('auth.admin')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::prefix('quan-ly-nguoi-dung')->group(function () {
             Route::get('', [UserController::class, 'manage_user'])->name('admin.manage_user');
             Route::get('info_detail/{id}', [UserController::class, 'get_info_detail'])->name('info');
@@ -59,8 +54,13 @@ Route::prefix('admin')->group(function () {
         Route::prefix('quan-ly-san-pham')->group(function () {
             Route::get('', [ProductController::class, 'manage_product'])->name('admin.manage_product');
             Route::get('info_detail/{id}', [ProductController::class, 'get_info_detail'])->name('product.info');
-            Route::get('add', [ProductController::class, 'get_add_product'])->name('getadd_product');
-            Route::post('add', [ProductController::class, 'post_add_product'])->name('admin.add_product');
+            Route::prefix('add')->group(function(){
+                Route::get('', [ProductController::class, 'get_add_product'])->name('getadd_product');
+                Route::post('', [ProductController::class, 'post_add_product'])->name('admin.add_product');
+                Route::get('nha-san-xuat', [ProductController::class, 'get_add_NSX'])->name('getadd_nsx');
+                Route::post('nha-san-xuat', [ProductController::class, 'post_add_NSX'])->name('admin.add_nsx');
+            });
+            
             Route::get('edit/{id}', [ProductController::class, 'get_edit_product'])->name('getedit_product');
             Route::post('edit/{id}', [ProductController::class, 'post_edit_product'])->name('postedit_product');
             Route::delete('delete/{id}', [ProductController::class, 'get_delete_product'])->name('getdelete_product');
@@ -86,6 +86,9 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::prefix('san-pham')->name('products.')->group(function(){
         Route::get('', [ProductControllerUser::class, 'index'])->name('index');
     });
+    Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
+    Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
+    Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');
 });
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){
@@ -94,7 +97,7 @@ Route::prefix('posts')->name('posts.')->group(function(){
 Auth::routes();
 Auth::routes(['verify' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 // Route::get('/email/verify',function(){ 

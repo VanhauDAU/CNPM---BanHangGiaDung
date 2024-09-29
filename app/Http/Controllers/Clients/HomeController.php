@@ -52,4 +52,7 @@ class HomeController extends Controller
         $this->data['title'] = 'SẢN PHẨM';
         return view('Clients.products.products', $this->data);
     }
+    public function get_lien_he(){
+        return view('clients.contact.index');
+    }
 }

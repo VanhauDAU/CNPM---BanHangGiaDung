@@ -25,15 +25,18 @@
             <!-- Hàng bộ lọc -->
             <form action="" method="get">
                 <div class="row mb-4">
-                    <div class="col-md-1 font-weight-bold text-primary text-uppercase mb-0">
-                        BỘ LỌC
+                    <div class="col-sm-1">
+                        <label for="keyword" class="d-flex align-items-center">
+                            <i class="fa-solid fa-filter" style="font-size:20px; margin-right: 10px;"></i>
+                            <h4 class="mb-0 fs-6">Bộ Lọc</h4>
+                        </label>
                     </div>
                     <div class="col-md-3">
                         <select class="form-select" name="nsx" value="{{request()->nsx}}">
                             <option value="">Chọn Nhà Sản Xuất</option>
                             @if(!empty(getAllNSX()))
                             @foreach (getAllNSX() as $item)
-                            <option value="{{$item->maNSX}}" {{request()->nsx == $item->maNSX ? 'selected' : false}}>{{$item->maNSX}} - {{$item->ten_NSX}}</option>
+                            <option value="{{$item->maNSX}}" {{request()->nsx == $item->maNSX ? 'selected' : false}}>{{$item->ten_NSX}}</option>
                             @endforeach
                             @endif
                         </select>
@@ -51,7 +54,7 @@
                     <div class="col-6 col-md-3 mb-4">
                         <div class="product-item border p-3 d-flex flex-column" style="min-height: 430px; border-radius: 10px">
                             <div class="img-container">
-                                <img src="{{ $product->anh }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" >
+                                <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" >
                             </div>
                             <h6 class="mt-2" style="min-height: 80px">{{ $product->ten_san_pham }}</h6>
                             <p class="text-muted text-decoration-line-through" style="margin-bottom: 2px">{{ number_format($product->don_gia_goc, 0, ',', '.') }}đ</p>

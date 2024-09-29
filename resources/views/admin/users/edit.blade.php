@@ -18,7 +18,7 @@
         @endif
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="username">Tên Tài Khoản</label>
+                <label for="username">Tài Khoản</label>
                 <input type="text" id="username" name="username" class="form-control" value="{{old('username') ?? $userDetail->username}}">
                 @error('username')
                         <span style="color:red;">{{$message}}</span>

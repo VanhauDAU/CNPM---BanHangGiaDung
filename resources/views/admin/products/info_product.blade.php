@@ -7,16 +7,23 @@
 @section('content-admin')
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-12" style="margin-top: 50px;">
-            <div class="panel panel-default">
-                <div class="panel-heading bg-primary text-white text-center">
-                    <h3 class="panel-title running-text">THÔNG TIN SẢN PHẨM</h3>
+        <div class="col-md-12 d-flex gap-5">
+            <!-- Khung thông tin sản phẩm -->
+            <div class="card col-md-7">
+                <div class="card-header text-white text-center">
+                    <h3 class="card-title running-text m-0">THÔNG TIN SẢN PHẨM</h3>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="row">
+                        <!-- Hình ảnh sản phẩm bên trái -->
                         <div class="col-md-4 text-center">
-                            <img src="{{ $productDetail->anh ?? 'https://via.placeholder.com/150' }}" alt="Hình ảnh sản phẩm" class="img-thumbnail" style="width: 200px; height: 200px;">
+                            <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" alt="Product Image"
+                                 alt="Hình ảnh sản phẩm" 
+                                 class="img-thumbnail shadow" 
+                                 style="width: 200px; height: 200px;">
                         </div>
+
+                        <!-- Thông tin sản phẩm bên phải -->
                         <div class="col-md-8">
                             <h4 class="text-primary"><strong>{{ $productDetail->ten_san_pham }}</strong></h4>
                             <p><strong>Mã sản phẩm: </strong>{{ $productDetail->maSP }}</p>
@@ -31,35 +38,29 @@
             </div>
 
             <!-- Khung thông tin chi tiết sản phẩm -->
-            <div class="panel panel-default mt-3">
-                <div class="panel-heading bg-info text-white">
-                    <h4 class="panel-title">Chi tiết sản phẩm</h4>
+            <div class="card mt-3 col-md-4">
+                <div class="card-header text-white" style="background-color: #005AB7;">
+                    <h4 class="card-title m-0">Chi tiết sản phẩm</h4>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <p><strong>Nhà cung cấp: </strong>
-                        @if(!empty($productDetail->ten_NSX))
-                            {{ $productDetail->ten_NSX }}
-                        @else
-                            Không xác định
-                        @endif
+                        {{ $productDetail->ten_NSX ?? 'Không xác định' }}
                     </p>
-                    <p><strong>Ngày nhập kho: </strong>{{ \Carbon\Carbon::parse($productDetail->created_at)->format('d-m-Y H:i:s') }}</p>
+                    <p><strong>Ngày nhập kho: </strong>{{
+                        $productDetail->created_at ? \Carbon\Carbon::parse($productDetail->created_at)->format('d-m-Y H:i:s') : 'Không xác định'
+                     }}</p>
                     <p><strong>Ngày cập nhật gần nhất: </strong>
-                        @if(!empty($productDetail->updated_at))
-                            {{ \Carbon\Carbon::parse($productDetail->updated_at)->format('d-m-Y H:i:s') }}
-                        @else
-                            Không xác định
-                        @endif
+                        {{ $productDetail->updated_at ? \Carbon\Carbon::parse($productDetail->updated_at)->format('d-m-Y H:i:s') : 'Không xác định' }}
                     </p>
                 </div>
-                
             </div>
 
             <!-- Nút chỉnh sửa thông tin -->
-            <div class="text-center mt-3">
-                <a href="{{ route('getedit_product', ['id' => $productDetail->maSP]) }}" class="btn btn-primary btn-sm">Chỉnh Sửa Thông Tin</a>
-                <a href="{{route('admin.manage_product')}}" class="btn btn-danger btn-sm">Quay Lại</a>
-            </div>
+            
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ route('getedit_product', ['id' => $productDetail->maSP]) }}" class="btn btn-primary btn-sm">Chỉnh Sửa Thông Tin</a>
+            <a href="{{ route('admin.manage_product') }}" class="btn btn-danger btn-sm">Quay Lại</a>
         </div>
     </div>
 </div>

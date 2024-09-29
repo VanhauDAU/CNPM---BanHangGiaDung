@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Models\clients\Products;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
@@ -65,6 +66,7 @@ class LoginController extends Controller
     }
     public function login(Request $request){
         $this->validateLogin($request);
+     
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
@@ -73,6 +75,11 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
+            $user = Auth::user();
+            if ($user->loai_tai_khoan != 0) {
+                Auth::logout();
+                return $this->sendFailedLoginResponse($request);
+            }
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
@@ -82,6 +89,7 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+      
     }
     protected function validateLogin(Request $request){
         // dd($request->all());
@@ -113,7 +121,7 @@ class LoginController extends Controller
         $dataArr = [
             $fieldDb => $request->username,
             'password' => $request->password,
-            'loai_tai_khoan' => 0,
+            // 'loai_tai_khoan' => 0,
         ];
         return $dataArr;
         // return $request->only($dataArr, 'password');
@@ -140,8 +148,15 @@ class LoginController extends Controller
         // dd($userUsername);
         // Auth::loginUsingId($userUsername);
         Auth::login($user);
+        $products = Products::all();
+        // dd($products);
         // dd($user);
-        return view('clients.home.home', ['title' => $data['title'], 'user' => $user]);
+        // return view('clients.home.home', ['title' => $data['title'], 'user' => $user]);
+        return view('clients.home.home', [
+            'title' => $data['title'],
+            'user' => auth()->user(), // Truyền user sau khi đăng nhập
+            'productList' => $products // Thêm biến 'products' vào để dùng ở view
+        ]);
     }
 
 }

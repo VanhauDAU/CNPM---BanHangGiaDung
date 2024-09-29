@@ -29,7 +29,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Fontawesome--}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  {{-- sweetAlert2 --}}
+  <script src="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         *{
@@ -38,6 +41,7 @@
           box-shadow: border-box;
         }
         a{
+          color: black;
           text-decoration: none;
         }
         body{
@@ -107,9 +111,39 @@
             border-bottom-left-radius: 150px; 
             border-bottom-right-radius: 150px;
         }
+        @keyframes colorChange {
+            0% { color: red; }
+            25% { color: blue; }
+            50% { color: green; }
+            75% { color: yellow; }
+            100% { color: red; }
+        }
+        .running-text {
+            animation: colorChange 3s infinite; /* Thay đổi màu sắc trong 3 giây, lặp lại vô hạn */
+            font-weight: bold; /* Đậm chữ */
+            font-size: 25px;
+        }
+        /* thả xuống cho navbar */
+        .nav-item.dropdown .collapse {
+            padding-left: 15px;
+        }
+
+        .nav-item.dropdown .nav-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-item.dropdown .collapse .nav-link {
+            padding-left: 30px;
+        }
+
+        .collapse {
+            transition: height 0.2s ease-in-out;
+        }
 
         </style>
-    @yield('css')
+    @yield('stylesheet')
 </head>
 
 <body>
@@ -118,10 +152,10 @@
     @yield('content-clients')
     <!-- Footer -->
     @include('Clients.blocks.footer')
+    @yield('js')
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
-    {{-- @yield('js') --}}
 
 </body>
 
