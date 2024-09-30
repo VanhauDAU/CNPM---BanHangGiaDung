@@ -10,9 +10,6 @@ class Products extends Model
     use HasFactory;
     protected $table = 'sanpham';
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
-        // $products = DB::select('SELECT * FROM '.$this->table.' ORDER BY username DESC');
-        // DB::enableQueryLog();
-
         $products = DB::table($this->table)
         ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*')
         ->join('nhasanxuat','sanpham.maNSX','=','nhasanxuat.maNSX')
@@ -50,4 +47,14 @@ class Products extends Model
         WHERE maSP = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
+    // tính số sao của sản phẩm
+    // public function ratings()
+    // {
+    //     return $this->hasMany(Rating::class);
+    // }
+
+    // public function averageRating()
+    // {
+    //     return $this->ratings()->avg('rating');
+    // }
 }

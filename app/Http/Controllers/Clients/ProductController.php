@@ -21,7 +21,7 @@ class ProductController extends Controller
         $keyword = null;
 
         // Khởi tạo query builder cho sản phẩm
-        $products = $this->products->newQuery(); // Sử dụng newQuery để tạo query builder mới
+        $products = $this->products->newQuery(); 
 
         // Xử lý sắp xếp
         if ($request->has('sort')) {
@@ -61,7 +61,12 @@ class ProductController extends Controller
 
         return view('clients.products.index', compact('title', 'productList'));
     }
-
+    public function getChuyenMuc($id_danh_muc)
+    {
+        // Sử dụng helper để lấy chuyên mục
+        $chuyenMuc = getChuyenMuc($id_danh_muc);
+        return response()->json($chuyenMuc);
+    }
     public function show(Request $request, $id)
     {
         $filters = [];
@@ -98,7 +103,6 @@ class ProductController extends Controller
     }
 
     public function detail_product($id){
-        
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);
             if(!empty($productDetail[0])){

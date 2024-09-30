@@ -11,7 +11,7 @@
             <a href="{{ route('getadd_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <button id="btn-add-danh_muc" class="btn btn-danger">Thêm Danh Mục</button>
+            <a href="{{route('getadd_dm')}}"class="btn btn-danger">Thêm Danh Mục</a>
         </div>
     </div>
     

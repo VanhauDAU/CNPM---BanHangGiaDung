@@ -90,6 +90,7 @@
                         </div>
                     </div>
                 </div>
+                {{-- SẢN PHẨM NỔI BẬT --}}
             </section>
             <div class="row mt-4">
                 <div class="col-lg-12" id="featured-products">
@@ -112,11 +113,11 @@
                                                 <span class="badge bg-danger position-absolute" style="top: 10px; left: 10px; z-index: 10;">Khuyến Mãi</span>
                                             @endif --}}
                                             
-                                            <div class="img-container text-center mb-3" style="height: 200px; overflow: hidden;">
+                                            <div class="img-container text-center mb-3" style=" overflow: hidden;">
                                                 <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" 
                                                      class="img-fluid" 
                                                      alt="{{ $product->ten_san_pham }}" 
-                                                     style="border-radius: 10px; height: 100%; width: auto; transition: transform 0.3s;">
+                                                     style="border-radius: 10px; width: auto;transition: transform 0.3s;">
                                             </div>
                     
                                             <h6 class="text-center text-truncate" style="min-height: 40px; overflow: hidden; 

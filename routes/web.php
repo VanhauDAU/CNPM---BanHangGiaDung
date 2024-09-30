@@ -91,6 +91,7 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
     Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');
+    Route::get('/api/chuyen-muc/{id_danh_muc}', [ProductControllerUser::class, 'getChuyenMuc']);
 });
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){

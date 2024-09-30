@@ -39,7 +39,10 @@
                     <a class="nav-link" href="{{route('getadd_nsx')}}">Thêm Nhà Sản Xuất</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{--route('getadd_user')--}}">Thêm Danh Mục</a>
+                    <a class="nav-link" href="{{route('getadd_dm')}}">Thêm Danh Mục</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{--route('getadd_user')--}}">Thêm Chuyên Mục</a>
                 </li>
             </ul>
         </li>

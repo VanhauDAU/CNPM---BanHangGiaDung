@@ -25,6 +25,10 @@ function sanphamnoibat(){
     $groups = new Groups;
     return $groups->getSanPhamNoiBat();
 }
+function getChuyenMuc($id){
+    $groups = new Groups();
+    return $groups->getChuyenMuc($id);
+}
 function getChuyenMuc1($id){
     $groups = new Groups();
     return $groups->getChuyenMuc1($id);

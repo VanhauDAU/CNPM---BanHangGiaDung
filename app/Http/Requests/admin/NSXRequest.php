@@ -23,17 +23,12 @@ class NSXRequest extends FormRequest
     {
         return [
             // 'id_danh_muc'=>'required|not_in',
-            'ten_NSX'=>'required',
-            'so_dien_thoai'=>'required|digits_between:10,12'
+            'ten_NSX'=>'required'
         ];
     }
     public function messages(){
         return [
-            // 'id_danh_muc.not_in'=>'Bạn phải chọn loại sản phẩm',
-            // 'id_danh_muc.required'=>'Bạn phải chọn loại sản phẩm',
             'ten_NSX.required'=>'Tên nhà sản xuất không được bỏ trống',
-            'so_dien_thoai.required'=>'Số điện thoại không được bỏ trống',
-            'so_dien_thoai.digits_between'=>'Số điện thoại phải từ 10-12 ký tự'
         ];
     }
     public function withValidator($validator){

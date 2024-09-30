@@ -21,7 +21,7 @@ class Groups extends Model
     }
     public function getAllDanhMucSp(){
         $groups = DB::table($this->table2)
-        ->orderBy('ten_danh_muc','ASC')
+        ->orderBy('id_danh_muc','ASC')
         ->get();
         return $groups;
     }
@@ -39,6 +39,13 @@ class Groups extends Model
         ->get();
         return $groups;
     }
+    public function getChuyenMuc($id) {
+        $groups = DB::table($this->table5)
+            ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table5 . '.id_danh_muc')
+            ->where($this->table5 . '.id_danh_muc', $id)
+            ->get();
+        return $groups;
+    }   
     public function getChuyenMuc1($id) {
         $groups = DB::table($this->table5)
             ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table5 . '.id_danh_muc')

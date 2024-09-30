@@ -52,24 +52,70 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="id_danh_muc" class="form-label">Danh mục sản phẩm:</label>
-                            <select name="id_danh_muc" id="id_danh_muc" class="form-select">
-                                <option value="">Chọn danh mục sản phẩm</option>
-                                @if(!empty(getAllDanhMucSp()))
-                                    @foreach(getAllDanhMucSp() as $item)
-                                        <option value="{{ $item->id_danh_muc }}" {{ old('id_danh_muc') == $item->id_danh_muc ? 'selected' : '' }}>{{ $item->ten_danh_muc }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @error('id_danh_muc')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                        <div class="row">
+                            <div class="mb-3">
+                                <label for="id_danh_muc" class="form-label">Danh mục sản phẩm:</label>
+                                <select name="id_danh_muc" id="id_danh_muc" class="form-select" onchange="fetchChuyenMuc(this.value)">
+                                    <option value="">Chọn danh mục sản phẩm</option>
+                                    @if(!empty(getAllDanhMucSp()))
+                                        @foreach(getAllDanhMucSp() as $item)
+                                            <option value="{{ $item->id_danh_muc }}" {{ old('id_danh_muc') == $item->id_danh_muc ? 'selected' : '' }}>{{ $item->id_danh_muc}} - {{ $item->ten_danh_muc }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('id_danh_muc')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_chuyen_muc" class="form-label">Chọn chuyên mục:</label>
+                                <select name="id_chuyen_muc" id="id_chuyen_muc" class="form-select">
+                                    <option value="">Chọn chuyên mục</option>
+                                    @php
+                                    $itemCategories =getChuyenMuc(1);
+                                    @endphp
+                                    @if(!empty($itemCategories) && count($itemCategories) > 0)
+                                        <div class="sub-category-container">
+                                            @foreach($itemCategories as $category)
+                                                <li><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </select>
+                                @error('id_chuyen_muc')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <script>
+                                function fetchChuyenMuc(idDanhMuc) {
+                                if (idDanhMuc) {
+                                    fetch(`/getChuyenMuc/${idDanhMuc}`) // Cập nhật đường dẫn theo route của bạn
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            const chuyenMucSelect = document.getElementById('id_chuyen_muc');
+                                            chuyenMucSelect.innerHTML = '<option value="">Chọn chuyên mục</option>'; // Reset chuyên mục
+
+                                            data.forEach(category => {
+                                                const option = document.createElement('option');
+                                                option.value = category.id_chuyen_muc;
+                                                option.textContent = category.ten_chuyen_muc;
+                                                chuyenMucSelect.appendChild(option);
+                                            });
+                                        })
+                                        .catch(error => console.error('Lỗi:', error));
+                                } else {
+                                    // Nếu không có danh mục được chọn, reset chuyên mục
+                                    document.getElementById('id_chuyen_muc').innerHTML = '<option value="">Chọn chuyên mục</option>';
+                                }
+                            }
+                            </script>
                         </div>
-                        
+                        <script>
+                        </script>
                         <div class="row">
                             <div class="mb-3 col-md-6">
-                                <label for="don_gia_goc" class="form-label">Giá (VNĐ):</label>
+                                <label for="don_gia_goc" class="form-label">Giá Gốc (VNĐ):</label>
                                 <input type="number" name="don_gia_goc" id="don_gia_goc" class="form-control" value="{{ old('don_gia_goc') }}">
                                 @error('don_gia_goc')
                                     <small class="text-danger">{{ $message }}</small>
@@ -124,7 +170,9 @@
                                 <option value="1" {{ old('sp_noi_bat') == 1 ? 'selected' : '' }}>Nổi Bật</option>
                             </select>
                         </div>
-                        
+                        <div class="mb-3">
+                            <img src="https://picsum.photos/id/237/200/300" alt="">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="mb-3">
@@ -142,4 +190,18 @@
         </div>
     </div>
 </div>
+@endsection
+@section('stylesheet')
+    <style>
+        img{
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+@endsection
+@section('js')
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('mo_ta');
+    </script>
 @endsection
