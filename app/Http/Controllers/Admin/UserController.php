@@ -63,6 +63,14 @@ class UserController extends Controller
         return view('admin.users.add', $this->data);
     }
     public function post_add_user(userRequest $request){
+        $fileName = null;
+        if ($request->has('hinh_anh')) {
+            $file = $request->hinh_anh;  
+            $ext = $file->getClientOriginalExtension();  
+            $fileName = time().'-'.$ext;
+            $file->move(public_path('storage/users/img'), $fileName);
+            // $anh = 'storage/products/img'.$file;
+        }
         $dataInsert=[
             $request->username,
             Hash::make($request->password),
@@ -73,8 +81,10 @@ class UserController extends Controller
             $request->address,
             $request->account_type,
             $request->chuc_vu,
+            $fileName,
         ];  
         $this->users->addUser($dataInsert);
+        toastr()->success('Thành công','Thêm người dùng thành công');
         return redirect()->route('admin.manage_user')->with('msg', 'Thêm mới người dùng thành công');
     }
     public function withValidator($validator){
@@ -116,22 +126,32 @@ class UserController extends Controller
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
+        $users = $this->users->getDetail($id);
+        $fileName = null;
+        if ($request->has('hinh_anh')) {
+            $file = $request->hinh_anh;  
+            $ext = $file->getClientOriginalExtension();  
+            $fileName = time() . '-' . $ext;
+            $file->move(public_path('storage/users/img/'), $fileName);
+            if ($users && !empty($users->anh)) {
+                $oldImagePath = public_path('storage/users/img/' . $users['anh']);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+        } else {
+            $fileName = $request->hinh_anh_cu;
+        }
         $request->validate([
             'username' => 'required|min:5|unique:taikhoan,username,'.$id.',username',
             'password' => 'required',
             'cccd' => 'max:12',
-            'phone' => 'required|numeric|digits_between:10,12|unique:taikhoan,so_dien_thoai,'.$id.',username',
             'email' => 'required'
         ],[
             'username.required' => 'Tài khoản bắt buộc phải nhập',
             'username.unique' => 'Tài khoản đã tồn tại trên hệ thống',
             'username.min' => 'Tài khoản bắt buộc lớn hơn 4 ký tự',
             'pasword.required' => 'Mật khẩu bắt buộc phải nhập',
-            'phone.max' => 'Số điện thoại không dài quá 12 ký tự',
-            'phone.reuired'=>'Số điện thoại phải bắt buộc nhập',
-            'phone.numeric' => 'Số điện thoại phải là số',
-            'phone.digits_between'=>'Số điện thoại phải từ 10 đến 12 chữ số',
-            'phone.unique' => 'Số điện thoại đã tồn tại trên hệ thống',
             'cccd.max'=>'CCCD nhiều nhất 12 ký tự',
             'email.required' => 'Email bắt buộc phải nhập'
         ]);
@@ -147,6 +167,7 @@ class UserController extends Controller
             $request->address,
             $request->account_type,
             $request->chuc_vu,
+            $fileName,
             
         ];
         $this->users->updateUser($dataUpdate, $id);
@@ -169,6 +190,7 @@ class UserController extends Controller
         }else{
             $msg = 'Liên kết không tồn tại';
         }
+        toastr()->warning('Thành công','Xóa tài khoản thành công');
         return redirect()->route('admin.manage_user')->with('msg',$msg);
     }
     //======================KẾT THÚC QUẢN LÝ TÀI KHOẢN=======================

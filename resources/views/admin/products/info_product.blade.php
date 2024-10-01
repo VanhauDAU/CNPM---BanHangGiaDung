@@ -16,7 +16,7 @@
             
             <div class="card col-md-7">
                 <div class="card-header text-white text-center">
-                    <h3 class="card-title running-text m-0">THÔNG TIN SẢN PHẨM</h3>
+                    <h3 class="running-text m-0">THÔNG TIN SẢN PHẨM</h3>
                 </div>
                 
                 <div class="card-body">
@@ -37,14 +37,15 @@
                             <p><strong>Giá: </strong>{{ number_format($productDetail->don_gia, 0, ',', '.') }} VNĐ</p>
                             <p><strong>Trọng lượng: </strong>{{ number_format($productDetail->trong_luong, 2) }} kg</p>
                             <p><strong>Số lượng tồn: </strong>{{ $productDetail->so_luong_ton }}</p>
-                            <p><strong>Mô tả: </strong>{{ $productDetail->mo_ta }}</p>
+                            
                         </div>
                     </div>
+                    
                 </div>
             </div>
 
             <!-- Khung thông tin chi tiết sản phẩm -->
-            <div class="card mt-3 col-md-4">
+            <div class="card col-md-4">
                 <div class="card-header text-white" style="background-color: #005AB7;">
                     <h4 class="card-title m-0">Chi tiết sản phẩm</h4>
                 </div>
@@ -52,19 +53,107 @@
                     <p><strong>Nhà cung cấp: </strong>
                         {{ $productDetail->ten_NSX ?? 'Không xác định' }}
                     </p>
-                    <p><strong>Ngày nhập kho: </strong>{{
-                        $productDetail->created_at ? \Carbon\Carbon::parse($productDetail->created_at)->format('d-m-Y H:i:s') : 'Không xác định'
-                     }}</p>
+                    <p><strong>Ngày nhập kho: </strong>
+                        {{$productDetail->created_at ? \Carbon\Carbon::parse($productDetail->created_at)->format('H:i:s d-m-Y') : 'Không xác định'}}
+                    </p>
                     <p><strong>Ngày cập nhật gần nhất: </strong>
-                        {{ $productDetail->updated_at ? \Carbon\Carbon::parse($productDetail->updated_at)->format('d-m-Y H:i:s') : 'Không xác định' }}
+                        {{$productDetail->updated_at ? \Carbon\Carbon::parse($productDetail->updated_at)->format('H:i:s d-m-Y') : 'Không xác định'}}
                     </p>
                 </div>
             </div>
 
-            <!-- Nút chỉnh sửa thông tin -->
             
         </div>
-        
+    </div>
+    <div class="row">
+        <p><strong>Mô tả: </strong>{!! $productDetail->mo_ta !!}</p>
     </div>
 </div>
+@endsection
+
+@section('stylesheet')
+<style>
+    /* Định dạng lại các thẻ HTML để tạo sự nhất quán và thu hút hơn */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        background-color: #005AB7;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn {
+        border-radius: 5px;
+        padding: 10px 15px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-primary {
+        background-color: #005AB7;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #004494;
+    }
+
+    .text-primary {
+        color: #005AB7;
+    }
+
+    .img-thumbnail {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        transition: transform 0.3s ease;
+    }
+
+    .img-thumbnail:hover {
+        transform: scale(1.05);
+    }
+
+    .running-text {
+        animation: slide 10s linear infinite;
+    }
+
+    /* @keyframes slide {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-100%); }
+    }
+
+    @media (max-width: 768px) {
+        .col-md-7, .col-md-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    } */
+
+</style>
 @endsection

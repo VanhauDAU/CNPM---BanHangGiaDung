@@ -29,9 +29,11 @@ header {
 }
 
 .navbar .logo {
+    position: relative;
     font-size: 24px;
     font-weight: bold;
 }
+
 
 .navbar nav ul {
     display: flex;
@@ -102,6 +104,7 @@ header {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    height: auto;
 }
 
 .product-item {

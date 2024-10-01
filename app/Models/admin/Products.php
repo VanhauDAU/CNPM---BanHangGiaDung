@@ -10,11 +10,11 @@ class products extends Model
     use HasFactory;
     protected $table ='sanpham';
     protected $tableDM ='danhmucsanpham';
-
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $products = DB::table($this->table)
-        ->select('sanpham.*','danhmucsanpham.ten_danh_muc')
-        ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc');
+        ->select('sanpham.*','danhmucsanpham.ten_danh_muc','nhasanxuat.*')
+        ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc')
+        ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX');
         $orderBy = 'sanpham.created_at';
         $orderType='desc';
         if(!empty($sortArr) & is_array($sortArr)){
@@ -29,10 +29,10 @@ class products extends Model
         }
         if(!empty($keyword)){
             $products = $products->where(function($query) use ($keyword){
-                $query->orWhere('maSP','like','%'.$keyword.'%');
-                $query->orWhere('ten_san_pham','like','%'.$keyword.'%');
-                $query->orWhere('maNSX','like','%'.$keyword.'%');
-                $query->orWhere('id_danh_muc','like','%'.$keyword.'%');
+                $query->orWhere('sanpham.maSP', 'like', '%' . $keyword . '%');
+                $query->orWhere('sanpham.ten_san_pham', 'like', '%' . $keyword . '%'); 
+                $query->orWhere('nhasanxuat.maNSX', 'like', '%' . $keyword . '%'); 
+                $query->orWhere('sanpham.id_danh_muc', 'like', '%' . $keyword . '%');
             });
         }
         if(!empty($perPage)){
@@ -40,25 +40,22 @@ class products extends Model
         }else{
             $products = $products->get();
         }
-        
-        // $sql = DB::getQueryLog();
-        // dd($sql);
-        // dd($products);
         return $products;
     }
     public function getDetail($id){
-        return DB::select('SELECT * FROM '.$this->table.' 
+        return DB::select('SELECT *,'.$this->table.'.updated_at FROM '.$this->table.' 
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
         WHERE maSP = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
+    
     public function addProduct($data){
         // $data['password'] = Hash::make($data['password']);
         $timestamp = now();
         $data[] = $timestamp;
         // dd($data); 
-        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_ton,anh,sp_noi_bat, created_at) values (?,?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc,id_chuyen_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_ton,anh,sp_noi_bat,xuat_xu, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     public function addNSX($data){

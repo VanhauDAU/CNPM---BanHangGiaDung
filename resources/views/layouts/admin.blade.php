@@ -31,7 +31,7 @@
     <meta name="msapplication-TileImage" content="{{asset('assets/general/favicon/ms-icon-144x144.png')}}">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    
     <link href="{{asset('assets/admin/css/custom_adminDashboard.css')}}" rel="stylesheet">
     <style>
         body {
@@ -100,9 +100,60 @@
             margin-left: 0;
             width: 100%;
         }
+        .text-sp-hover{
+            color: black;
+            text-decoration:none;
+        }
+        .text-sp-hover:hover{
+            color: green;
+        }
+        .border-animation {
+            position: relative;
+            border-radius: 50%;
+            border: 5px solid;
+            border-image-slice: 1;
+            animation: borderColorChange 3s linear infinite;
+        }
+        .border-animation1 {
+            position: relative;
+            border-radius: 50%;
+            border: 2px solid;
+            border-image-slice: 1;
+            animation: borderColorChange 3s linear infinite;
+        }
+
+        @keyframes borderColorChange {
+            0% {
+                border-color: #ff6b6b;
+            }
+            25% {
+                border-color: #ffcc00;
+            }
+            50% {
+                border-color: #1dd1a1;
+            }
+            75% {
+                border-color: #54a0ff;
+            }
+            100% {
+                border-color: #ff6b6b;
+            }
+        }
     </style>
     @yield('stylesheet')
 </head>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="loginToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Thông báo</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Bạn đã đăng nhập thành công!
+        </div>
+    </div>
+</div>
+
 <body>
 <div class="d-flex">
     <!-- Sidebar -->
@@ -142,22 +193,69 @@
         }
         
         function toggleNavbar() {
-        // Lấy đối tượng của navbar và content
-        var navbar = document.getElementById('navbar');
-        var content = document.getElementById('content');
+            // Lấy đối tượng của navbar và content
+            var navbar = document.getElementById('navbar');
+            var content = document.getElementById('content');
 
-        // Kiểm tra và thay đổi trạng thái hiển thị của navbar
-        if (navbar.style.display === "none" || navbar.style.display === "") {
-            navbar.style.display = "block"; // Hiển thị navbar nếu đang ẩn
-            content.style.marginLeft = "250px"; // Đặt khoảng cách lề trái tương ứng với chiều rộng navbar
-            content.style.width = "calc(100% - 250px)"; // Chiều rộng content điều chỉnh theo navbar
-        } else {
-            navbar.style.display = "none"; // Ẩn navbar nếu đang hiển thị
-            content.style.marginLeft = "0"; // Không có lề trái khi navbar bị ẩn
-            content.style.width = "100%"; // Chiều rộng content 100% khi navbar bị ẩn
+            // Kiểm tra và thay đổi trạng thái hiển thị của navbar
+            if (navbar.style.display === "none" || navbar.style.display === "") {
+                navbar.style.display = "block"; // Hiển thị navbar nếu đang ẩn
+                content.style.marginLeft = "250px"; // Đặt khoảng cách lề trái tương ứng với chiều rộng navbar
+                content.style.width = "calc(100% - 250px)"; // Chiều rộng content điều chỉnh theo navbar
+            } else {
+                navbar.style.display = "none"; // Ẩn navbar nếu đang hiển thị
+                content.style.marginLeft = "0"; // Không có lề trái khi navbar bị ẩn
+                content.style.width = "100%"; // Chiều rộng content 100% khi navbar bị ẩn
+            }
         }
-    }
+        
+        </script>
+        
+        <script>
+            ClassicEditor
+                .create( document.querySelector( '#mo_ta' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+        </script>
+        <script>
+            ClassicEditor
+                .create( document.querySelector( '#noi_dung' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+        </script>
+        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('mo_ta');
+            CKEDITOR.replace('noi_dung');
+            function fetchChuyenMuc(idDanhMuc) {
+            console.log("Fetching Chuyen Muc for idDanhMuc: ", idDanhMuc); // Debug log
+            if (idDanhMuc) {
+                fetch(`/getChuyenMuc/${idDanhMuc}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Data fetched: ", data); // Debug log
+                        const chuyenMucSelect = document.getElementById('id_chuyen_muc');
+                        chuyenMucSelect.innerHTML = '<option value="">Chọn chuyên mục</option>';
 
+                        data.forEach(category => {
+                            const option = document.createElement('option');
+                            option.value = category.id_chuyen_muc;
+                            option.textContent = category.ten_chuyen_muc;
+                            chuyenMucSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Lỗi:', error));
+            } else {
+                document.getElementById('id_chuyen_muc').innerHTML = '<option value="">Chọn chuyên mục</option>';
+            }
+        }
         </script>
         @yield('js')
         

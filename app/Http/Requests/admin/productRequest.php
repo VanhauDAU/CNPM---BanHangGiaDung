@@ -24,6 +24,7 @@ class productRequest extends FormRequest
         return [
             'maNSX' => 'required',
             'id_danh_muc' => 'required',
+            'id_chuyen_muc'=>'required',
             'ten_san_pham' => 'required|unique:taikhoan,email',
             'don_gia'=>'required|numeric',
             'don_gia_goc'=>'required|numeric',
@@ -35,6 +36,7 @@ class productRequest extends FormRequest
         return [
             'maNSX.required' => 'Mã NSX bắt buộc phải nhập',
             'id_danh_muc.required' => 'Loại sản phẩm bắt buộc phải nhập',
+            'id_chuyen_muc'=>'Chuyên mục bắt buộc phải chọn',
             'ten_san_pham.unique' => 'Tên sản phẩm đã tồn tại trên hệ thống',
             'ten_san_pham.required' => 'Tên sản phẩm bắt buộc phải nhập',
             'don_gia.required'=>'Đơn giá bắt buộc phải nhập',

@@ -18,6 +18,7 @@ use App\Http\Controllers\Clients\LoginController as UserLoginController;
 use App\Http\Controllers\Clients\ShoppingCartController;
 use App\Http\Controllers\PostController;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
 use App\Http\Controllers\Clients\ContactController;
 //product user
@@ -37,6 +38,7 @@ Route::prefix('admin')->group(function () {
     Route::post('login', [LoginController::class, 'post_login'])->middleware('guest:admin');
     Route::post('logout', function () {
         Auth::guard('admin')->logout();
+        toastr()->success('Thành công','Đăng xuất thành công');
         return redirect()->route('admin.login');
     })->name('admin.logout');
     Route::middleware('auth.admin')->group(function () {
@@ -60,10 +62,19 @@ Route::prefix('admin')->group(function () {
                 Route::post('nha-san-xuat', [ProductController::class, 'post_add_NSX'])->name('admin.add_nsx');
                 Route::get('danh-muc', [ProductController::class, 'get_add_DM'])->name('getadd_dm');
                 Route::post('danh-muc', [ProductController::class, 'post_add_DM'])->name('admin.add_dm');
+
             });
             Route::get('edit/{id}', [ProductController::class, 'get_edit_product'])->name('getedit_product');
             Route::post('edit/{id}', [ProductController::class, 'post_edit_product'])->name('postedit_product');
             Route::delete('delete/{id}', [ProductController::class, 'get_delete_product'])->name('getdelete_product');
+        });
+        Route::prefix('quan-ly-bai-viet')->group(function () {
+            Route::get('', [PostControllerAdmin::class, 'index'])->name('admin.manage_post');
+            Route::get('add', [PostControllerAdmin::class, 'add'])->name('getadd_post');
+            Route::post('add', [PostControllerAdmin::class, 'postAdd']);
+            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->name('getedit_post');
+            Route::post('edit/{post}', [PostControllerAdmin::class, 'postEdit']);
+            Route::delete('delete/{post}', [PostControllerAdmin::class, 'delete'])->name('getdelete_post');
         });
         Route::prefix('quan-ly-hoa-don')->group(function () {
             Route::get('', [OrderController::class, 'manage_order'])->name('admin.manage_order');
@@ -85,14 +96,13 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::get('', [ProductControllerUser::class, 'index'])->name('index');
         Route::get('/{id}', [ProductControllerUser::class, 'show'])->name('sanpham_id');
         Route::get('/{id_danh_muc}/{id_chuyen_muc}', [ProductControllerUser::class, 'show2'])->name('sanpham_id_id');
-        
     });
     Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
     Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');
-    Route::get('/api/chuyen-muc/{id_danh_muc}', [ProductControllerUser::class, 'getChuyenMuc']);
 });
+Route::get('/getChuyenMuc/{id}', [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){
     Route::get('/', [PostController::class,'index'])->name('index');

@@ -9,7 +9,7 @@
 <div class="container">
     <h1 class="text-center mb-4 fw-bold"><i class="fa-solid fa-plus"></i>{{$title}}</h1>
 
-    <form action="{{-- route('admin.add_user') --}}" method="POST">
+    <form action="{{-- route('admin.add_user') --}}" method="POST" enctype="multipart/form-data">
         @csrf
         @if($errors->any())
             <div class="alert alert-danger text-center" id="error-message">
@@ -73,8 +73,11 @@
                 <textarea id="address" name="address" class="form-control" rows="3" placeholder="Nhập địa chỉ..." value="{{old('address')}}"></textarea>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="anh">Chọn ảnh:</label>
-                <input type="file" name="anh" id="anh" class="form-control" value="{{old('anh')}}">
+                <label for="hinh_anh" class="form-label">Hình ảnh:</label>
+                <input type="file" name="hinh_anh" id="hinh_anh" class="form-control" accept="image/*" value="{{ old('hinh_anh') }}">
+                @error('hinh_anh')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
         </div>
         

@@ -10,11 +10,11 @@
             <img src="{{asset('assets/general/img/logoDAU.png')}}" alt="" class="img-fluid me-2" style="width: 50px; height: 45px;">
             <h1 id="title-top" class="ms-3">{{$title}}</h1>
         </div>
-        @if(session('msg'))
+        {{-- @if(session('msg'))
             <div class="alert alert-success">
                 {{ session('msg') }}
             </div>
-        @endif
+        @endif --}}
 
         <div class="d-flex justify-content-between mb-2">
             <a href="{{ route('getadd_user') }}" class="btn btn-primary">Thêm người dùng</a>
@@ -51,6 +51,7 @@
             <thead>
                 <tr>
                     <th style="width:3%;"><a href="">STT</a></th>
+                    <th><a href="">Ảnh</a></th>
                     <th><a href="">Tài khoản</a></th>
                     <th><a href="">Nhóm</a></th>
                     <th><a href="?sort-by=ho_ten&sort-type={{$sortType}}">Họ Tên</a></th>
@@ -64,8 +65,23 @@
             <tbody>
                 @if(!empty($userList))
                     @foreach ($userList as $key => $item)
-                    <tr>
+                    <tr class="align-middle">
                         <td>{{$key + 1}}</td>
+                        <td>
+                            @if($item->provider=="google" && $item->updated_at != null)
+                                <a href="{{ route('info', ['id'=>$item->username]) }}">
+                                    <img src="{{$item->anh}}" alt="" style="width: 50px; height:50px; border-radius:50%" class="rounded-circle img-thumbnail border-animation1">
+                                </a>
+                            @else
+                                <a href="{{ route('info', ['id'=>$item->username]) }}">
+                                    @if(!empty($item->anh))
+                                        <img src="{{asset('storage/users/img/'.$item->anh)}}" alt="" class="rounded-circle img-thumbnail border-animation1" style="width: 50px; height: 50px;">
+                                    @else
+                                        <i class="fa-solid fa-xmark"></i>  
+                                    @endif
+                                </a>
+                            @endif
+                        </td>
                         <td>
                             @if(empty($item->provider == "google"))
                                 {{$item->username}}

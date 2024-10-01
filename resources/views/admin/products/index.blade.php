@@ -34,22 +34,27 @@
                         <option value="0">Nhà Sản Xuất</option>
                         @if(!empty(getAllNSX()))
                             @foreach(getAllNSX() as $item)
-                                <option value="{{$item->maNSX}}" {{request()->maNSX == $item->maNSX ? 'selected' : false }}>{{$item->maNSX}} - {{$item->ten_NSX}}</option>
+                                <option value="{{$item->maNSX}}" {{request()->nsx == $item->maNSX ? 'selected' : false }}>{{$item->ten_NSX}}</option>
                             @endforeach
                         @endif
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <select class="form-select" name="id_danh_muc" id="id_danh_muc">
-                        <option value="0">Nhóm Sản Phẩm</option>
+                    <select class="form-select" name="id_danh_muc" id="id_danh_muc" onchange="fetchChuyenMuc(this.value)">
+                        <option value="0">Danh mục</option>
                         @if(!empty(getAllDanhMucSp()))
                             @foreach(getAllDanhMucSp() as $item)
-                                <option value="{{$item->id_danh_muc}}" {{request()->nhom_sp == $item->id_danh_muc ? 'selected' : false }}>{{$item->id_danh_muc}} - {{$item->ten_danh_muc}}</option>
+                                <option value="{{$item->id_danh_muc}}" {{request()->id_danh_muc == $item->id_danh_muc ? 'selected' : false }}>{{$item->ten_danh_muc}}</option>
                             @endforeach
                         @endif
                     </select>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <select class="form-select" name="id_chuyen_muc" id="id_chuyen_muc" >
+                        <option value="0">Chuyên mục</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
                     <input type="search" class="form-control" name="keyword" id="keyword" placeholder="Nhập tìm kiếm..." value="{{request()->keyword}}">
                 </div>
                 <div class="col-sm-2">
@@ -62,8 +67,9 @@
             <thead>
                 <tr class="text-center">
                     <th width="3%">STT</th>
+                    <th>Ảnh</th>
                     <th>Tên Sản Phẩm</th>
-                    <th>Mã NSX</th>
+                    <th>NSX</th>
                     <th>Loại</th>
                     <th>Giá</th>
                     <th>Loại</th>
@@ -75,8 +81,13 @@
                     @foreach ($ProductList as $key => $item)
                     <tr>
                         <td>{{$key + 1}}</td>
-                        <td>{{$item->ten_san_pham}}</td>
-                        <td>{{$item->maNSX}}</td>
+                        <td>
+                            <img src="{{asset('storage/products/img/'.$item->anh)}}" alt="" style="width: 50px">
+                        </td>   
+                        <td>
+                            <a href="{{route('home.chi_tiet_sp',$item->maSP)}}"  class="text-sp-hover">{{$item->ten_san_pham}}</a>
+                        </td>
+                        <td>{{$item->ten_NSX}}</td>
                         <td>{{$item->ten_danh_muc}}</td>
                         <td>{{number_format($item->don_gia,0,',','.')}} VNĐ</td>
                         <td>
@@ -86,6 +97,7 @@
                                 <h6 class="text-center bg-light p-1 border rounded text-black p-1">Thường</h6>
                             @endif
                         </td>
+                        
                         <td>
                             <a href="{{ route('product.info', ['id'=>$item->maSP]) }}" class="btn btn-primary btn-sm">Xem</a>
                             <a href="{{ route('postedit_product', $item->maSP) }}" class="btn btn-warning btn-sm">Sửa</a>
@@ -104,6 +116,9 @@
                 @endif
             </tbody>
         </table>
+        <div class="d-flex justify-content-center mt-3">
+            {{$ProductList->links()}}
+        </div>  
     </div>
 </div>
 @endsection
@@ -131,4 +146,46 @@
     });
 });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('id_chuyen_muc').addEventListener('change', function() {
+            const selectedValue = this.value;
+            console.log("Selected Chuyen Muc ID: ", selectedValue); 
+        });
+    });
+    function fetchChuyenMuc(idDanhMuc) {
+        console.log("Fetching Chuyen Muc for idDanhMuc: ", idDanhMuc); // Debug log
+        if (idDanhMuc) {
+            fetch(`/getChuyenMuc/${idDanhMuc}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data fetched: ", data); // Debug log
+                    const chuyenMucSelect = document.getElementById('id_chuyen_muc');
+                    chuyenMucSelect.innerHTML = '<option value="">Chọn chuyên mục</option>';
+
+                    data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.id_chuyen_muc;
+                        option.textContent = category.ten_chuyen_muc;
+                        chuyenMucSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Lỗi:', error));
+        } else {
+            document.getElementById('id_chuyen_muc').innerHTML = '<option value="">Chọn chuyên mục</option>';
+        }
+    }
+
+    // Thêm sự kiện change cho trường select chuyên mục
+    document.getElementById('id_chuyen_muc').addEventListener('change', function() {
+        const selectedValue = this.value; // Giá trị được chọn
+        console.log("Selected Chuyen Muc ID: ", selectedValue); // In ra giá trị được chọn
+    });
+</script>
+
 @endsection

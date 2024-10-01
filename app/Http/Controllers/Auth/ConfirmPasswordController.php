@@ -61,7 +61,7 @@ class ConfirmPasswordController extends Controller
             ->subject('Xác nhận mật khẩu thành công')
             ->html($content);
           });
-        
+        toastr()->success('Thành công','Xác nhận mật khẩu thành công');
         return $request->wantsJson()
                     ? new JsonResponse([], 204)
                     : redirect()->intended($this->redirectPath());

@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     //
     private $products;
-    const _PER_PAGE = 5;
+    const _PER_PAGE = 4;
     public function __construct(){
         $this->products = new products();
     }
@@ -31,6 +31,7 @@ class ProductController extends Controller
         }else{
             return redirect()->route('manage_product')->with('msg','Mã Sản phẩm không tồn tại');
         }
+        // dd($productDetail);
         return view('admin.products.info_product', compact('productDetail'));
     }
     public function manage_product(Request $request){
@@ -44,7 +45,11 @@ class ProductController extends Controller
         }
         if(!empty($request->id_danh_muc)){
             $nhom_SP = $request->id_danh_muc;
-            $filters[] = ['taikhoan.id_danh_muc', '=',$nhom_SP];
+            $filters[] = ['sanpham.id_danh_muc', '=',$nhom_SP];
+        }
+        if(!empty($request->id_chuyen_muc)){
+            $nhom_SP = $request->id_chuyen_muc;
+            $filters[] = ['sanpham.id_chuyen_muc', '=',$nhom_SP];
         }
         if(!empty($request->keyword)){
             $keyword = $request->keyword;
@@ -87,6 +92,7 @@ class ProductController extends Controller
         $dataInsert=[
             $request->maNSX,
             $request->id_danh_muc,
+            $request->id_chuyen_muc,
             $request->ten_san_pham,
             $request->don_gia_goc,
             $request->don_gia,
@@ -95,10 +101,13 @@ class ProductController extends Controller
             $request->so_luong_ton,
             $fileName,
             $request->sp_noi_bat,
+            $request->xuat_xu,
+
 
         ];  
         // dd($dataInsert);
         $this->products->addProduct($dataInsert);
+        toastr()->success('Thành công','Thêm sản phẩm thành công');
         return redirect()->route('admin.manage_product')->with('msg', 'Thêm mới sản phẩm thành công');
     }
     public function get_add_NSX(){
@@ -162,13 +171,21 @@ class ProductController extends Controller
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
+        $productDetail = $this->products->getDetail($id);
         $fileName = null;
         if ($request->has('hinh_anh')) {
             $file = $request->hinh_anh;  
             $ext = $file->getClientOriginalExtension();  
-            $fileName = time().'-'.$ext;
+            $fileName = time() . '-' . $ext;
             $file->move(public_path('storage/products/img'), $fileName);
-            // $anh = 'storage/products/img'.$file;
+            if ($productDetail && !empty($productDetail->anh)) {
+                $oldImagePath = public_path('storage/products/img/' . $productDetail['anh']);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+        } else {
+            $fileName = $request->hinh_anh_cu;
         }
         $request->validate([
             'maNSX' => 'required',
@@ -217,9 +234,17 @@ class ProductController extends Controller
         }else{
             $msg = 'Liên kết không tồn tại';
         }
+        if($msg ='Xóa sản phẩm thành công'){
+            toastr()->success('Thành công','Xóa sản phẩm thành công');
+        }else{
+            toastr()->warning('Cảnh báo','Xóa sản phẩm thất bại');
+        }
         return redirect()->route('admin.manage_product')->with('msg',$msg);
     }
-
-    
+    public function getChuyenMuc($id_danh_muc)
+    {
+        $chuyenMucs = getChuyenMucSP($id_danh_muc);
+        return response()->json($chuyenMucs);
+    }
     //======================KẾT THÚC QUẢN LÝ SẢN PHẨM=======================
 }

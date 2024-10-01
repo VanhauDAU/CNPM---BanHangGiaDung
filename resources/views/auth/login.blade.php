@@ -19,6 +19,7 @@
                     <h2 class="text-center">ĐĂNG NHẬP</h2>
                     @if($errors->any() > 0)
                         <div class="alert alert-danger text-center">
+                            
                             Đã có lỗi xảy ra, vui lòng kiểm tra bên dưới!
                         </div>
                     @endif

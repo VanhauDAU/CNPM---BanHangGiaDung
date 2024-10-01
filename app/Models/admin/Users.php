@@ -18,7 +18,6 @@ class Users extends Model
         $users = DB::table($this->table)
         ->select('taikhoan.*','chucvu.ten_chuc_vu')
         ->join('chucvu','taikhoan.maCV','=','chucvu.maCV');
-
         $orderBy = 'taikhoan.created_at';
         $orderType='desc';
         if(!empty($sortArr) & is_array($sortArr)){
@@ -48,7 +47,7 @@ class Users extends Model
         }
         
         // $sql = DB::getQueryLog();
-        // dd($sql);
+        // dd($);
         return $users;
     }
 
@@ -76,7 +75,7 @@ class Users extends Model
         $data[] = now(); // Thêm giá trị updated_at với thời gian hiện tại
         $data[] = $id; // Thêm id của người dùng cần cập nhật
         
-        return DB::update('UPDATE '.$this->table.' SET username = ?, password = ?, ho_ten = ?, ngay_sinh = ?, so_dien_thoai = ?, email = ?,gioi_tinh = ?,cccd= ?, dia_chi = ?, loai_tai_khoan = ?, maCV = ?, updated_at = ? WHERE username = ?', $data);
+        return DB::update('UPDATE '.$this->table.' SET username = ?, password = ?, ho_ten = ?, ngay_sinh = ?, so_dien_thoai = ?, email = ?,gioi_tinh = ?,cccd= ?, dia_chi = ?, loai_tai_khoan = ?, maCV = ?,anh=?, updated_at = ? WHERE username = ?', $data);
     }
     
     public function deleteUser($id){

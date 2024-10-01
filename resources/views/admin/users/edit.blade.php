@@ -74,33 +74,44 @@
                 </select>
             </div>
         </div>
-        <div class="mb-3">
-            <label for="address">Địa Chỉ</label>
-            <textarea id="address" name="address" class="form-control" rows="3">{{ old('address') ?? $userDetail->dia_chi }}</textarea>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="address">Địa Chỉ</label>
+                <textarea id="address" name="address" class="form-control" rows="3">{{ old('address') ?? $userDetail->dia_chi }}</textarea>
+                <div class="mb-3 mt-3">
+                    <label for="account_type">Loại Tài Khoản</label>
+                    <select id="account_type" name="account_type" class="form-control">
+                        <option value="1" {{ old('account_type', $userDetail->loai_tai_khoan) == 1 ? 'selected' : '' }}>Admin</option>
+                        <option value="0" {{ old('account_type', $userDetail->loai_tai_khoan) == 0 ? 'selected' : '' }}>Người Dùng</option>
+                    </select>
+                    
+                </div>
+                <div class="mb-3" style="margin-top:5px" name="chuc_vu">
+                    <label for="chuc_vu">Chức vụ</label>
+                    <select id="chuc_vu" name="chuc_vu" class="form-control">
+                        @if(!empty(getAllGroups()))
+                            @foreach(getAllGroups() as $item)
+                                <option value="{{$item->maCV}}" 
+                                    {{ old('chuc_vu', $userDetail->maCV) == $item->maCV ? 'selected' : '' }}>
+                                    {{$item->ten_chuc_vu}}
+                                </option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>   
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="hinh_anh" class="form-label">Ảnh đại diện:</label>
+                <input type="file" name="hinh_anh" id="hinh_anh" class="form-control" accept="image/*" value="{{old('hinh_anh')}}">
+                <div class="row">
+                    <div class="mb-3">
+                        <img src="{{asset('storage/products/img/'.$userDetail->anh)}}" alt="" style="width: 200px">
+                        <img class="mt-3" src="{{$userDetail->anh}}" alt="" style="width: 130px;height:130px; border-radius:50%">
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="account_type">Loại Tài Khoản</label>
-            <select id="account_type" name="account_type" class="form-control">
-                <option value="1" {{ old('account_type', $userDetail->loai_tai_khoan) == 1 ? 'selected' : '' }}>Admin</option>
-                <option value="0" {{ old('account_type', $userDetail->loai_tai_khoan) == 0 ? 'selected' : '' }}>Người Dùng</option>
-            </select>
-            
-        </div>
-        <div class="mb-3" style="margin-top:5px" name="chuc_vu">
-            <label for="chuc_vu">Chức vụ</label>
-            <select id="chuc_vu" name="chuc_vu" class="form-control">
-                @if(!empty(getAllGroups()))
-                    @foreach(getAllGroups() as $item)
-                        <option value="{{$item->maCV}}" 
-                            {{ old('chuc_vu', $userDetail->maCV) == $item->maCV ? 'selected' : '' }}>
-                            {{$item->ten_chuc_vu}}
-                        </option>
-                    @endforeach
-                @endif
-            </select>
-        </div>        
-
+        <input type="hidden" name="hinh_anh_cu" id="hinh_anh_cu" value="{{ old('hinh_anh', $userDetail->anh)}}">
         <div class="text-center">
             <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Cập Nhật</button>
             <a href="{{route('admin.manage_user')}}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>

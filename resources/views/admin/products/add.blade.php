@@ -72,44 +72,11 @@
                                 <label for="id_chuyen_muc" class="form-label">Chọn chuyên mục:</label>
                                 <select name="id_chuyen_muc" id="id_chuyen_muc" class="form-select">
                                     <option value="">Chọn chuyên mục</option>
-                                    @php
-                                    $itemCategories =getChuyenMuc(1);
-                                    @endphp
-                                    @if(!empty($itemCategories) && count($itemCategories) > 0)
-                                        <div class="sub-category-container">
-                                            @foreach($itemCategories as $category)
-                                                <li><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
-                                            @endforeach
-                                        </div>
-                                    @endif
                                 </select>
                                 @error('id_chuyen_muc')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <script>
-                                function fetchChuyenMuc(idDanhMuc) {
-                                if (idDanhMuc) {
-                                    fetch(`/getChuyenMuc/${idDanhMuc}`) // Cập nhật đường dẫn theo route của bạn
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            const chuyenMucSelect = document.getElementById('id_chuyen_muc');
-                                            chuyenMucSelect.innerHTML = '<option value="">Chọn chuyên mục</option>'; // Reset chuyên mục
-
-                                            data.forEach(category => {
-                                                const option = document.createElement('option');
-                                                option.value = category.id_chuyen_muc;
-                                                option.textContent = category.ten_chuyen_muc;
-                                                chuyenMucSelect.appendChild(option);
-                                            });
-                                        })
-                                        .catch(error => console.error('Lỗi:', error));
-                                } else {
-                                    // Nếu không có danh mục được chọn, reset chuyên mục
-                                    document.getElementById('id_chuyen_muc').innerHTML = '<option value="">Chọn chuyên mục</option>';
-                                }
-                            }
-                            </script>
                         </div>
                         <script>
                         </script>
@@ -171,16 +138,28 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <img src="https://picsum.photos/id/237/200/300" alt="">
+                            <label for="xuat_xu" class="form-label">Xuất xứ:</label>
+                            <select name="xuat_xu" id="xuat_xu" class="form-select">
+                                <option value="">-- Chọn quốc gia --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3">
                             <label for="mo_ta" class="form-label">Mô tả sản phẩm:</label>
                             <textarea name="mo_ta" id="mo_ta" class="form-control" rows="4">{{ old('mo_ta') }}</textarea>
+
                             @error('mo_ta')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
+                            <script>
+                                ClassicEditor
+                                    .create(document.querySelector('#mo_ta'))
+                                    .catch(error => {
+                                        console.error(error);
+                                    });
+                                // CKEDITOR.replace('mo_ta');
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -200,8 +179,27 @@
     </style>
 @endsection
 @section('js')
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('mo_ta');
-    </script>
+<script>
+    async function fetchCountries() {
+        try {
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const countries = await response.json();
+            
+            const select = document.getElementById('xuat_xu');
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.cca2;
+                option.textContent = country.name.common;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        }
+    }
+
+    // Gọi hàm để thực hiện
+    fetchCountries();
+
+</script>
+
 @endsection

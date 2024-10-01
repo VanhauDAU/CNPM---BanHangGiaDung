@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use App\Models\clients\Products;
+use App\Models\admin\Post as adminPost;
 class HomeController extends Controller
 {
     //
@@ -43,10 +44,12 @@ class HomeController extends Controller
             'sortBy'=>$sortBy,
             'sortType'=>$sortType
         ];
+        $posts = adminPost::orderBy('created_at', 'desc')->take(6)->get();
         //end xử lý
         $productList = $this->products->getAllProducts($filters, $keyword,$sortArr, self::_PER_PAGE);
         // dd($productList);
-        return view('clients.home.home', compact('title', 'productList','sortType'));
+        // dd($posts);
+        return view('clients.home.home', compact('title', 'productList','sortType','posts'));
     }
     public function products(){
         $this->data['title'] = 'SẢN PHẨM';

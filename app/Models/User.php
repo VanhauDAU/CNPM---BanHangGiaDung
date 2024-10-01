@@ -55,4 +55,8 @@ class User extends Authenticatable implements MustVerifyEmail
         // dd($users);
         return $users;
     }
+    public function chucvu()
+    {
+        return $this->belongsTo(Chucvu::class, 'maCV', 'maCV'); // 'maCV' trong bảng taikhoan và 'maCV' trong bảng chucvu
+    }
 }

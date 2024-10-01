@@ -29,6 +29,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Fontawesome--}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {{-- gg font --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   {{-- sweetAlert2 --}}
   <script src="
     https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
@@ -40,80 +44,45 @@
           padding: 0;
           margin: 0;
           box-shadow: border-box;
+          font-family: "Open Sans", sans-serif;
         }
         a{
           color: black;
           text-decoration: none;
         }
         body{
+         background: url('/assets/general/img/banner_background2.png');
           position: relative;
         }
-        .social-info {
-            position: fixed;
-            right: 30px;
-            top: 60%;
+        .navbar .logo .bee{
+            position: absolute;
+            top:-13px;
+            width: 130px;
+            left: 80px;
         }
-
-        .social-info .social {
-            display: flex;
-            justify-content: center;
-            align-items: center; 
-            border: 1px solid #ccc;
-            border-radius: 50%;
-            padding: 12px;
-            height: 50px;width: 50px;
-            margin: 10px 0px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.5s ease
-        }
-        .social-info .social:hover {
-            transform: scale(1.2);
-            cursor: pointer;
-            background-color: aliceblue;
-        }
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        @keyframes colorChange {
-            0% { color: red; }
-            25% { color: blue; }
-            50% { color: green; }
-            75% { color: yellow; }
-            100% { color: red; }
-        }
-        .running-text {
-            animation: colorChange 3s infinite; /* Thay đổi màu sắc trong 3 giây, lặp lại vô hạn */
-            font-weight: bold; /* Đậm chữ */
-            font-size: 25px;
-        }
-        /* thả xuống cho navbar */
-        .nav-item.dropdown .collapse {
-            padding-left: 15px;
-        }
-
-        .nav-item.dropdown .nav-link {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-item.dropdown .collapse .nav-link {
-            padding-left: 30px;
-        }
-
-        .collapse {
-            transition: height 0.2s ease-in-out;
-        }
-
         </style>
     @yield('stylesheet')
 </head>
 
 <body>
   @include('clients.blocks.header')
-
+    <div class="social-info">
+        <div class="social zalo">
+            <a href=""><i class="fa-brands fa-zalo" style="color:#3AAFE1;"></i></a>
+        </div>
+        <div class="social facebook">
+            <a href=""><i class="fa-brands fa-facebook"></i></a>
+        </div>
+        <div class="social twitter">
+            <a href=""><i class="fa-brands fa-twitter" style="color: black"></i></a>
+        </div>
+        <div class="social youtube">
+            <a href=""><i class="fa-brands fa-youtube" style="color: red"></i></a>
+        </div>
+        <div class="social telegram">
+            <a href=""><i class="fa-brands fa-telegram" style="color:#3AAFE1;"></i></a>
+        </div>
+    </div>
     @yield('content-clients')
     <!-- Footer -->
     @include('Clients.blocks.footer')
@@ -141,7 +110,31 @@
               });
           }
       }
-      
+            // script.js
+        const images = [
+            '/assets/general/img/banner_background1.png',
+            '/assets/general/img/banner_background2.png',
+            '/assets/general/img/banner_background3.png',
+        ];
+
+        let currentIndex = 0;
+        function changeBackground() {
+            currentIndex = (currentIndex + 1) % images.length; 
+            document.body.style.backgroundImage = `url('${images[currentIndex]}')`;
+        }
+        setInterval(changeBackground, 6000);
+        changeBackground();
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('toast'))
+                var toastEl = document.getElementById('loginToast');
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            @endif
+        });
+        
     </script>
 </body>
 

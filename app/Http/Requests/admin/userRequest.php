@@ -24,7 +24,7 @@ class userRequest extends FormRequest
         return [
             'username' => 'required|min:4|unique:taikhoan,username',
             'password' => 'required',
-            'phone' => 'required|numeric|digits_between:10,12|unique:taikhoan,so_dien_thoai',
+            // 'phone' => 'required|numeric|digits_between:10,12|unique:taikhoan,so_dien_thoai',
             'email' => 'required|unique:taikhoan,email'
         ];
     }
@@ -34,11 +34,11 @@ class userRequest extends FormRequest
             'username.unique' => 'Tài khoản đã tồn tại trên hệ thống',
             'username.min' => 'Tài khoản phải lớn hơn 4 ký tự',
             'pasword.required' => 'Mật khẩu bắt buộc phải nhập',
-            'phone.unique' => 'Số điện thoại đã tồn tại trên hệ thống',
-            'phone.required' => 'Số điện thoại phải bắt buộc nhập',
-            'phone.numeric' => 'Số điện thoại phải là số',
-            'phone.digits_between' => 'Số điện thoại phải từ 10 đến 12 chữ số',
-            'phone.max' => 'Số điện thoại không dài quá 12 ký tự',
+            // 'phone.unique' => 'Số điện thoại đã tồn tại trên hệ thống',
+            // 'phone.required' => 'Số điện thoại phải bắt buộc nhập',
+            // 'phone.numeric' => 'Số điện thoại phải là số',
+            // 'phone.digits_between' => 'Số điện thoại phải từ 10 đến 12 chữ số',
+            // 'phone.max' => 'Số điện thoại không dài quá 12 ký tự',
             'email.required' => 'Emal bắt buộc phải nhập',
             'email.unique' => 'Email đã tồn tại trên hệ thống'
         ];

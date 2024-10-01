@@ -1,5 +1,10 @@
 /* header navbar */
-
+.categories {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 30px;
+    z-index: 1;
+}
 .main-home{
     background-color: white; 
     max-width: 1370px; 
@@ -222,8 +227,9 @@ header .navbar form .txtQuery{
     z-index: 1;
     border: 1px solid #ccc;
     border-radius: 20px;
-    padding: 30px;
-    padding-left: 80px;
+    padding: 20px;
+    padding-left: 60px;
+    padding-bottom: 10px;
     list-style-type: none;
 }
 .sub-category li:hover a{
@@ -256,6 +262,17 @@ header .navbar form .txtQuery{
     font-weight: bold;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
+.new-product-label2 {
+    background: yellow;
+    font-size: 14px;
+    padding: 5px 15px;
+    color: red;
+    border-radius: 5px;
+    text-transform: uppercase;
+    display: inline-block;
+    position: relative;
+    font-weight: bold;
+}
 
 .new-product-label:before {
     content: '';
@@ -282,9 +299,214 @@ header .navbar form .txtQuery{
     border-bottom: 10px solid transparent;
     border-left: 10px solid #e00; /* Màu góc tam giác phải */
 }
-.btn-xemchitiet{
+.btn-xemchitiet {
+    color: transparent;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease;
+}
+
+.btn-xemchitiet {
+    color: transparent;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease;
+}
+
+.product-item:hover .btn-xemchitiet {
     color: white;
-}
-.product-item:hover .btn-xemchitiet{
     background-color: #0D6EFD;
+    border: none;
+    padding: 5px 7px;
+    border-radius: 5px; 
 }
+.social-info {
+    position: fixed;
+    right: 13px;
+    top: 54%;
+}
+
+.social-info .social {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    padding: 12px;
+    height: 50px;width: 50px;
+    margin: 10px 0px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease
+}
+.social-info .social:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    background-color: aliceblue;
+}
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+@keyframes colorChange1 {
+    0% { color: red; }
+    25% { color: blue; }
+    50% { color: green; }
+    75% { color: yellow; }
+    100% { color: red; }
+}
+.running-text {
+    animation: colorChange1 3s infinite; /* Thay đổi màu sắc trong 3 giây, lặp lại vô hạn */
+    font-weight: bold; /* Đậm chữ */
+    font-size: 25px;
+}
+@keyframes colorChange {
+    0% { color: white; }
+    50% { color: yellow; }
+    75% { color:#F0F0F0; }
+    100% { color: white; }
+}
+.running-text2 {
+    animation: colorChange 3s infinite; /* Thay đổi màu sắc trong 3 giây, lặp lại vô hạn */
+    font-weight: bold; /* Đậm chữ */
+    font-size: 25px;
+}
+/* thả xuống cho navbar */
+.nav-item.dropdown .collapse {
+    padding-left: 15px;
+}
+
+.nav-item.dropdown .nav-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-item.dropdown .collapse .nav-link {
+    padding-left: 30px;
+}
+
+.collapse {
+    transition: height 0.2s ease-in-out;
+}
+.header-style-1 {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.header-scrolled {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.breadcrumb {
+    display: flex;
+    align-items: center; 
+    font-family: 'Arial', sans-serif; 
+    font-size: 16px; 
+    color: #333;
+    margin: 10px 0; 
+    background-color: #F2F2F2;
+    padding: 5px;
+}
+
+.breadcrumb i {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.breadcrumb .separator {
+    margin: 0 5px;
+    color: #888;
+}
+
+.breadcrumb a {
+    color:black;
+    text-decoration: none;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #27A2DB;
+}
+
+.breadcrumb .current {
+    font-weight: bold;
+    color: #000; 
+}
+.listChuyenMuc{
+    padding: 3px;
+}
+.listChuyenMuc a:hover{
+    text-decoration: underline;
+    color: black;
+}
+.info-pay{
+    margin-top: 10px;
+    background: rgb(255,46,36);
+    background: linear-gradient(90deg, rgba(255,46,36,1) 0%, rgba(217,42,33,1) 48%, rgba(219,44,35,1) 100%);
+    padding: 10px;
+    border-radius: 10px;
+}
+.info-pay .price{
+    font-size: 29px;
+}
+.info-pay .title-time{
+    font-size: 10px;
+    margin-top: -3px;
+}
+#quantity {
+    transition: all 0.2s ease-in-out;
+    font-weight: bold;
+    font-size: 20px;
+}
+.main-products{
+    max-width: 1370px; 
+    height: auto;
+    margin: 0 auto;
+    background-color: white;
+    padding: 0px 30px;
+    padding-bottom: 20px;
+}
+/* footer */
+.footer {
+    background-color: #343a40;
+    color: #ffffff;
+}
+.footer-title {
+    color: #EB2C23;
+    margin-bottom: 15px;
+}
+
+.footer a {
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: #EB2C23;
+}
+
+.payment-icon {
+    max-width: 50px;
+    margin: 0 5px;
+}
+
+/* endfooter */
+.image-magnifier-container {
+    position: relative; /* Để vùng zoom có thể đặt chính xác */
+    display: inline-block; /* Để giữ cho hình ảnh không bị tràn ra ngoài */
+}
+
+.product-image {
+    width: 100%; /* Đảm bảo hình ảnh lấp đầy toàn bộ chiều rộng */
+    height: auto; /* Để duy trì tỷ lệ hình ảnh */
+}
+
+.magnifier {
+    position: absolute; /* Để có thể đặt vị trí chính xác */
+    border: 3px solid #000; /* Đường viền cho kính lúp */
+    border-radius: 50%; /* Để tạo hình tròn */
+    cursor: none; /* Không hiển thị con trỏ khi di chuột vào */
+    width: 200px; /* Đường kính của kính lúp */
+    height: 200px; /* Đường kính của kính lúp */
+    opacity: 0; /* Ẩn vùng zoom */
+    pointer-events: none; /* Không cho phép tương tác */
+}
+

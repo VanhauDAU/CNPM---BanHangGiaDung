@@ -14,7 +14,11 @@
                     <h3 class="card-title running-text m-0">THÔNG TIN CHUNG</h3>
                 </div>
                 <div class="card-body text-center">
-                    <img src="{{ $userDetail->anh ?? 'https://via.placeholder.com/150' }}" alt="Avatar" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
+                        @if(!empty($userDetail->anh))
+                            <img src="{{asset('storage/users/img/'.$userDetail->anh)}}" alt="" class="rounded-circle img-thumbnail mb-3 border-animation" style="width: 150px; height: 150px;">
+                        @else
+                            <i class="fa-solid fa-xmark"></i>  
+                        @endif
                     <h4 class="text-primary"><strong>{{ $userDetail->loai_tai_khoan == 0 ? 'KHÁCH HÀNG' : 'NHÂN VIÊN' }}</strong></h4>
                     <p class="text-muted">{{ $userDetail->ho_ten }}</p>
                     <div class="social-icons mt-3">

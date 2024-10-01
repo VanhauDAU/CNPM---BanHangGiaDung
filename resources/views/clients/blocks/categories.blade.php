@@ -1,5 +1,5 @@
 <!-- Danh mục sản phẩm -->
-<div class="col-lg-3">
+<div class="col-lg-3 categories">
     <h4 class="mb-4">
         <i class="fas fa-bars"></i> Danh Mục Sản Phẩm
     </h4>
@@ -21,8 +21,8 @@
                     {{$item->ten_danh_muc}}
                     <i class="fa-solid fa-angles-right icon-submenu"></i>
                 </a>
-    
-                <ul class="sub-category">
+            
+                <ul class="sub-category ">
                     <div class="row col-sm-12">
                         <div class="col-sm-4">
                             @php
@@ -32,7 +32,7 @@
                         @if(!empty($itemCategories) && count($itemCategories) > 0)
                             <div class="sub-category-container">
                                 @foreach($itemCategories as $category)
-                                    <li><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
+                                    <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
                                 @endforeach
                             </div>
                         @else
@@ -47,7 +47,7 @@
                             @if(!empty($itemCategories) && count($itemCategories) > 0)
                                 <div class="sub-category-container">
                                     @foreach($itemCategories as $category)
-                                        <li><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
+                                        <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
                                     @endforeach
                                 </div>
                             @endif
@@ -60,7 +60,7 @@
                             @if(!empty($itemCategories) && count($itemCategories) > 0)
                                 <div class="sub-category-container">
                                     @foreach($itemCategories as $category)
-                                        <li><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
+                                        <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
                                     @endforeach
                                 </div>
                             @endif
@@ -68,7 +68,13 @@
                     </div>
                 </ul>                
             </li>
+            
             @endforeach
+            <li class="list-group-item text-center">
+                <a href="{{ route('home.products.sanpham_id', $item->id_danh_muc) }}" class="category-link text-danger text-center" >
+                    Xem tất cả danh mục
+                </a>
+            </li>
         @endif
     </ul>
     

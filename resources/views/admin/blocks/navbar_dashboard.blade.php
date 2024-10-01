@@ -1,7 +1,8 @@
 <nav class="sidebar p-3" id="sidebar" style="min-width:240px">
     <div class="text-center mb-4">
         <a href="{{route('home.index')}}"><img src="{{asset('assets/general/img/logoShop_bl.png')}}" alt="Logo" class="img-fluid rounded-circle" width="80"></a>
-        <h4>Trang Admin</h4>
+        <h4 style="font-size: 15px;margin-top:15px;font-weight:600; text-transform:uppercase">Chào, {{Auth::user()->ho_ten}}</h4>
+        <h5 style="font-size: 15px;font-weight:600; text-transform:uppercase">{{Auth::user()->Chucvu->ten_chuc_vu}}</h5>
     </div>
     <ul class="nav flex-column gap-4">
         <li class="nav-item">
@@ -43,6 +44,20 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{--route('getadd_user')--}}">Thêm Chuyên Mục</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#postSubMenu" aria-expanded="false">
+                <i class="fas fa-box"></i> QL Bài Viết
+                <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
+            </a>
+            <ul class="collapse" id="postSubMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.manage_post')}}">Xem - Sửa - Xóa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('getadd_post')}}">Thêm Bài Viết</a>
                 </li>
             </ul>
         </li>

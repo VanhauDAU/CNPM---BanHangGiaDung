@@ -9,84 +9,30 @@
 @section('content-clients')
   <!-- Hero Section -->
     <div class="main-home mt-5">
-        <div class="social-info">
-            <div class="social facebook">
-                <a href=""><i class="fa-brands fa-facebook"></i></a>
-            </div>
-            <div class="social twitter">
-                <a href=""><i class="fa-brands fa-twitter" style="color: black"></i></a>
-            </div>
-            <div class="social youtube">
-                <a href=""><i class="fa-brands fa-youtube" style="color: red"></i></a>
-            </div>
-            <div class="social telegram">
-                <a href=""><i class="fa-brands fa-telegram" style="color:#3AAFE1;"></i></a>
-            </div>
-        </div>
         <main class="container my-2">
             <!-- Danh mục sản phẩm -->
             <section class="category-section py-1">
                 <div class="container">
                     <div class="row">
                         @include('clients.blocks.categories')
-            
                         <!-- Hình ảnh sản phẩm -->
-                        <div class="col-lg-9">
-                            <div class="row g-3">
-                                <div class="col-md-8">
-                                    <a href="#" class="image-link">
-                                        <div class="image-container position-relative overflow-hidden">
-                                            <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang09/ho-tro/Banner-ho-tro-kiem-tra-san-pham-sau-bao-yagi-720x445.png" alt="Đồ Gia Dụng" class="img-fluid rounded shadow" style="object-fit: cover; height: 300px; width: 100%;">
-                                            <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
-                                                <span class="text-white fw-bold" style="font-size: 1.5rem;">Đồ Gia Dụng</span>
-                                            </div>
+                        <div class="col-lg-9 img-baiviet p-3 rounded" style="background:#DEEFE7;">
+                            @if(!empty($posts))
+                                <div class="row g-5">
+                                    @foreach($posts as $post)
+                                        <div class="col-md-4"> <!-- Sử dụng col-md-4 để tạo 3 cột -->
+                                            <a href="#" class="image-link">
+                                                <div class="image-container position-relative overflow-hidden">
+                                                    <img src="{{$post->anh_bia ?? 'https://www.fivebranches.edu/wp-content/uploads/2021/08/default-image.jpg'}}" alt="{{$post->tieu_de}}" class="img-fluid rounded shadow" style="object-fit: cover; height: 250px; width: 100%;">
+                                                    <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
+                                                        <span class="text-white fw-bold" style="font-size: 1.25rem;">{{$post->tieu_de}}</span>
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    @endforeach
                                 </div>
-                                <div class="col-md-4">
-                                    <a href="#" class="image-link">
-                                        <div class="image-container position-relative overflow-hidden">
-                                            <img src="https://st.meta.vn/Data/2024/Thang08/may-rua-bat-336x280.jpg" alt="Thời Trang" class="img-fluid rounded shadow" style="object-fit: cover; height: 300px; width: 100%;">
-                                            <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
-                                                <span class="text-white fw-bold" style="font-size: 1.5rem;">Thời Trang</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-            
-                            <div class="row g-3 mt-3">
-                                <div class="col-md-3">
-                                    <a href="#" class="image-link">
-                                        <div class="image-container position-relative overflow-hidden">
-                                            <img src="https://st.meta.vn/Data/2024/Thang02/cay-nuoc-nong-lanh-300x250.jpg" alt="Thể Thao" class="img-fluid rounded shadow" style="object-fit: cover; height: 250px; width: 100%;">
-                                            <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
-                                                <span class="text-white fw-bold" style="font-size: 1.5rem;">Thể Thao</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="#" class="image-link">
-                                        <div class="image-container position-relative overflow-hidden">
-                                            <img src="https://st.meta.vn/Data/2019/Thang07/tu-lanh-mini-300x250.png" alt="Sức Khỏe" class="img-fluid rounded shadow" style="object-fit: cover; height: 250px; width: 100%;">
-                                            <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
-                                                <span class="text-white fw-bold" style="font-size: 1.5rem;">Sức Khỏe</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="#" class="image-link">
-                                        <div class="image-container position-relative overflow-hidden">
-                                            <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang03/dien-may/Banner-dien-may-720x445.png" alt="Thêm Sản Phẩm" class="img-fluid rounded shadow" style="object-fit: cover; height: 250px; width: 100%;">
-                                            <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
-                                                <span class="text-white fw-bold" style="font-size: 1.5rem;">Thêm Sản Phẩm</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -100,11 +46,11 @@
                         Sản Phẩm Nổi Bật
                         <span class="icon-effect"><i class="fas fa-star"></i></span>
                     </h5>
-                    <div class="row my-5 justify-content-center">
+                    <div class="row my-4 justify-content-center p-3 rounded" style="background: #F29F05">
                         @if(!empty(sanphamnoibat()))
                             @foreach (sanphamnoibat() as $product)
-                                <div class="col-6 col-md-4 col-lg-2 mb-3"> <!-- Thêm khoảng cách dưới cho mỗi sản phẩm -->
-                                    <a href="#" class="product-link text-decoration-none">
+                                <div class="col-6 col-md-4 col-lg-2 mb-3 gap-1"> <!-- Thêm khoảng cách dưới cho mỗi sản phẩm -->
+                                    <a href="{{route('home.chi_tiet_sp',$product->maSP)}}" class="product-link text-decoration-none">
                                         <div class="product-item shadow-sm p-3 d-flex flex-column" 
                                              style="border-radius: 10px; transition: transform 0.3s ease; background-color: #f8f9fa; 
                                              height: 100%; position: relative; overflow: hidden;">
@@ -117,7 +63,7 @@
                                                 <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" 
                                                      class="img-fluid" 
                                                      alt="{{ $product->ten_san_pham }}" 
-                                                     style="border-radius: 10px; width: auto;transition: transform 0.3s;">
+                                                     style="border-radius: 10px; width: auto;transition: transform 0.3s;min-height: 130px">
                                             </div>
                     
                                             <h6 class="text-center text-truncate" style="min-height: 40px; overflow: hidden; 
@@ -133,8 +79,6 @@
                                                     {{ number_format($product->don_gia, 0, ',', '.') }}đ
                                                 </p>
                                             </div>
-                                            
-                                            <a href="#" class="btn btn-outline-primary mt-auto w-100">Xem Chi Tiết</a>
                                         </div>
                                     </a>
                                 </div>
@@ -177,11 +121,27 @@
 @section('stylesheet')
 <style>
     body{
-    background: url('/assets/general/img/banner_background.png');
-    /* background-size: cover; */
-    background-attachment: fixed;
-    margin: 0; 
-}
+        background: url('/assets/general/img/banner_background.png');
+        /* background-size: cover; */
+        background-attachment: fixed;
+        margin: 0; 
+    }
+    .image-container {
+        perspective: 1000px; /* Tạo chiều sâu cho hiệu ứng 3D */
+    }
+
+    .image-container img {
+        transition: transform 0.6s; /* Thêm hiệu ứng chuyển tiếp cho hình ảnh */
+    }
+
+    .image-container:hover img {
+        transform: rotateY(15deg); /* Lật hình ảnh theo trục Y khi di chuột */
+    }
+
+    .image-container:hover .image-overlay {
+        opacity: 1; /* Hiện overlay khi di chuột */
+    }
+
 </style>
 @endsection
 {{-- js --}}
@@ -193,5 +153,14 @@
             behavior: 'smooth' // Cuộn xuống mượt mà
         });
     });
+    document.querySelectorAll('.image-container').forEach(item => {
+    item.addEventListener('mouseover', event => {
+        item.querySelector('img').style.transform = 'scale(1.1)'; // Phóng to ảnh khi di chuột
+    });
+
+    item.addEventListener('mouseout', event => {
+        item.querySelector('img').style.transform = 'scale(1)'; // Khôi phục kích thước ảnh
+    });
+});
 </script>
 @endsection

@@ -11,9 +11,10 @@ class Products extends Model
     protected $table = 'sanpham';
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $products = DB::table($this->table)
-        ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*')
+        ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*','chitietdanhmucsp.*')
         ->join('nhasanxuat','sanpham.maNSX','=','nhasanxuat.maNSX')
-        ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc');
+        ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc')
+        ->join('chitietdanhmucsp','sanpham.id_chuyen_muc','=','chitietdanhmucsp.id_chuyen_muc');
         $orderBy = 'sanpham.created_at';
         $orderType='desc';
         if(!empty($sortArr) & is_array($sortArr)){
@@ -44,7 +45,24 @@ class Products extends Model
         return DB::select('SELECT * FROM '.$this->table.' 
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
+        INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
         WHERE maSP = ? 
+        ORDER BY '.$this->table.'.created_at DESC',[$id]);
+    }
+    public function getDetail2($id){
+        return DB::select('SELECT * FROM '.$this->table.' 
+        INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
+        INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
+        INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
+        WHERE chitietdanhmucsp.id_chuyen_muc = ? 
+        ORDER BY '.$this->table.'.created_at DESC',[$id]);
+    }
+    public function getDetail3($id){
+        return DB::select('SELECT * FROM '.$this->table.' 
+        INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
+        INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
+        INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
+        WHERE chitietdanhmucsp.id_chuyen_muc = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
     // tính số sao của sản phẩm

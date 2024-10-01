@@ -55,17 +55,10 @@ class ProductController extends Controller
         foreach ($filters as $filter) {
             $products->where($filter[0], $filter[1], $filter[2]);
         }
-
+        $productDetail ='';
         // Lấy danh sách sản phẩm đã sắp xếp và lọc
         $productList = $products->paginate(self::_PER_PAGE);
-
-        return view('clients.products.index', compact('title', 'productList'));
-    }
-    public function getChuyenMuc($id_danh_muc)
-    {
-        // Sử dụng helper để lấy chuyên mục
-        $chuyenMuc = getChuyenMuc($id_danh_muc);
-        return response()->json($chuyenMuc);
+        return view('clients.products.index', compact('title', 'productList','productDetail'));
     }
     public function show(Request $request, $id)
     {
@@ -81,7 +74,12 @@ class ProductController extends Controller
         }
         $filters[] = ['sanpham.id_danh_muc', '=', $id];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
-        return view('clients.products.index', compact('title', 'productList'));
+        $productDetail = $this->products->getDetail2($id);
+        // dd($productDetail);
+        if(!empty($productDetail)){
+            $productDetail = $productDetail[0];
+        }
+        return view('clients.products.index', compact('title', 'productList','productDetail'));
     }
     public function show2(Request $request, $id, $id2)
     {
@@ -95,11 +93,15 @@ class ProductController extends Controller
         if (!empty($request->keyword)) {
             $keyword = $request->keyword;
         }
+
         $filters[] = ['sanpham.id_danh_muc', '=', $id];
         $filters[] = ['sanpham.id_chuyen_muc', '=', $id2];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
-        // dd($productList);
-        return view('clients.products.index', compact('title', 'productList', 'keyword'));
+        $productDetail = $this->products->getDetail3($id2);
+        if(!empty($productDetail)){
+            $productDetail = $productDetail[0];
+        }
+        return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword'));
     }
 
     public function detail_product($id){
@@ -108,10 +110,10 @@ class ProductController extends Controller
             if(!empty($productDetail[0])){
                 $productDetail = $productDetail[0];
             }else{
-                return redirect()->route('products.index')->with('msg','Sản phẩm không tồn tại');
+                return redirect()->route('home.products.index')->with('msg','Sản phẩm không tồn tại');
             }
         }else{
-            return redirect()->route('products.index')->with('msg','Mã Sản phẩm không tồn tại');
+            return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         $title=$productDetail->ten_san_pham;
         return view('clients.products.detail_product', compact('title','productDetail'));

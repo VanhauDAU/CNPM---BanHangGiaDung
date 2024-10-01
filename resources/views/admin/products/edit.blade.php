@@ -53,7 +53,7 @@
 
                         <div class="mb-3">
                             <label for="id_danh_muc" class="form-label">Danh mục sản phẩm:</label>
-                            <select name="id_danh_muc" id="id_danh_muc" class="form-select">
+                            <select name="id_danh_muc" id="id_danh_muc" class="form-select" onchange="fetchChuyenMuc(this.value)">
                                 <option value="">Chọn danh mục sản phẩm</option>
                                 @if(!empty(getAllDanhMucSp()))
                                     @foreach(getAllDanhMucSp() as $item)
@@ -65,7 +65,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="don_gia_goc" class="form-label">Giá Gốc(VNĐ):</label>
@@ -125,7 +124,11 @@
                             </select>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="mb-3">
+                            <img src="{{asset('storage/products/img/'.$productDetail->anh)}}" alt="" style="width: 200px">
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="mb-3">
                             <label for="mo_ta" class="form-label">Mô tả sản phẩm:</label>
@@ -136,6 +139,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="hinh_anh_cu" id="hinh_anh_cu" value="{{ old('hinh_anh', $productDetail->anh)}}">
 
                 <button type="submit" class="btn btn-success w-100">Cập Nhật Sản Phẩm</button>
             </form>

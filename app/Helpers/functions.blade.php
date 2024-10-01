@@ -5,6 +5,10 @@ function getAllGroups(){
     $group = new Groups;
     return $group->getAll();
 }
+function getAllUserPost(){
+    $group = new Groups;
+    return $group->getAllUserPost();
+}
 function getAllDanhMucSp(){
     $group = new Groups;
     return $group->getAllDanhMucSp();
@@ -25,7 +29,7 @@ function sanphamnoibat(){
     $groups = new Groups;
     return $groups->getSanPhamNoiBat();
 }
-function getChuyenMuc($id){
+function getChuyenMucSP($id){
     $groups = new Groups();
     return $groups->getChuyenMuc($id);
 }

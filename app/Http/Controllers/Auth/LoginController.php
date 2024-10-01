@@ -59,7 +59,7 @@ class LoginController extends Controller
         if ($response = $this->loggedOut($request)) {
             return $response;
         }
-
+        toastr()->success('Thành công','Đăng xuất thành công');
         return $request->wantsJson()
             ? new JsonResponse([], 204)
             : redirect(route('login'));
@@ -87,7 +87,6 @@ class LoginController extends Controller
             return $this->sendLoginResponse($request);
         }
         $this->incrementLoginAttempts($request);
-
         return $this->sendFailedLoginResponse($request);
       
     }
@@ -133,12 +132,13 @@ class LoginController extends Controller
         $providerID = $usergoogle->getID();
         $provider ='google';
         $user = User::where('provider', $provider)->where('provider_id',$providerID)->first();
-        // dd($usergoogle->getID());
+        // dd($usergoogle);
         if(!$user){
             $user = new User();
             $user->ho_ten = $usergoogle->getName();
             $user->email = $usergoogle->getEmail();
             $user->username = $usergoogle->getID();
+            $user->anh = $usergoogle->getAvatar();
             $user->provider_id = $providerID;
             $user->provider = 'google';
             $user->password = Hash::make(rand());
