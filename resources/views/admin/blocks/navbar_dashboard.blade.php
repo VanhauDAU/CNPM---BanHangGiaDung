@@ -62,13 +62,22 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/quan-ly-hoa-don">
-                <i class="fas fa-receipt"></i> QL Hóa Đơn
+            <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#promotionSubMenu" aria-expanded="false">
+                <i class="fas fa-tags"></i> QL Khuyến Mãi
+                <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
             </a>
+            <ul class="collapse" id="promotionSubMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.manage_post')}}">Xem - Sửa - Xóa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('getadd_post')}}">Thêm Khuyến Mãi</a>
+                </li>
+            </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
-                <i class="fas fa-tags"></i> QL Khuyến Mãi
+            <a class="nav-link" href="/admin/quan-ly-hoa-don">
+                <i class="fas fa-receipt"></i> QL Hóa Đơn
             </a>
         </li>
     </ul>

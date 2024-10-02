@@ -60,8 +60,13 @@ Route::prefix('admin')->group(function () {
                 Route::post('', [ProductController::class, 'post_add_product'])->name('admin.add_product');
                 Route::get('nha-san-xuat', [ProductController::class, 'get_add_NSX'])->name('getadd_nsx');
                 Route::post('nha-san-xuat', [ProductController::class, 'post_add_NSX'])->name('admin.add_nsx');
+                Route::delete('delete-nsx/{id}', [ProductController::class, 'get_delete_NSX'])->name('delete_nsx');
                 Route::get('danh-muc', [ProductController::class, 'get_add_DM'])->name('getadd_dm');
                 Route::post('danh-muc', [ProductController::class, 'post_add_DM'])->name('admin.add_dm');
+                Route::get('chuyen-muc', [ProductController::class, 'get_add_CM'])->name('getadd_cm');
+                Route::post('chuyen-muc', [ProductController::class, 'post_add_CM'])->name('admin.add_cm');
+                Route::get('chuyen-muc-nsx', [ProductController::class, 'get_add_CM_NSX'])->name('getadd_cm_nsx');
+                Route::post('chuyen-muc-nsx', [ProductController::class, 'post_add_CM_NSX'])->name('admin.add_cm_nsx');
 
             });
             Route::get('edit/{id}', [ProductController::class, 'get_edit_product'])->name('getedit_product');
@@ -72,9 +77,9 @@ Route::prefix('admin')->group(function () {
             Route::get('', [PostControllerAdmin::class, 'index'])->name('admin.manage_post');
             Route::get('add', [PostControllerAdmin::class, 'add'])->name('getadd_post');
             Route::post('add', [PostControllerAdmin::class, 'postAdd']);
-            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->name('getedit_post');
-            Route::post('edit/{post}', [PostControllerAdmin::class, 'postEdit']);
-            Route::delete('delete/{post}', [PostControllerAdmin::class, 'delete'])->name('getdelete_post');
+            Route::get('edit/{id}', [PostControllerAdmin::class, 'edit'])->name('getedit_post');
+            Route::post('edit/{id}', [PostControllerAdmin::class, 'postEdit']);
+            Route::delete('delete/{id}', [PostControllerAdmin::class, 'delete'])->name('getdelete_post');
         });
         Route::prefix('quan-ly-hoa-don')->group(function () {
             Route::get('', [OrderController::class, 'manage_order'])->name('admin.manage_order');
@@ -101,8 +106,11 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
     Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');
+    Route::get('bai-viet',[PostController::class,'post'])->name('bai-viet');
+    Route::get('bai-viet/{id}',[PostController::class,'get_detail_post'])->name('get_bai_viet');
 });
-Route::get('/getChuyenMuc/{id}', [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
+Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
+Route::get('/getDanhMuc/{id}', [ProductController::class, 'getDanhMuc'])->name('getDanhMuc');
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){
     Route::get('/', [PostController::class,'index'])->name('index');

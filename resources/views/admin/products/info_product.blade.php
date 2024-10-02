@@ -36,7 +36,8 @@
                             <p><strong>Loại sản phẩm: </strong>{{ $productDetail->ten_danh_muc }}</p>
                             <p><strong>Giá: </strong>{{ number_format($productDetail->don_gia, 0, ',', '.') }} VNĐ</p>
                             <p><strong>Trọng lượng: </strong>{{ number_format($productDetail->trong_luong, 2) }} kg</p>
-                            <p><strong>Số lượng tồn: </strong>{{ $productDetail->so_luong_ton }}</p>
+                            <p><strong>Số lượng tồn: </strong>{{ $productDetail->so_luong_nhap }}</p>
+                            <p><strong>Xuất xứ: </strong>{{ $productDetail->xuat_xu }}</p>
                             
                         </div>
                     </div>

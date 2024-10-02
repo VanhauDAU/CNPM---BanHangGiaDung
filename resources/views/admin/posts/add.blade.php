@@ -41,9 +41,31 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-12">
+                        <label for="slug" class="form-label col-md-12">Đường dẫn:</label>
+                        <input type="text" class="form-control" name="slug" id="slug" readonly style="background-color:#ccc">
+                        @error('slug')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
                         <label for="anh_bia" class="form-label col-md-12">Ảnh bìa:</label>
                         <input type="file" class="form-control" name="anh_bia" id="anh_bia">
                         @error('anh_bia')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label for="trang_thai" class="form-label col-md-12">Trạng thái bài viết:</label>
+                        <select name="trang_thai" id="trang_thai" class="form-control">
+                            <option value="0">Ẩn</option>
+                            <option value="1">Hiện</option>
+                        </select>
+
+                        @error('trang_thai')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
@@ -81,6 +103,25 @@
 @endsection
 @section('js')
     <script>
-        
+        function removeVietnameseTones(str) {
+        return str
+            .normalize('NFD') 
+            .replace(/[\u0300-\u036f]/g, '') 
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D'); 
+    }
+        function generateSlug(value) {
+            let slug = removeVietnameseTones(value); 
+            return slug
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        }
+        const nameInput = document.getElementById('tieu_de');
+        const slugInput = document.getElementById('slug');
+        nameInput.addEventListener('input', function() {
+            slugInput.value = generateSlug(nameInput.value);
+        });
     </script>
 @endsection

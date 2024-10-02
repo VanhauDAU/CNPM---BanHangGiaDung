@@ -11,7 +11,10 @@
             <a href="{{ route('getadd_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <a href="{{route('getadd_dm')}}"class="btn btn-danger">Thêm Danh Mục</a>
+            <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
+            <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
+            <a href="{{route('getadd_cm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('getadd_cm_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     
@@ -29,10 +32,9 @@
                 @endif
                 @if(session('msg'))
                     <div class="alert alert-success text-center">
-                        {{session('msg')}}
+                        {{ session('msg') }}
                     </div>
                 @endif
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -74,6 +76,71 @@
             </form>
         </div>
     </div>
+
+    <!-- Bảng hiển thị danh sách nhà sản xuất -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Danh Sách Nhà Sản Xuất</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên Nhà Sản Xuất</th>
+                        <th>Số Điện Thoại</th>
+                        <th>Email</th>
+                        <th>Địa Chỉ</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(getAllNSX() as $key =>$item)
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $item->ten_NSX }}</td>
+                            <td>{{ $item->so_dien_thoai }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td>{{ $item->dia_chi }}</td>
+                            <td>
+                                <form action="{{ route('delete_nsx', $item->maNSX) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm delete-product" data-form="delete-form-{{$key}}">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
+@endsection
+
+@section('js')
+<script>
+    document.querySelectorAll('.delete-product').forEach(button => {
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const formId = event.target.getAttribute('data-form');
+        const form = document.getElementById(formId);
+        
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Bạn sẽ không thể hoàn tác điều này!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>
 @endsection

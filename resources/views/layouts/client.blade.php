@@ -67,9 +67,6 @@
 <body>
   @include('clients.blocks.header')
     <div class="social-info">
-        <div class="social zalo">
-            <a href=""><i class="fa-brands fa-zalo" style="color:#3AAFE1;"></i></a>
-        </div>
         <div class="social facebook">
             <a href=""><i class="fa-brands fa-facebook"></i></a>
         </div>

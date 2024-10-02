@@ -189,7 +189,7 @@
                 if (successMessage) {
                     successMessage.style.display = 'none';
                 }
-            }, 3500); // Thời gian ẩn thông báo (5000 milliseconds = 5 giây)
+            }, 5500); // Thời gian ẩn thông báo (5000 milliseconds = 5 giây)
         }
         
         function toggleNavbar() {
@@ -229,10 +229,45 @@
         <script>
             CKEDITOR.replace('mo_ta');
             CKEDITOR.replace('noi_dung');
-            function fetchChuyenMuc(idDanhMuc) {
-            console.log("Fetching Chuyen Muc for idDanhMuc: ", idDanhMuc); // Debug log
-            if (idDanhMuc) {
-                fetch(`/getChuyenMuc/${idDanhMuc}`)
+            async function fetchChuyenMuc(id_danh_muc) {
+            const maNSX = document.getElementById('maNSX').value;
+
+            if (maNSX && id_danh_muc) {
+                try {
+                    const response = await fetch(`/fetch-chuyen-muc/${maNSX}/${id_danh_muc}`);
+                    
+                    // Kiểm tra xem phản hồi có phải là 404 không
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.status}`);
+                    }
+                    
+                    const chuyenMucs = await response.json();
+
+                    const chuyenMucSelect = document.getElementById('id_chuyen_muc');
+                    chuyenMucSelect.innerHTML = '<option value="">Chọn chuyên mục sản phẩm</option>'; // Reset the options
+
+                    chuyenMucs.forEach(chuyenMuc => {
+                        const option = document.createElement('option');
+                        option.value = chuyenMuc.id_danh_muc; 
+                        option.textContent = chuyenMuc.ten_chuyen_muc; // Thay thế bằng tên chuyên mục
+                        chuyenMucSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error fetching chuyen muc:', error);
+                }
+            } else {
+                // Nếu không có maNSX hoặc id_danh_muc thì reset select chuyên mục
+                document.getElementById('id_chuyen_muc').innerHTML = '<option value="">Chọn chuyên mục sản phẩm</option>';
+            }
+        }
+
+        function fetchDanhMuc(maNSX) {
+            console.log("Fetching Danh Muc for maNSX: ", maNSX); 
+            const danhMucSelect = document.getElementById('id_danh_muc');
+            danhMucSelect.innerHTML = '<option value="">Chọn danh mục</option>'; 
+
+            if (maNSX) {
+                fetch(`/getDanhMuc/${maNSX}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
@@ -240,24 +275,38 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log("Data fetched: ", data); // Debug log
-                        const chuyenMucSelect = document.getElementById('id_chuyen_muc');
-                        chuyenMucSelect.innerHTML = '<option value="">Chọn chuyên mục</option>';
+                        console.log("Data fetched: ", data);
 
-                        data.forEach(category => {
-                            const option = document.createElement('option');
-                            option.value = category.id_chuyen_muc;
-                            option.textContent = category.ten_chuyen_muc;
-                            chuyenMucSelect.appendChild(option);
-                        });
+                        if (data.length === 0) {
+                            const noOption = document.createElement('option');
+                            noOption.value = "";
+                            noOption.textContent = "Nhà sản xuất này không có danh mục nào"; 
+                            danhMucSelect.appendChild(noOption);
+                        } else {
+                            // Nếu có danh mục, thêm chúng vào select
+                            data.forEach(category => {
+                                const option = document.createElement('option');
+                                option.value = category.id_danh_muc;
+                                option.textContent = category.ten_danh_muc;
+                                danhMucSelect.appendChild(option);
+                            });
+                        }
+
+                        // Gọi fetchChuyenMuc khi danh mục thay đổi
+                        danhMucSelect.onchange = function() {
+                            fetchChuyenMuc(this.value); // Gọi hàm fetchChuyenMuc khi danh mục thay đổi
+                        };
                     })
                     .catch(error => console.error('Lỗi:', error));
             } else {
-                document.getElementById('id_chuyen_muc').innerHTML = '<option value="">Chọn chuyên mục</option>';
+                danhMucSelect.innerHTML = '<option value="">Chọn danh mục</option>';
             }
         }
-        </script>
-        @yield('js')
+
+        
+        
+    </script>
+@yield('js')
         
 </body>
 </html>

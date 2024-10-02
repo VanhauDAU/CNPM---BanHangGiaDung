@@ -15,7 +15,7 @@
             <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
             <span class="separator">></span>
             <a href="{{route('home.products.sanpham_id', $productDetail->id_danh_muc)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
-
+            
             @if(!empty($productDetail->id_chuyen_muc) && !request()->routeIs('home.products.sanpham_id'))
                 <span class="separator">></span>
                 <a href="{{route('home.products.sanpham_id_id', [$productDetail->id_danh_muc, $productDetail->id_chuyen_muc])}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
@@ -40,18 +40,16 @@
                         <div class="col-md-3">
                             <select class="form-select" name="nsx" value="{{request()->nsx}}">
                                 <option value="">Chọn Nhà Sản Xuất</option>
-                                @if(!empty(getAllNSX()))
-                                @foreach (getAllNSX() as $item)
+                                @foreach ($danhMucNsx as $item)
                                     <option value="{{$item->maNSX}}" {{request()->nsx == $item->maNSX ? 'selected' : false}}>{{$item->ten_NSX}}</option>
                                 @endforeach
-                                @endif
                             </select>
                         </div>
                         <div class="col-md-5">
                             <input type="text" class="form-control" name="keyword" placeholder="Tìm kiếm sản phẩm" value="{{request()->keyword}}">
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary">Tìm Kiếm</button>
+                            <button class="btn btn-primary" >Tìm Kiếm</button>
                         </div>
                     </div>
                     <div class="row_sort mb-3 text-center quick_product gap-2">
@@ -70,7 +68,7 @@
                                         <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" style="object-fit: cover;padding: 8px;border-radius: 10px; width:auto">
                                         
                                         {{-- Kiểm tra trạng thái sản phẩm, nếu hết hàng thì hiển thị--}}
-                                        @if($product->so_luong_ton == 0)
+                                        @if($product->so_luong_nhap == 0)
                                             <div class="out-of-stock-label position-absolute top-0 start-0 bg-danger text-white px-3 py-1" style="border-radius: 0 0 10px 0; font-weight: bold;">
                                                 Sản phẩm tạm hết
                                             </div>
@@ -82,7 +80,7 @@
                                             </div>
                                         @endif
                                         {{-- phần trăm giảm giá--}}
-                                        @if(number_format((($product->don_gia_goc - $product->don_gia) / $product->don_gia_goc)*100) > 0 && $product->so_luong_ton >0)
+                                        @if(number_format((($product->don_gia_goc - $product->don_gia) / $product->don_gia_goc)*100) > 0 && $product->so_luong_nhap >0)
                                             <div class="new-product-label2 position-absolute top-0 end-0 text-red px-3 py-1" style="font-weight: bold;">
                                                 -{{number_format((($product->don_gia_goc - $product->don_gia) / $product->don_gia_goc)*100)}}%
                                             </div>

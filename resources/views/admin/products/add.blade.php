@@ -13,6 +13,8 @@
         <div class="col-auto">
             <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
             <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
+            <a href="{{route('getadd_cm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('getadd_cm_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     
@@ -39,7 +41,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="maNSX" class="form-label">Nhà sản xuất:</label>
-                            <select name="maNSX" id="maNSX" class="form-select">
+                            <select name="maNSX" id="maNSX" class="form-select" onchange="fetchDanhMuc(this.value)">
                                 <option value="">Chọn nhà sản xuất</option>
                                 @if(!empty(getAllNSX()))
                                     @foreach(getAllNSX() as $item)
@@ -57,11 +59,6 @@
                                 <label for="id_danh_muc" class="form-label">Danh mục sản phẩm:</label>
                                 <select name="id_danh_muc" id="id_danh_muc" class="form-select" onchange="fetchChuyenMuc(this.value)">
                                     <option value="">Chọn danh mục sản phẩm</option>
-                                    @if(!empty(getAllDanhMucSp()))
-                                        @foreach(getAllDanhMucSp() as $item)
-                                            <option value="{{ $item->id_danh_muc }}" {{ old('id_danh_muc') == $item->id_danh_muc ? 'selected' : '' }}>{{ $item->id_danh_muc}} - {{ $item->ten_danh_muc }}</option>
-                                        @endforeach
-                                    @endif
                                 </select>
                                 @error('id_danh_muc')
                                     <small class="text-danger">{{ $message }}</small>
@@ -71,7 +68,7 @@
                             <div class="mb-3">
                                 <label for="id_chuyen_muc" class="form-label">Chọn chuyên mục:</label>
                                 <select name="id_chuyen_muc" id="id_chuyen_muc" class="form-select">
-                                    <option value="">Chọn chuyên mục</option>
+                                    <option value="">Chọn chuyên mục sản phẩm</option>
                                 </select>
                                 @error('id_chuyen_muc')
                                     <small class="text-danger">{{ $message }}</small>
@@ -104,7 +101,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="ten_san_pham" class="form-label">Tên sản phẩm:</label>
@@ -116,9 +112,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="so_luong_ton" class="form-label">Số lượng nhập:</label>
-                            <input type="number" name="so_luong_ton" id="so_luong_ton" class="form-control" value="{{ old('so_luong_ton') }}">
-                            @error('so_luong_ton')
+                            <label for="so_luong_nhap" class="form-label">Số lượng nhập:</label>
+                            <input type="number" name="so_luong_nhap" id="so_luong_nhap" class="form-control" value="{{ old('so_luong_nhap') }}">
+                            @error('so_luong_nhap')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

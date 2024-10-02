@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class PostController extends Controller
 {
     //
@@ -16,5 +16,17 @@ class PostController extends Controller
         // $post->save();
         $posts =$post::all();
         
+    }
+    public function post(){
+        $PostList = DB::table('baiviet')
+        ->get();
+        return view('clients.post.index',compact('PostList'));
+    }
+    public function get_detail_post($id){
+        $title = $id;
+        $Post =DB::table('baiviet')
+        ->where('baiviet.slug','=',$id)
+        ->get();
+        return view('clients.post.detailPost', compact('Post','title'));
     }
 }

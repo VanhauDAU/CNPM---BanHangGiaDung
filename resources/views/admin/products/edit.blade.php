@@ -90,6 +90,9 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <img src="{{asset('storage/products/img/'.$productDetail->anh)}}" alt="" style="width: 200px">
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -102,9 +105,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="so_luong_ton" class="form-label">Số lượng nhập:</label>
-                            <input type="number" name="so_luong_ton" id="so_luong_ton" class="form-control" value="{{old('so_luong_ton', $productDetail->so_luong_ton)}}">
-                            @error('so_luong_ton')
+                            <label for="so_luong_nhap" class="form-label">Số lượng nhập:</label>
+                            <input type="number" name="so_luong_nhap" id="so_luong_nhap" class="form-control" value="{{old('so_luong_nhap', $productDetail->so_luong_nhap)}}">
+                            @error('so_luong_nhap')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -123,10 +126,12 @@
                                 <option value="1" {{ old('sp_noi_bat', $productDetail->sp_noi_bat) == 1 ? 'selected' : '' }}>Nổi Bật</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="mb-3">
-                            <img src="{{asset('storage/products/img/'.$productDetail->anh)}}" alt="" style="width: 200px">
+                            <label for="trang_thai" class="form-label">Hiển thị</label>
+                            <select name="trang_thai" id="trang_thai" class="form-select">
+                                <option value="0" {{ old('trang_thai', $productDetail->trang_thai) == 0 ? 'selected' : '' }}>Ẩn</option>
+                                <option value="1" {{ old('trang_thai', $productDetail->trang_thai) == 1 ? 'selected' : '' }}>Hiển Thị</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">

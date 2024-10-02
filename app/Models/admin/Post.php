@@ -20,6 +20,9 @@ class Post extends Model
     public function getDetail($id){
         return DB::select('SELECT * FROM '.$this->table.' INNER JOIN taikhoan ON '.$this->table.'.user_id = taikhoan.id WHERE id_bai_viet = ? ',[$id]);
     }
+    public function deletePost($id){
+        return DB::delete("DELETE FROM baiviet WHERE id_bai_viet = ?",[$id]);
+    }
     public function getAllPosts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $posts = DB::table($this->table)
         ->select('baiviet.*','taikhoan.*')
@@ -49,5 +52,9 @@ class Post extends Model
             $posts = $posts->get();
         }
         return $posts;
+    } 
+    public function updatePost($data, $id){
+        $data[] = $id;
+        return DB::update('UPDATE '.$this->table.' SET tieu_de = ?, anh_bia = ?, trang_thai = ?, noi_dung = ? WHERE id_bai_viet = ?', $data);
     }
 }

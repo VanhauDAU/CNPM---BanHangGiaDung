@@ -11,11 +11,11 @@
             <img src="{{asset('assets/general/img/logoDAU.png')}}" alt="" class="img-fluid" style="width: 50px; height: 45px;">
             <h1 id="title-top" class="ms-3">{{$title}}</h1>
         </div>
-        @if(session('msg'))
+        {{-- @if(session('msg'))
             <div class="alert alert-success">
                 {{ session('msg') }}
             </div>
-        @endif
+        @endif --}}
 
         <div class="d-flex justify-content-between mb-2">
             <a href="{{ route('getadd_product') }}" class="btn btn-primary">Thêm sản phẩm</a>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-sm-2">
                     <select class="form-select" name="nsx" id="nsx">
-                        <option value="0">Nhà Sản Xuất</option>
+                        <option value="0">--Nhà Sản Xuất--</option>
                         @if(!empty(getAllNSX()))
                             @foreach(getAllNSX() as $item)
                                 <option value="{{$item->maNSX}}" {{request()->nsx == $item->maNSX ? 'selected' : false }}>{{$item->ten_NSX}}</option>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-sm-2">
                     <select class="form-select" name="id_danh_muc" id="id_danh_muc" onchange="fetchChuyenMuc(this.value)">
-                        <option value="0">Danh mục</option>
+                        <option value="0">--Danh mục--</option>
                         @if(!empty(getAllDanhMucSp()))
                             @foreach(getAllDanhMucSp() as $item)
                                 <option value="{{$item->id_danh_muc}}" {{request()->id_danh_muc == $item->id_danh_muc ? 'selected' : false }}>{{$item->ten_danh_muc}}</option>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-sm-2">
                     <select class="form-select" name="id_chuyen_muc" id="id_chuyen_muc" >
-                        <option value="0">Chuyên mục</option>
+                        <option value="0">--Chuyên mục--</option>
                     </select>
                 </div>
                 <div class="col-sm-2">
@@ -72,6 +72,7 @@
                     <th>NSX</th>
                     <th>Loại</th>
                     <th>Giá</th>
+                    <th>Loại</th>
                     <th>Loại</th>
                     <th width="200px">Chức Năng</th>
                 </tr>
@@ -94,10 +95,16 @@
                             @if($item->sp_noi_bat == 1)
                                 <h6 class="text-center bg-success p-1 border rounded text-white p-1">Nổi Bật</h6>
                             @else
-                                <h6 class="text-center bg-light p-1 border rounded text-black p-1">Thường</h6>
+                                <h6 class="text-center bg-secondary p-1 border rounded text-white p-1">Thường</h6>
                             @endif
                         </td>
-                        
+                        <td>
+                            @if($item->trang_thai == 1)
+                                <h6 class="text-center bg-success p-1 border rounded text-white p-1">Hiển thị</h6>
+                            @else
+                                <h6 class="text-center bg-secondary p-1 border rounded text-white p-1">Ẩn</h6>
+                            @endif
+                        </td>
                         <td>
                             <a href="{{ route('product.info', ['id'=>$item->maSP]) }}" class="btn btn-primary btn-sm">Xem</a>
                             <a href="{{ route('postedit_product', $item->maSP) }}" class="btn btn-warning btn-sm">Sửa</a>

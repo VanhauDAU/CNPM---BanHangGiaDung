@@ -49,13 +49,16 @@ class products extends Model
         WHERE maSP = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
-    
+    public function getDetailNSX($id){
+        return DB::select('SELECT * FROM nhasanxuat
+        WHERE maNSX = ?',[$id]);
+    }
     public function addProduct($data){
         // $data['password'] = Hash::make($data['password']);
         $timestamp = now();
         $data[] = $timestamp;
         // dd($data); 
-        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc,id_chuyen_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_ton,anh,sp_noi_bat,xuat_xu, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc,id_chuyen_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_nhap,anh,sp_noi_bat,xuat_xu, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     public function addNSX($data){
@@ -66,14 +69,33 @@ class products extends Model
     public function addDM($data){
         $timestamp = now();
         $data[] = $timestamp;
-        DB::insert('INSERT INTO danhmucsanpham(ten_danh_muc, icon, created_at) values (?,?,?)', $data);
+        DB::insert('INSERT INTO danhmucsanpham(ten_danh_muc, icon, slug, created_at) values (?,?,?,?)', $data);
     }
+    public function addCM($data){
+        $timestamp = now();
+        $data[] = $timestamp;
+        DB::insert('INSERT INTO chitietdanhmucsp(id_danh_muc, ten_chuyen_muc, slug, created_at) values (?,?,?,?)', $data);
+    }
+    public function addCM_NSX($data){
+        DB::insert('INSERT INTO nsx_danhmuc(maNSX, id_danh_muc, id_chuyen_muc) values (?,?,?)', $data);
+    }
+    public function checkDuplicate($maNSX, $id_danh_muc, $id_chuyen_muc) {
+        return DB::table('nsx_danhmuc')
+            ->where('maNSX', $maNSX)
+            ->where('id_danh_muc', $id_danh_muc)
+            ->where('id_chuyen_muc', $id_chuyen_muc)
+            ->exists();
+    }    
     public function deleteUser($id){
         return DB::delete("DELETE FROM $this->table WHERE maSP = ? ", [$id]);
     }
+    public function deleteNsx($id) {
+        return DB::delete("DELETE FROM nhasanxuat WHERE maNSX = ?", [$id]);
+    }
+    
     public function updateProduct($data, $id){
         $data[] = now();
         $data[] = $id;
-        return DB::update('UPDATE '.$this->table.' SET maNSX = ?, id_danh_muc = ?, anh = ?, ten_san_pham = ?, don_gia_goc = ?,don_gia = ?,trong_luong= ?, mo_ta = ?, so_luong_ton = ?, sp_noi_bat = ?, updated_at = ? WHERE maSP = ?', $data);
+        return DB::update('UPDATE '.$this->table.' SET maNSX = ?, id_danh_muc = ?, anh = ?, ten_san_pham = ?, don_gia_goc = ?,don_gia = ?,trong_luong= ?, mo_ta = ?, so_luong_nhap = ?, sp_noi_bat = ?,trang_thai=?, updated_at = ? WHERE maSP = ?', $data);
     }
 }

@@ -72,6 +72,7 @@ class ProductController extends Controller
             'sortType'=>$sortType
         ];
         //end xử lý
+        
         $ProductList = $products->getAllProducts($filters, $keyword,$sortArr, self::_PER_PAGE);
         return view('admin.products.index', compact('title', 'ProductList','sortType'));
     }
@@ -98,11 +99,10 @@ class ProductController extends Controller
             $request->don_gia,
             $request->trong_luong,
             $request->mo_ta,
-            $request->so_luong_ton,
+            $request->so_luong_nhap,
             $fileName,
             $request->sp_noi_bat,
             $request->xuat_xu,
-
 
         ];  
         // dd($dataInsert);
@@ -131,18 +131,78 @@ class ProductController extends Controller
         return view('admin.products.add_danhmuc',$this->data);
         
     }
+    public function get_add_CM(){
+        $this->data['title'] ='THÊM MỚI CHUYÊN MỤC SẢN PHẨM';
+        $this->data['massage'] ='Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
+        return view('admin.products.add_chuyenmuc',$this->data);
+        
+    }
+    public function get_add_CM_NSX(){
+        $this->data['title'] ='THÊM MỚI DANH MỤC SẢN PHẨM';
+        $this->data['massage'] ='Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
+        return view('admin.products.add_cm_nsx',$this->data);
+    }
+    public function post_add_CM_NSX(Request $request){
+        request()->validate([
+            'maNSX'=>'required',
+            'id_chuyen_muc'=>'required',
+            'id_danh_muc'=>'required'
+        ],[
+            'maNSX.required'=>'Nhà sản xuất chưa được chọn',
+            'ten_danh_muc.required'=>'Tên danh mục chưa được chọn',
+            'id_chuyen_muc.required'=>'Tên danh mục chưa được chọn'
+        ]);
+        $exists = $this->products->checkDuplicate($request->maNSX, $request->id_danh_muc, $request->id_chuyen_muc);
+
+        if ($exists) {
+            // toastr()->warning('Thất bị','Thêm chuyên mục cho NSX thất bại');
+            return back()->withErrors(['duplicate' => 'Đã tồn tại bản ghi với Nhà sản xuất, Danh mục và Chuyên mục này.'])->withInput();
+        }
+        $dataInsert=[
+            $request->maNSX,
+            $request->id_danh_muc,
+            $request->id_chuyen_muc,
+        ];
+        $this->products->addCM_NSX($dataInsert);
+        toastr()->success('Thành công','Thêm chuyên mục cho NSX thành công');
+        return redirect()->route('getadd_cm_nsx');
+    }
     public function post_add_DM(Request $request){
         request()->validate([
-            'ten_danh_muc'=>'required|min:5'
+            'ten_danh_muc'=>'required|min:2|unique:danhmucsanpham,ten_danh_muc',
+            'icon'=>'required',
+            'slug'=>'unique:danhmucsanpham,slug',
         ],[
             'ten_danh_muc.required'=>'Tên danh mục bắt buộc phải nhập',
-            'ten_danh_muc.min'=>'Tên danh mục phải lớn hơn :min ký tự'
+            'ten_danh_muc.min'=>'Tên danh mục phải lớn hơn :min ký tự',
+            'ten_danh_muc.unique'=>'Tên danh mục đã tồn tại',
+            'icon.required'=>'Icon bắt buộc phải có',
+            'slug.unique'=>'Đường dẫn đã tồn tại',
         ]);
         $dataInsert=[
             $request->ten_danh_muc,
             $request->icon,
+            $request->slug,
         ];
         $this->products->addDM($dataInsert);
+        return redirect()->route('getadd_dm')->with('msg','Thêm mới danh mục thành công');
+    }
+    public function post_add_CM(Request $request){
+        request()->validate([
+            'ten_danh_muc'=>'required',
+            'ten_chuyen_muc'=>'required',
+            'slug'=>'unique:danhmucsanpham,slug',
+        ],[
+            'ten_danh_muc.required'=>'Danh mục bắt buộc phải nhập',
+            'ten_chuyen_muc.required'=>'Tên chuyên mục bắt buộc phải có',
+            'slug.unique'=>'Đường dẫn đã tồn tại',
+        ]);
+        $dataInsert=[
+            $request->ten_danh_muc,
+            $request->ten_chuyen_muc,
+            $request->slug,
+        ];
+        $this->products->addCM($dataInsert);
         return redirect()->route('getadd_dm')->with('msg','Thêm mới danh mục thành công');
     }
     public function withValidator($validator){
@@ -187,6 +247,7 @@ class ProductController extends Controller
         } else {
             $fileName = $request->hinh_anh_cu;
         }
+        
         $request->validate([
             'maNSX' => 'required',
             'id_danh_muc' => 'required',
@@ -209,14 +270,41 @@ class ProductController extends Controller
             $request->don_gia,
             $request->trong_luong,
             $request->mo_ta,
-            $request->so_luong_ton,
+            $request->so_luong_nhap,
             $request->sp_noi_bat,
+            $request->trang_thai,
             
         ];
         // dd($dataUpdate);
         $this->products->updateProduct($dataUpdate, $id);
         return redirect()->route('getedit_product',['id'=>$id])->with('msg','Cập nhật sản phẩm thành công!');
     }
+    public function get_delete_NSX($id) {
+        if (!empty($id)) {
+            $nsxDetail = $this->products->getDetailNsx($id);
+    
+            if (!empty($nsxDetail[0])) {
+                try {
+                    $deleteNsx = $this->products->deleteNsx($id);
+                    if ($deleteNsx) {
+                        toastr()->success('Thành công', 'Xóa NSX thành công');
+                    } else {
+                        toastr()->warning('Thất bại', 'Bạn không thể xóa NSX lúc này, vui lòng thử lại sau!');
+                    }
+                } catch (\Exception $e) {
+                    // Chỉ thông báo cho người dùng mà không hiển thị lỗi ra ngoài
+                    toastr()->warning('Thất bại', 'Bạn không thể xóa NSX vì có liên kết với các mục khác.');
+                }
+            } else {
+                toastr()->warning('Thất bại', 'NSX không tồn tại!');
+            }
+        } else {
+            toastr()->warning('Cảnh báo', 'Liên kết không tồn tại');
+        }
+    
+        return redirect()->route('getadd_nsx');
+    }
+    
     public function get_delete_product($id){
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);
@@ -241,10 +329,15 @@ class ProductController extends Controller
         }
         return redirect()->route('admin.manage_product')->with('msg',$msg);
     }
-    public function getChuyenMuc($id_danh_muc)
+    public function getChuyenMuc($maNSX, $id_danh_muc)
     {
-        $chuyenMucs = getChuyenMucSP($id_danh_muc);
+        $chuyenMucs = getChuyenMucSP($maNSX, $id_danh_muc);
         return response()->json($chuyenMucs);
+    }
+    public function getDanhMuc($ma_NSX)
+    {
+        $danhMucs = getDanhMucSP($ma_NSX);
+        return response()->json($danhMucs);
     }
     //======================KẾT THÚC QUẢN LÝ SẢN PHẨM=======================
 }

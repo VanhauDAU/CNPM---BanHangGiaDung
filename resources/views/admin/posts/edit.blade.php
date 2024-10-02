@@ -40,15 +40,33 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-12">
+                    <div class="col-6">
                         <label for="anh_bia" class="form-label col-md-12">Ảnh bìa:</label>
                         <input type="file" class="form-control" name="anh_bia" id="anh_bia">
                         @error('anh_bia')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
+                        <div class="row mb-3">
+                            <div class="col-12 mt-3">
+                                <label for="trang_thai" class="form-label col-md-12">Trạng thái bài viết:</label>
+                                <select name="trang_thai" id="trang_thai" class="form-control">
+                                    <option value="0"{{ old('trang_thai', $postDetail->trang_thai) == 0 ? 'selected' : '' }}>Ẩn</option>
+                                    <option value="1"{{ old('trang_thai', $postDetail->trang_thai) == 1 ? 'selected' : '' }}>Hiện</option>
+                                </select>
+        
+                                @error('trang_thai')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <img src="{{asset('storage/posts/img/'.$postDetail->anh_bia)}}" alt="">
+                        <img src="{{$postDetail->anh_bia}}" alt="" style="height:200px">
                     </div>
                 </div>
-                
+                <input type="hidden" class="form-control" name="hinh_anh_cu" id="hinh_anh_cu" value="{{ old('anh_bia', $postDetail->anh_bia)}}">
+
                 <div class="row">
                     <label for="noi_dung" class="form-label col-md-12">Mô tả sản phẩm:</label>
                     <div class="col-md-12"> <!-- Thêm div col-md-12 -->

@@ -18,12 +18,12 @@
                         <!-- Hình ảnh sản phẩm -->
                         <div class="col-lg-9 img-baiviet p-3 rounded" style="background:#DEEFE7;">
                             @if(!empty($posts))
-                                <div class="row g-5">
+                                <div class="row g-2">
                                     @foreach($posts as $post)
                                         <div class="col-md-4"> <!-- Sử dụng col-md-4 để tạo 3 cột -->
-                                            <a href="#" class="image-link">
+                                            <a href="{{route('home.get_bai_viet',$post->slug)}}" class="image-link">
                                                 <div class="image-container position-relative overflow-hidden">
-                                                    <img src="{{$post->anh_bia ?? 'https://www.fivebranches.edu/wp-content/uploads/2021/08/default-image.jpg'}}" alt="{{$post->tieu_de}}" class="img-fluid rounded shadow" style="object-fit: cover; height: 250px; width: 100%;">
+                                                    <img src="{{$post->anh_bia ? 'storage/posts/img/'.$post->anh_bia :'https://www.fivebranches.edu/wp-content/uploads/2021/08/default-image.jpg'}}" alt="{{$post->tieu_de}}" class="img-fluid rounded shadow" style="object-fit: cover; height: 250px; width: 100%;">
                                                     <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
                                                         <span class="text-white fw-bold" style="font-size: 1.25rem;">{{$post->tieu_de}}</span>
                                                     </div>
@@ -117,6 +117,14 @@
           </div>
         </section>
     </div>
+    <!-- Modal Structure -->
+    <div id="popupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Welcome to our Website</h2>
+            <p>This is a beautiful centered popup.</p>
+        </div>
+    </div>
 @endsection
 @section('stylesheet')
 <style>
@@ -154,13 +162,35 @@
         });
     });
     document.querySelectorAll('.image-container').forEach(item => {
-    item.addEventListener('mouseover', event => {
-        item.querySelector('img').style.transform = 'scale(1.1)'; // Phóng to ảnh khi di chuột
-    });
+        item.addEventListener('mouseover', event => {
+            item.querySelector('img').style.transform = 'scale(1.1)'; // Phóng to ảnh khi di chuột
+        });
 
-    item.addEventListener('mouseout', event => {
-        item.querySelector('img').style.transform = 'scale(1)'; // Khôi phục kích thước ảnh
+        item.addEventListener('mouseout', event => {
+            item.querySelector('img').style.transform = 'scale(1)'; // Khôi phục kích thước ảnh
+        });
     });
-});
+    // Get modal element
+    const modal = document.getElementById("popupModal");
+    // Get close button
+    const closeBtn = document.querySelector(".close-btn");
+
+    // Show modal when the page loads
+    window.onload = function() {
+        modal.style.display = "flex";
+    }
+
+    // Close modal when user clicks the close button
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Optionally, close modal when user clicks anywhere outside the modal content
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
 </script>
 @endsection

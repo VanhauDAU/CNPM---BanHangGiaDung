@@ -22,7 +22,7 @@ class ProductController extends Controller
 
         // Khởi tạo query builder cho sản phẩm
         $products = $this->products->newQuery(); 
-
+        $products->where('trang_thai', '!=', 0); 
         // Xử lý sắp xếp
         if ($request->has('sort')) {
             switch ($request->sort) {
@@ -56,9 +56,12 @@ class ProductController extends Controller
             $products->where($filter[0], $filter[1], $filter[2]);
         }
         $productDetail ='';
-        // Lấy danh sách sản phẩm đã sắp xếp và lọc
+        $danhMucNsx = $this->products->getAllNSX();
+        $allProduct = $this->products->getAllProductsMAIN();
+        // dd($allProduct);
         $productList = $products->paginate(self::_PER_PAGE);
-        return view('clients.products.index', compact('title', 'productList','productDetail'));
+        // dd($productList);
+        return view('clients.products.index', compact('title', 'productList','productDetail','danhMucNsx','allProduct'));
     }
     public function show(Request $request, $id)
     {
@@ -72,14 +75,14 @@ class ProductController extends Controller
         if (!empty($request->keyword)) {
             $keyword = $request->keyword;
         }
-        $filters[] = ['sanpham.id_danh_muc', '=', $id];
+        $filters[] = ['danhmucsanpham.slug', '=', $id];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
         $productDetail = $this->products->getDetail2($id);
-        // dd($productDetail);
+        $danhMucNsx = $this->products->getDetailDM_Nsx($id);
         if(!empty($productDetail)){
             $productDetail = $productDetail[0];
         }
-        return view('clients.products.index', compact('title', 'productList','productDetail'));
+        return view('clients.products.index', compact('title', 'productList','productDetail','danhMucNsx'));
     }
     public function show2(Request $request, $id, $id2)
     {
@@ -94,14 +97,16 @@ class ProductController extends Controller
             $keyword = $request->keyword;
         }
 
-        $filters[] = ['sanpham.id_danh_muc', '=', $id];
-        $filters[] = ['sanpham.id_chuyen_muc', '=', $id2];
+        $filters[] = ['danhmucsanpham.slug', '=', $id];
+        $filters[] = ['chitietdanhmucsp.slug', '=', $id2];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
         $productDetail = $this->products->getDetail3($id2);
+        $danhMucNsx = $this->products->getDetailDM_Nsx($id,$id2);
+        // dd($danhMucNsx);
         if(!empty($productDetail)){
             $productDetail = $productDetail[0];
         }
-        return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword'));
+        return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword','danhMucNsx'));
     }
 
     public function detail_product($id){

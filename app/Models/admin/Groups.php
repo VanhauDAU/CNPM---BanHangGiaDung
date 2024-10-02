@@ -14,9 +14,16 @@ class Groups extends Model
     protected $table4 = 'sanpham';
     protected $table5 = 'chitietdanhmucsp';
     protected $table6 = 'baiviet';
+    protected $table7 = 'nsx_danhmuc';
     public function getAll(){
         $groups = DB::table($this->table)
         ->orderBy('ten_chuc_vu','ASC')
+        ->get();
+        return $groups;
+    }
+    public function getAllNSX(){
+        $groups = DB::table($this->table3)
+        ->orderBy('created_at','DESC')
         ->get();
         return $groups;
     }
@@ -27,9 +34,16 @@ class Groups extends Model
         ->get();
         return $groups;
     }
-    public function getAllNSX(){
-        $groups = DB::table($this->table3)
-        ->orderBy('ten_NSX','ASC')
+    public function getAllDanhMucSp2(){
+        $groups = DB::table($this->table2)
+        ->orderBy('created_at','DESC')
+        ->get();
+        return $groups;
+    }
+    
+    public function getAllChuyenMucSp(){
+        $groups = DB::table($this->table5)
+        ->orderBy('id_chuyen_muc','ASC')
         ->get();
         return $groups;
     }
@@ -41,24 +55,37 @@ class Groups extends Model
         ->get();
         return $groups;
     }
-    public function getChuyenMuc($id) {
-        $groups = DB::table($this->table5)
-            ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table5 . '.id_danh_muc')
-            ->where($this->table5 . '.id_danh_muc', $id)
+    public function getChuyenMuc($maNSX, $id_danh_muc) {
+        $groups = DB::table($this->table7)
+            ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table7 . '.id_danh_muc')
+            ->join($this->table5, $this->table5 . '.id_chuyen_muc', '=', $this->table7 . '.id_chuyen_muc')
+            ->where($this->table5 . '.id_danh_muc', $id_danh_muc)
+            ->where($this->table7 . '.maNSX', $maNSX)
             ->get();
         return $groups;
     }
-     
+    public function getDanhMuc($id) {
+        $groups = DB::table($this->table7)
+            ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table7 . '.id_danh_muc')
+            ->where($this->table7. '.maNSX', $id)
+            ->get(['danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc']);
+        return $groups;
+    }
+    
     public function getChuyenMuc1($id) {
         $groups = DB::table($this->table5)
+            ->select('chitietdanhmucsp.*', 'danhmucsanpham.*', 'chitietdanhmucsp.slug')
             ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table5 . '.id_danh_muc')
             ->where($this->table5 . '.id_danh_muc', $id)
             ->limit(8)
             ->get();
-        return $groups;
-    }   
+        
+        return $groups; // Kiểm tra dữ liệu ở đây
+    }
+    
     public function getChuyenMuc2($id) {
         $groups = DB::table($this->table5)
+            ->select('chitietdanhmucsp.*', 'danhmucsanpham.*', 'chitietdanhmucsp.slug')
             ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table5 . '.id_danh_muc')
             ->where($this->table5 . '.id_danh_muc', $id)
             ->skip(8)
@@ -68,6 +95,7 @@ class Groups extends Model
     }  
     public function getChuyenMuc3($id) {
         $groups = DB::table($this->table5)
+            ->select('chitietdanhmucsp.*', 'danhmucsanpham.*', 'chitietdanhmucsp.slug')
             ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table5 . '.id_danh_muc')
             ->where($this->table5 . '.id_danh_muc', $id)
             ->skip(16)

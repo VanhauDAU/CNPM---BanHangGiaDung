@@ -55,13 +55,14 @@
                     <th><a href="">Người đăng</a></th>
                     <th><a href="">Ngày đăng</a></th>
                     <th><a href="">Ngày cập nhật</a></th>
+                    <th><a href="">Trạng thái</a></th>
                     <th style="width: 200px;"><a href="">Chức năng</a></th>
                 </tr>
             </thead>
             <tbody>
                 @if(!empty($PostList))
                     @foreach ($PostList as $key => $item)
-                    <tr>
+                    <tr class="align-middle">
                         <td>{{$key + 1}}</td>
                         <td>
                             {!! \Illuminate\Support\Str::limit($item->tieu_de,30) !!}
@@ -83,9 +84,18 @@
                             @endif
                         </td>
                         <td>
+                            @if($item->trang_thai == 0)
+                                <h6 class="bg-danger p-1 text-white rounded" style="min-width: 30px;">ẨN</h6>
+                            @else
+                                <h6 class="bg-success p-1 text-white rounded" style="min-width: 30px;">HIỆN</h6>
+                            @endif
+                            
+
+                        </td>
+                        <td>
                             {{-- <a href="{{ route('info', ['id'=>$item->username]) }}" class="btn btn-info btn-sm">Xem</a> --}}
-                            <a href="{{ route('getedit_post', ['post'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{route('getdelete_post',['post'=>$item->id_bai_viet]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
+                            <a href="{{ route('getedit_post', ['id'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{{route('getdelete_post',['id'=>$item->id_bai_viet]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger btn-sm delete-user" data-form="delete-form-{{$key}}">Xóa</button>

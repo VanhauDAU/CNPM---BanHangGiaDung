@@ -18,6 +18,7 @@
 
         <div class="d-flex justify-content-between mb-2">
             <a href="{{ route('getadd_user') }}" class="btn btn-primary">Thêm người dùng</a>
+            <a href="{{ route('getadd_user') }}" class="btn btn-warning">Thêm chức vụ</a>
         </div>
 
         <form action="" method="get" class="mb-3 border-top pt-3">

@@ -9,13 +9,22 @@ function getAllUserPost(){
     $group = new Groups;
     return $group->getAllUserPost();
 }
+
+function getAllNSX(){
+    $group = new Groups;
+    return $group->getAllNSX();
+}
 function getAllDanhMucSp(){
     $group = new Groups;
     return $group->getAllDanhMucSp();
 }
-function getAllNSX(){
+function getAllDanhMucSp2(){
     $group = new Groups;
-    return $group->getAllNSX();
+    return $group->getAllDanhMucSp2();
+}
+function getAllChuyenMucSp(){
+    $group = new Groups;
+    return $group->getAllChuyenMucSp();
 }
 function isAdminActive($username){
     $count = admin::where('username', $username)->where('loai_tai_khoan',1)->count();
@@ -29,9 +38,13 @@ function sanphamnoibat(){
     $groups = new Groups;
     return $groups->getSanPhamNoiBat();
 }
-function getChuyenMucSP($id){
+function getDanhMucSP($id){
     $groups = new Groups();
-    return $groups->getChuyenMuc($id);
+    return $groups->getDanhMuc($id);
+}
+function getChuyenMucSP($maNSX, $id_danh_muc){
+    $groups = new Groups();
+    return $groups->getChuyenMuc($maNSX, $id_danh_muc);
 }
 function getChuyenMuc1($id){
     $groups = new Groups();

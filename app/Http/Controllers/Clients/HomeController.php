@@ -20,36 +20,23 @@ class HomeController extends Controller
         $title = 'Website Bán Hàng Gia Dụng - VĂN HẬU';
         $filters =[];
         $keyword = null;
-        if(!empty($request->nsx)){
-            $maNSX = $request->nsx;
-            $filters[] = ['sanpham.maNSX', '=',$maNSX];
-        }
-        if(!empty($request->keyword)){
-            $keyword = $request->keyword;
-        }
-        //Xử lý logic sắp xếp theo cột
-        $sortBy = $request->input('sort-by');
-        $sortType = $request->input('sort-type');
-        $arrSort =['ASC', 'DESC'];
-        if(!empty($sortType) & in_array($sortType,$arrSort)){
-            if($sortType=='DESC'){
-                $sortType ='ASC';
-            }else{
-                $sortType ='DESC';
-            }
-        }else{
-            $sortType ='ASC';
-        }
-        $sortArr =[
-            'sortBy'=>$sortBy,
-            'sortType'=>$sortType
-        ];
-        $posts = adminPost::orderBy('created_at', 'desc')->take(6)->get();
+        $products = $this->products->newQuery();
+        
+        $posts = adminPost::orderBy('created_at', 'desc')->where('trang_thai',1)->take(6)->get();
         //end xử lý
-        $productList = $this->products->getAllProducts($filters, $keyword,$sortArr, self::_PER_PAGE);
+        $sortType = '';
+        $productList = $this->products->getAllProducts($filters, $keyword,$sortArr=null, self::_PER_PAGE);
+        $allProduct = $this->products->getAllProductsMAIN();
+        // dd($allProduct);
         // dd($productList);
         // dd($posts);
-        return view('clients.home.home', compact('title', 'productList','sortType','posts'));
+        $danhMucNsx = $this->products->getAllNSX();
+        if(!empty($request->keyword)){
+            $keyword = $request->keyword;
+            $products->where('ten_san_pham', 'like', '%' . $keyword . '%');
+            return view('clients.products.index', compact('title', 'productList','danhMucNsx','allProduct'));
+        }
+        return view('clients.home.home', compact('title', 'productList','sortType','posts','allProduct'));
     }
     public function products(){
         $this->data['title'] = 'SẢN PHẨM';
