@@ -10,6 +10,10 @@ class products extends Model
     use HasFactory;
     protected $table ='sanpham';
     protected $tableDM ='danhmucsanpham';
+    public function khuyenMais()
+    {
+        return $this->belongsToMany(Promotion::class, 'sanpham_khuyenmai', 'san_pham_id', 'khuyen_mai_id');
+    }
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $products = DB::table($this->table)
         ->select('sanpham.*','danhmucsanpham.ten_danh_muc','nhasanxuat.*')
@@ -53,12 +57,16 @@ class products extends Model
         return DB::select('SELECT * FROM nhasanxuat
         WHERE maNSX = ?',[$id]);
     }
+    public function getDetailDm($id){
+        return DB::select('SELECT * FROM danhmucsanpham
+        WHERE id_danh_muc = ?',[$id]);
+    }
     public function addProduct($data){
         // $data['password'] = Hash::make($data['password']);
         $timestamp = now();
         $data[] = $timestamp;
         // dd($data); 
-        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc,id_chuyen_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_nhap,anh,sp_noi_bat,xuat_xu, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc,id_chuyen_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_nhap,so_luong_ton,anh,sp_noi_bat,xuat_xu,slug, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     public function addNSX($data){
@@ -91,6 +99,9 @@ class products extends Model
     }
     public function deleteNsx($id) {
         return DB::delete("DELETE FROM nhasanxuat WHERE maNSX = ?", [$id]);
+    }
+    public function deleteDm($id) {
+        return DB::delete("DELETE FROM danhmucsanpham WHERE id_danh_muc = ?", [$id]);
     }
     
     public function updateProduct($data, $id){

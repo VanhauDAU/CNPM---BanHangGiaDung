@@ -11,10 +11,11 @@
             <a href="{{ route('getadd_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
-            <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
-            <a href="{{route('getadd_cm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Chuyên Mục</a>
-            <a href="{{route('getadd_cm_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm CM cho NSX</a>
+            <a href="{{ route('getadd_product') }}" class="btn btn-secondary me-2">Thêm sản phẩm</a>
+            <a href="{{route('getadd_nsx')}}" class="btn btn-secondary me-2">Thêm Nhà Sản Xuất</a>
+            <a href="{{route('getadd_dm')}}" class="btn btn-secondary me-2">Thêm Danh Mục</a>
+            <a href="{{route('getadd_cm')}}" class="btn btn-secondary me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('getadd_cm_nsx')}}" class="btn btn-danger me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     
@@ -42,7 +43,7 @@
                             <option value="">Chọn nhà sản xuất</option>
                             @if(!empty(getAllNSX()))
                                 @foreach(getAllNSX() as $item)
-                                    <option value="{{$item->maNSX}}" {{request()->maNSX = $item->maNSX ? 'selected' : false}}>{{$item->ten_NSX}}</option>
+                                    <option value="{{$item->maNSX}}" {{request()->maNSX == $item->maNSX ? 'selected' : ''}}>{{$item->ten_NSX}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -55,7 +56,7 @@
                         <select name="id_danh_muc" id="id_danh_muc" class="form-control">
                             @if(!empty(getAllDanhMucSp2()))
                                 @foreach(getAllDanhMucSp2() as $item)
-                                    <option value="{{$item->id_danh_muc}}" {{request()->id_danh_muc = $item->id_danh_muc ? 'selected' : false}}>{{$item->ten_danh_muc}}</option>
+                                    <option value="{{$item->id_danh_muc}}" {{request()->id_danh_muc == $item->id_danh_muc ? 'selected' : ''}}>{{$item->ten_danh_muc}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -68,7 +69,7 @@
                         <select name="id_chuyen_muc" id="id_chuyen_muc" class="form-control">
                             @if(!empty(getAllChuyenMucSp()))
                                 @foreach(getAllChuyenMucSp() as $item)
-                                    <option value="{{$item->id_chuyen_muc}}" {{request()->id_chuyen_muc = $item->id_chuyen_muc ? 'selected' : false}}>{{$item->ten_chuyen_muc}}</option>
+                                    <option value="{{$item->id_chuyen_muc}}" {{request()->id_chuyen_muc == $item->id_chuyen_muc ? 'selected' : ''}}>{{$item->ten_chuyen_muc}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -81,6 +82,52 @@
             </form>
         </div>
     </div>
-</div>
 
+    <!-- Bảng hiển thị Nhà Sản Xuất và Chuyên Mục -->
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="text-center">Danh Sách Nhà Sản Xuất và Chuyên Mục</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nhà Sản Xuất</th>
+                        @if(!empty(getAllDanhMucSp2()))
+                            @foreach(getAllDanhMucSp2() as $danhMuc)
+                                <th>{{$danhMuc->ten_danh_muc}}</th>
+                            @endforeach
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(!empty(getAllNSX()))
+                        @foreach(getAllNSX() as $nsx)
+                            <tr>
+                                <td>{{$nsx->ten_NSX}}</td>
+                                @if(!empty(getAllDanhMucSp2()))
+                                    @foreach(getAllDanhMucSp2() as $danhMuc)
+                                        <td>
+                                            @php
+                                                // Kiểm tra xem nhà sản xuất này có chuyên mục nào thuộc danh mục không
+                                                $chuyenMucCount = getChuyenMucCountByNSXAndDanhMuc($nsx->maNSX, $danhMuc->id_danh_muc);
+                                            @endphp
+                                            @if($chuyenMucCount > 0)
+                                                <span class="text-success">{{$chuyenMucCount}} chuyên mục</span>
+                                            @else
+                                                <span class="text-danger">Không có</span>
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                @endif
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="100%" class="text-center">Không có dữ liệu nhà sản xuất</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection

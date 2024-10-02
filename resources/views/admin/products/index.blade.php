@@ -117,9 +117,9 @@
                     </tr>
                     @endforeach
                 @else
-                <tr>
-                    <td colspan="7" class="text-center">KHÔNG CÓ SẢN PHẨM</td>
-                </tr>
+                    <tr>
+                        <td colspan="9" class="text-center">KHÔNG CÓ SẢN PHẨM</td>
+                    </tr>
                 @endif
             </tbody>
         </table>

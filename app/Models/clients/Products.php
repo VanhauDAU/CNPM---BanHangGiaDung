@@ -15,7 +15,7 @@ class Products extends Model
     
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $products = DB::table($this->table)
-        ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*','chitietdanhmucsp.*')
+        ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*','chitietdanhmucsp.*','sanpham.slug')
         ->join('nhasanxuat','sanpham.maNSX','=','nhasanxuat.maNSX')
         ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc')
         ->join('chitietdanhmucsp','sanpham.id_chuyen_muc','=','chitietdanhmucsp.id_chuyen_muc');
@@ -50,7 +50,7 @@ class Products extends Model
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
         INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
-        WHERE maSP = ? 
+        WHERE sanpham.slug = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
     public function getDetail2($id){

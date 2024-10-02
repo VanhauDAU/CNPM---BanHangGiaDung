@@ -22,15 +22,15 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Hình ảnh sản phẩm bên trái -->
-                        <div class="col-md-4 text-center">
+                        <div class="col-md-5 text-center">
                             <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" alt="Product Image"
                                  alt="Hình ảnh sản phẩm" 
-                                 class="img-thumbnail shadow" 
-                                 style="width: 200px; height: 200px;">
+                                 class="img-thumbnail" 
+                                 style="width: auto;">
                         </div>
 
                         <!-- Thông tin sản phẩm bên phải -->
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <h4 class="text-primary"><strong>{{ $productDetail->ten_san_pham }}</strong></h4>
                             <p><strong>Mã sản phẩm: </strong>{{ $productDetail->maSP }}</p>
                             <p><strong>Loại sản phẩm: </strong>{{ $productDetail->ten_danh_muc }}</p>

@@ -76,12 +76,14 @@ class ProductController extends Controller
             $keyword = $request->keyword;
         }
         $filters[] = ['danhmucsanpham.slug', '=', $id];
+        $filters[] = ['sanpham.trang_thai', '=', 1];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
         $productDetail = $this->products->getDetail2($id);
         $danhMucNsx = $this->products->getDetailDM_Nsx($id);
         if(!empty($productDetail)){
             $productDetail = $productDetail[0];
         }
+        // dd($productList);
         return view('clients.products.index', compact('title', 'productList','productDetail','danhMucNsx'));
     }
     public function show2(Request $request, $id, $id2)
@@ -99,6 +101,7 @@ class ProductController extends Controller
 
         $filters[] = ['danhmucsanpham.slug', '=', $id];
         $filters[] = ['chitietdanhmucsp.slug', '=', $id2];
+        $filters[] = ['sanpham.trang_thai', '=', 1];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
         $productDetail = $this->products->getDetail3($id2);
         $danhMucNsx = $this->products->getDetailDM_Nsx($id,$id2);

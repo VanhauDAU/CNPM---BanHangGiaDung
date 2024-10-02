@@ -11,10 +11,11 @@
             <a href="{{ route('getadd_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
-            <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
-            <a href="{{route('getadd_cm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Chuyên Mục</a>
-            <a href="{{route('getadd_cm_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm CM cho NSX</a>
+            <a href="{{ route('getadd_product') }}" class="btn btn-secondary me-2">Thêm sản phẩm</a>
+            <a href="{{route('getadd_nsx')}}"  class="btn btn-secondary me-2">Thêm Nhà Sản Xuất</a>
+            <a href="{{route('getadd_dm')}}"  class="btn btn-danger me-2">Thêm Danh Mục</a>
+            <a href="{{route('getadd_cm')}}"  class="btn btn-secondary me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('getadd_cm_nsx')}}"  class="btn btn-secondary me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     <div class="card shadow-sm col-md-12">
@@ -89,10 +90,10 @@
                             <td>{{ $category->slug }}</td>
                             <td>
                                 {{-- <a href="{{ route('admin.edit_category', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a> --}}
-                                <form action="{{-- route('admin.delete_category', $category->id) --}}" method="POST" style="display:inline;">
+                                <form action="{{ route('delete_dm', $category->id_danh_muc) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">Xóa</button>
+                                    <button type="submit" class="btn btn-danger btn-sm delete-product" data-form="delete-form-{{$key}}">Xóa</button>
                                 </form>
                             </td>
                         </tr>
@@ -126,5 +127,27 @@
     nameInput.addEventListener('input', function() {
         slugInput.value = generateSlug(nameInput.value);
     });
+
+    document.querySelectorAll('.delete-product').forEach(button => {
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const formId = event.target.getAttribute('data-form');
+        const form = document.getElementById(formId);
+        
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Bạn sẽ không thể hoàn tác điều này!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
 </script>
 @endsection

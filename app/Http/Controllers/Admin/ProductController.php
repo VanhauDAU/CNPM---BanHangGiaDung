@@ -100,9 +100,11 @@ class ProductController extends Controller
             $request->trong_luong,
             $request->mo_ta,
             $request->so_luong_nhap,
+            $request->so_luong_ton,
             $fileName,
             $request->sp_noi_bat,
             $request->xuat_xu,
+            $request->slug,
 
         ];  
         // dd($dataInsert);
@@ -203,7 +205,7 @@ class ProductController extends Controller
             $request->slug,
         ];
         $this->products->addCM($dataInsert);
-        return redirect()->route('getadd_dm')->with('msg','Thêm mới danh mục thành công');
+        return redirect()->route('getadd_cm')->with('msg','Thêm mới danh mục thành công');
     }
     public function withValidator($validator){
         $validator->after(function ($validator) {
@@ -304,7 +306,30 @@ class ProductController extends Controller
     
         return redirect()->route('getadd_nsx');
     }
+    public function get_delete_dm($id) {
+        if (!empty($id)) {
+            $dmDetail = $this->products->getDetailDm($id);
     
+            if (!empty($dmDetail[0])) {
+                try {
+                    $deleteDm = $this->products->deleteDm($id);
+                    if ($deleteDm) {
+                        toastr()->success('Thành công', 'Xóa danh mục thành công');
+                    } else {
+                        toastr()->warning('Thất bại', 'Bạn không thể xóa Danh mục lúc này, vui lòng thử lại sau!');
+                    }
+                } catch (\Exception $e) {
+                    toastr()->warning('Thất bại', 'Bạn không thể xóa danh mục vì có liên kết với các mục khác.');
+                }
+            } else {
+                toastr()->warning('Thất bại', 'Danh mục không tồn tại!');
+            }
+        } else {
+            toastr()->warning('Cảnh báo', 'Liên kết không tồn tại');
+        }
+    
+        return redirect()->route('getadd_dm');
+    }
     public function get_delete_product($id){
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);

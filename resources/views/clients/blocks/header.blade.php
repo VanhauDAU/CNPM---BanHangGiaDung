@@ -12,7 +12,7 @@
               </a>
               <form id="frmsearch" class="text-center" action="" title="Tìm kiếm sản phẩm" method="get">
                   <i class="fa-solid fa-magnifying-glass"></i>
-                  <input type="text" name="keyword" tabindex="-1" id="keyword" class="txtQuery search-txt txtsearch has-mic ac_input" autocomplete="off" size="40" title="Nhập từ khóa liên quan đến sản phẩm" placeholder="Bạn đang tìm kiếm sản phẩm nào?" required="">
+                  <input type="text" name="keyword" tabindex="-1" id="keyword" class="txtQuery search-txt txtsearch has-mic ac_input" autocomplete="off" size="40" title="Nhập từ khóa liên quan đến sản phẩm" placeholder="Tìm kiếm với {{CountSanPham()}} sản phẩm tại cửa hàng" required="">
                   <a class="btnClear" style="display: none;" id="btnClear"></a>
                   <div class="iconSearch"></div>
                   <div class="btnSearch" id="FindSubmit">

@@ -6,7 +6,8 @@
     <ul class="list-group">
         <li class="list-group-item">
             <a href="{{ route('home.products.index') }}" class="category-link d-flex">
-                <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>Tất cả danh mục (10)
+                <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>
+                    Tất cả danh mục ({{CountDanhMuc()}}) 
             </a>
         </li>
         @if(!empty(getAllDanhMucSp()))
@@ -18,7 +19,7 @@
                     @else
                         <img src="{{$item->icon}}" alt="" style="width: 22px; margin-right: 10px">
                     @endif
-                    {{$item->ten_danh_muc}}
+                    {{$item->ten_danh_muc}} <span style="margin-left:5px; font-size: 10px; margin-top: 9px; font-weight: bold"> ({{getDanhMucSP2($item->id_danh_muc)}} chuyên mục)</span>
                     <i class="fa-solid fa-angles-right icon-submenu"></i>
                 </a>
             

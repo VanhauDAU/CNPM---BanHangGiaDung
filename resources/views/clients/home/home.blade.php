@@ -49,8 +49,8 @@
                     <div class="row my-4 justify-content-center p-3 rounded" style="background: #F29F05">
                         @if(!empty(sanphamnoibat()))
                             @foreach (sanphamnoibat() as $product)
-                                <div class="col-6 col-md-4 col-lg-2 mb-3 gap-1"> <!-- Thêm khoảng cách dưới cho mỗi sản phẩm -->
-                                    <a href="{{route('home.chi_tiet_sp',$product->maSP)}}" class="product-link text-decoration-none">
+                                <div class="col-6 col-md-4 col-lg-2 mb-3 gap-1">
+                                    <a href="{{route('home.chi_tiet_sp',$product->slug)}}" class="product-link text-decoration-none">
                                         <div class="product-item shadow-sm p-3 d-flex flex-column" 
                                              style="border-radius: 10px; transition: transform 0.3s ease; background-color: #f8f9fa; 
                                              height: 100%; position: relative; overflow: hidden;">

@@ -248,7 +248,7 @@
 
                     chuyenMucs.forEach(chuyenMuc => {
                         const option = document.createElement('option');
-                        option.value = chuyenMuc.id_danh_muc; 
+                        option.value = chuyenMuc.id_chuyen_muc; 
                         option.textContent = chuyenMuc.ten_chuyen_muc; // Thay thế bằng tên chuyên mục
                         chuyenMucSelect.appendChild(option);
                     });

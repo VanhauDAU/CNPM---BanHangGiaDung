@@ -50,6 +50,7 @@ class Groups extends Model
     public function getSanPhamNoiBat(){
         $groups = DB::table($this->table4)
         ->where('sp_noi_bat',1)
+        ->where('trang_thai',1)
         ->orderBy('created_at', 'DESC')
         ->limit(12)
         ->get();
@@ -66,12 +67,20 @@ class Groups extends Model
     }
     public function getDanhMuc($id) {
         $groups = DB::table($this->table7)
+            ->distinct()
             ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table7 . '.id_danh_muc')
             ->where($this->table7. '.maNSX', $id)
             ->get(['danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc']);
+        // dd($groups);
         return $groups;
     }
-    
+    public function getDanhMuc2($id) {
+        $groups = DB::table($this->table7)
+            ->join($this->table2, $this->table2 . '.id_danh_muc', '=', $this->table7 . '.id_danh_muc')
+            ->where($this->table7. '.maNSX', $id)
+            ->count();
+        return $groups;
+    }
     public function getChuyenMuc1($id) {
         $groups = DB::table($this->table5)
             ->select('chitietdanhmucsp.*', 'danhmucsanpham.*', 'chitietdanhmucsp.slug')
@@ -111,6 +120,24 @@ class Groups extends Model
             ->distinct('user_id')
             ->get();
     
+        return $groups;
+    }
+    public function getChuyenMucCountByNSXAndDanhMuc($maNSX, $idDanhMuc){
+        $groups= DB::table('nsx_danhmuc')
+        ->join('chitietdanhmucsp', 'chitietdanhmucsp.id_chuyen_muc','=','nsx_danhmuc.id_chuyen_muc')
+        ->where('maNSX', $maNSX)
+        ->where('nsx_danhmuc.id_danh_muc', $idDanhMuc)
+        ->count();
+        return $groups;
+    }
+    public function CountDanhMuc(){
+        $groups = DB::table('danhmucsanpham')
+        ->count();
+        return $groups;
+    }
+    public function CountSanPham(){
+        $groups = DB::table('sanpham')
+        ->count();
         return $groups;
     }
     

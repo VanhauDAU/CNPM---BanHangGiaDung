@@ -62,7 +62,7 @@
                     @if(!empty($productList) && count($productList) > 0)
                     @foreach ($productList as $product)
                         <div class="col-6 col-md-4 col-lg-3" style="padding:0px 2px 0px ">
-                            <a href="{{route('home.chi_tiet_sp',$product->maSP)}}">
+                            <a href="{{route('home.chi_tiet_sp',$product->slug)}}">
                                 <div class="product-item p-2 d-flex flex-column" style="border-radius: 10px; background-color: #fff; transition: transform 0.3s ease;">
                                     <div class="img-container position-relative d-flex justify-content-center align-items-center" style="min-height: 200px;width: auto;overflow: hidden; border:1px solid #ccc;border-radius:20px">
                                         <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" style="object-fit: cover;padding: 8px;border-radius: 10px; width:auto">

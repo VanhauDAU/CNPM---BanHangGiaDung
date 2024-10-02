@@ -63,6 +63,7 @@ Route::prefix('admin')->group(function () {
                 Route::delete('delete-nsx/{id}', [ProductController::class, 'get_delete_NSX'])->name('delete_nsx');
                 Route::get('danh-muc', [ProductController::class, 'get_add_DM'])->name('getadd_dm');
                 Route::post('danh-muc', [ProductController::class, 'post_add_DM'])->name('admin.add_dm');
+                Route::delete('delete-dm/{id}', [ProductController::class, 'get_delete_dm'])->name('delete_dm');
                 Route::get('chuyen-muc', [ProductController::class, 'get_add_CM'])->name('getadd_cm');
                 Route::post('chuyen-muc', [ProductController::class, 'post_add_CM'])->name('admin.add_cm');
                 Route::get('chuyen-muc-nsx', [ProductController::class, 'get_add_CM_NSX'])->name('getadd_cm_nsx');

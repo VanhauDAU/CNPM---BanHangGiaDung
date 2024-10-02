@@ -21,7 +21,7 @@ class HomeController extends Controller
         $filters =[];
         $keyword = null;
         $products = $this->products->newQuery();
-        
+        $filters[] = ['sanpham.trang_thai', '=', 1];
         $posts = adminPost::orderBy('created_at', 'desc')->where('trang_thai',1)->take(6)->get();
         //end xử lý
         $sortType = '';

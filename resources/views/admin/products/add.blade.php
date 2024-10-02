@@ -11,10 +11,11 @@
             <a href="{{ route('admin.manage_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
-            <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
-            <a href="{{route('getadd_cm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Chuyên Mục</a>
-            <a href="{{route('getadd_cm_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm CM cho NSX</a>
+            <a href="{{ route('getadd_product') }}" class="btn btn-danger me-2">Thêm sản phẩm</a>
+            <a href="{{route('getadd_nsx')}}"  class="btn btn-secondary me-2">Thêm Nhà Sản Xuất</a>
+            <a href="{{route('getadd_dm')}}"  class="btn btn-secondary me-2">Thêm Danh Mục</a>
+            <a href="{{route('getadd_cm')}}"  class="btn btn-secondary me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('getadd_cm_nsx')}}"  class="btn btn-secondary me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     
@@ -108,12 +109,16 @@
                             @error('ten_san_pham')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
-                            
+                        </div>
+                        <div class="mb-3">
+                            <label for="slug" class="form-label"></label>
+                            <input type="text" name="slug" id="slug" class="form-control" placeholder="Đường dẫn..." readonly style="background-color: #ccc">
                         </div>
 
                         <div class="mb-3">
                             <label for="so_luong_nhap" class="form-label">Số lượng nhập:</label>
                             <input type="number" name="so_luong_nhap" id="so_luong_nhap" class="form-control" value="{{ old('so_luong_nhap') }}">
+                            <input type="hidden" value="" id="so_luong_ton" name="so_luong_ton">
                             @error('so_luong_nhap')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -176,6 +181,12 @@
 @endsection
 @section('js')
 <script>
+    // Lấy các input theo ID
+    const numberInput = document.getElementById('so_luong_nhap');
+    const textInput = document.getElementById('so_luong_ton');
+    numberInput.addEventListener('input', function() {
+        textInput.value = numberInput.value;
+    });
     async function fetchCountries() {
         try {
             const response = await fetch('https://restcountries.com/v3.1/all');
@@ -195,7 +206,26 @@
 
     // Gọi hàm để thực hiện
     fetchCountries();
-
+    function removeVietnameseTones(str) {
+        return str
+            .normalize('NFD') 
+            .replace(/[\u0300-\u036f]/g, '') 
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D'); 
+    }
+    function generateSlug(value) {
+        let slug = removeVietnameseTones(value); 
+        return slug
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    }
+    const nameInput = document.getElementById('ten_san_pham');
+    const slugInput = document.getElementById('slug');
+    nameInput.addEventListener('input', function() {
+        slugInput.value = generateSlug(nameInput.value);
+    });
 </script>
 
 @endsection

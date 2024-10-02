@@ -11,10 +11,11 @@
             <a href="{{ route('getadd_product') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <a href="{{route('getadd_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
-            <a href="{{route('getadd_dm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Danh Mục</a>
-            <a href="{{route('getadd_cm')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm Chuyên Mục</a>
-            <a href="{{route('getadd_cm_nsx')}}" id="btn-add-nsx" class="btn btn-danger me-2">Thêm CM cho NSX</a>
+            <a href="{{ route('getadd_product') }}" class="btn btn-secondary me-2">Thêm sản phẩm</a>
+            <a href="{{route('getadd_nsx')}}"  class="btn btn-danger me-2">Thêm Nhà Sản Xuất</a>
+            <a href="{{route('getadd_dm')}}"  class="btn btn-secondary me-2">Thêm Danh Mục</a>
+            <a href="{{route('getadd_cm')}}"  class="btn btn-secondary me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('getadd_cm_nsx')}}"  class="btn btn-secondary me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     
@@ -103,12 +104,13 @@
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->dia_chi }}</td>
                             <td>
-                                <form action="{{ route('delete_nsx', $item->maNSX) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
+                                <form action="{{ route('delete_nsx', $item->maNSX) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm delete-product" data-form="delete-form-{{$key}}">Xóa</button>
                                 </form>
                             </td>
+                            
                         </tr>
                     @endforeach
                 </tbody>
