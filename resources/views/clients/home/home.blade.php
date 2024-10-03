@@ -93,6 +93,62 @@
                     </div>
                 </div>
             </div>
+            <section class="product_poli_wrap mt-1 mb-3">
+                <div class="container">
+                    <div class="product_poli m-0">
+                        <div class="row">
+                            <div class="col-6 col-lg-3 mb-3 mb-lg-0">
+                                <div class="item d-flex align-items-center p-2 p-xl-3 bg-white rounded-10 modal-open h-100 ">
+                                    <div class="mr-2 mr-sm-3 w-32">
+                                        <picture class="position-relative w-100 m-0 ratio1by1 d-block aspect">
+                                            <img src="//bizweb.dktcdn.net/thumb/icon/100/489/006/themes/949658/assets/img_poli_1.png?1727755960909" alt="" decoding="async">
+                                        </picture>
+                                    </div>
+                                    <div class="media-body"> 
+                                        <b>FREESHIP </b>cho đơn hàng từ 1.000.000đ
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 mb-3 mb-lg-0">
+                                <div class="item d-flex align-items-center p-xl-3 bg-white modal-open h-100">
+                                    <div class="mr-2 mr-sm-3 w-32">
+                                        <picture class="position-relative w-100 m-0 ratio1by1 d-block aspect">
+                                            <img src="//bizweb.dktcdn.net/thumb/icon/100/489/006/themes/949658/assets/img_poli_2.png?1727755960909" alt="" decoding="async">
+                                        </picture>
+                                    </div>
+                                    <div class="media-body"> 
+                                        Hỗ trợ giao 4h nội thành Đà Nẵng theo nhu cầu
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 ">
+                                <div class="item d-flex align-items-center p-2 p-xl-3 bg-white rounded-10 modal-open h-100 ">
+                                    <div class="mr-2 mr-sm-3 w-32">
+                                        <picture class="position-relative w-100 m-0 ratio1by1 d-block aspect">
+                                            <img src="//bizweb.dktcdn.net/thumb/icon/100/489/006/themes/949658/assets/img_poli_3.png?1727755960909" alt="" decoding="async">
+                                        </picture>
+                                    </div>
+                                    <div class="media-body"> 
+                                        Đổi trả trong 30 ngày
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 ">
+                                <div class="item d-flex align-items-center p-2 p-xl-3 bg-white rounded-10 modal-open h-100 ">
+                                    <div class="mr-2 mr-sm-3 w-32">
+                                        <picture class="position-relative w-100 m-0 ratio1by1 d-block aspect">
+                                            <img src="//bizweb.dktcdn.net/thumb/icon/100/489/006/themes/949658/assets/img_poli_4.png?1727755960909" alt="" decoding="async">
+                                        </picture>
+                                    </div>
+                                    <div class="media-body"> 
+                                        NHẬP MÃ 🏷️<b>VANHAUDAU</b> Giảm 10% cho đơn hàng ≥ 800,000₫ 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
         </section>
         <section class="bg-light py-5">
@@ -116,7 +172,6 @@
               </div>
           </div>
         </section>
-    </div>
     <!-- Modal Structure -->
     <div id="popupModal" class="modal">
         <div class="modal-content">

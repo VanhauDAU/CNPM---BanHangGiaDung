@@ -16,7 +16,7 @@ class products extends Model
     }
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $products = DB::table($this->table)
-        ->select('sanpham.*','danhmucsanpham.ten_danh_muc','nhasanxuat.*')
+        ->select('sanpham.*','danhmucsanpham.ten_danh_muc','nhasanxuat.*','sanpham.slug')
         ->join('danhmucsanpham','sanpham.id_danh_muc','=','danhmucsanpham.id_danh_muc')
         ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX');
         $orderBy = 'sanpham.created_at';

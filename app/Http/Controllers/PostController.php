@@ -18,15 +18,25 @@ class PostController extends Controller
         
     }
     public function post(){
-        $PostList = DB::table('baiviet')
+        $Post = DB::table('baiviet')
+        ->orderBy('created_at','DESC')
         ->get();
-        return view('clients.post.index',compact('PostList'));
+        // dd($Post);
+        return view('clients.post.index',compact('Post'));
     }
     public function get_detail_post($id){
         $title = $id;
-        $Post =DB::table('baiviet')
-        ->where('baiviet.slug','=',$id)
-        ->get();
+        if(!empty($id)){
+            $Post =DB::table('baiviet')
+            ->select('baiviet.*','taikhoan.ho_ten')
+            ->join('taikhoan','taikhoan.id','=','baiviet.user_id')
+            ->where('baiviet.slug','=',$id)
+            ->get();
+            if(!empty($Post)){
+                $Post = $Post[0];
+            }
+        }
+        // dd($Post);
         return view('clients.post.detailPost', compact('Post','title'));
     }
 }

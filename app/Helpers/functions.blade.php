@@ -9,6 +9,10 @@ function getAllUserPost(){
     $group = new Groups;
     return $group->getAllUserPost();
 }
+function getAllProductCM($id){
+    $group = new Groups;
+    return $group->getAllProductCM($id);
+}
 
 function getAllNSX(){
     $group = new Groups;

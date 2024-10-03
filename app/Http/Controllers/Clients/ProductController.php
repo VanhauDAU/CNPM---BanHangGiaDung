@@ -80,9 +80,11 @@ class ProductController extends Controller
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
         $productDetail = $this->products->getDetail2($id);
         $danhMucNsx = $this->products->getDetailDM_Nsx($id);
+        
         if(!empty($productDetail)){
             $productDetail = $productDetail[0];
         }
+        // dd($productDetail);
         // dd($productList);
         return view('clients.products.index', compact('title', 'productList','productDetail','danhMucNsx'));
     }
@@ -109,6 +111,7 @@ class ProductController extends Controller
         if(!empty($productDetail)){
             $productDetail = $productDetail[0];
         }
+        // dd($productDetail);
         return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword','danhMucNsx'));
     }
 
@@ -124,6 +127,7 @@ class ProductController extends Controller
             return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         $title=$productDetail->ten_san_pham;
+        // dd($productDetail);
         return view('clients.products.detail_product', compact('title','productDetail'));
     }
 

@@ -70,11 +70,7 @@
                             {{-- {!! \Illuminate\Support\Str::limit($item->noi_dung, 50) !!} --}}
                         <td>{{$item->ho_ten}}</td>
                         <td>
-                            @if(empty($item->created_at))
-                                <i class="fa-solid fa-xmark"></i>
-                            @else
                             {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}
-                            @endif
                         </td>
                         <td>
                             @if(empty($item->updated_at))

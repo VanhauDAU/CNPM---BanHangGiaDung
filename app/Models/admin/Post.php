@@ -25,7 +25,7 @@ class Post extends Model
     }
     public function getAllPosts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $posts = DB::table($this->table)
-        ->select('baiviet.*','taikhoan.*')
+        ->select('baiviet.*','taikhoan.ho_ten')
         ->join('taikhoan','taikhoan.id','=','baiviet.user_id');
         $orderBy = 'baiviet.created_at';
         $orderType='desc';
@@ -54,7 +54,10 @@ class Post extends Model
         return $posts;
     } 
     public function updatePost($data, $id){
+        $timestamp = now();
+        $data[] = $timestamp;
         $data[] = $id;
-        return DB::update('UPDATE '.$this->table.' SET tieu_de = ?, anh_bia = ?, trang_thai = ?, noi_dung = ? WHERE id_bai_viet = ?', $data);
+        return DB::update('UPDATE baiviet SET tieu_de = ?, anh_bia = ?, trang_thai = ?, noi_dung = ?,slug =?,updated_at = ? WHERE id_bai_viet = ?', $data);
     }
+    
 }

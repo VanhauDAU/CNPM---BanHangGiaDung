@@ -53,6 +53,7 @@
         body{
          background: url('/assets/general/img/banner_background2.png');
           position: relative;
+          background-color: #F3F3F3;
         }
         .navbar .logo .bee{
             position: absolute;
@@ -60,12 +61,95 @@
             width: 130px;
             left: 80px;
         }
+        .floating-buttons {
+            position: fixed;
+            left: -5px;
+            bottom: 50%; 
+            transform: translateY(50%);
+            z-index: 1000; 
+            padding: 5px;
+            background-color: #CE1219;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .floating-buttons {
+            position: fixed;
+            left: 0;
+            bottom: 50%; 
+            transform: translateY(50%);
+            z-index: 1000; 
+            padding: 5px;
+            background-color: #CE1219;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 50%;
+            text-align: center;
+            transition: transform 0.3s, background-color 0.3s; /* Hiệu ứng chuyển động */
+        }
+
+        .button:hover {
+            transform: scale(1.1); 
+        }
+
+        .button i {
+            font-size: 24px; 
+            color: white;
+            transition: color 0.3s, transform 0.3s; 
+        }
+
+        .button:hover i {
+            color: #007bff;
+            transform: rotate(10deg); 
+        }
+        @keyframes swing {
+            0% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(15deg);
+            }
+            50% {
+                transform: rotate(-15deg);
+            }
+            75% {
+                transform: rotate(15deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .swing {
+            animation: swing 1s infinite; /* Thay đổi thời gian nếu cần */
+        }
+
+
         </style>
     @yield('stylesheet')
 </head>
 
 <body>
   @include('clients.blocks.header')
+  <div class="floating-buttons">
+    <a href="tel:123456789" class="button phone-button" title="Gọi điện">
+        <i class="fas fa-phone-alt"></i>
+    </a>
+    <a href="{{route('home.bai-viet')}}" class="button messenger-button" title="Tin Tức">
+        <i class="fa-solid fa-newspaper"></i>
+    </a>
+    <a href="https://zalo.me/your_zalo_number" class="button zalo-button" title="Khuyến Mãi">
+        <i class="fa-solid fa-ticket"></i>
+    </a>
+</div>
+
+
     <div class="social-info">
         <div class="social facebook">
             <a href=""><i class="fa-brands fa-facebook"></i></a>
@@ -88,6 +172,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        // Lấy tất cả các biểu tượng trong các nút
+        const icons = document.querySelectorAll('.floating-buttons .button i');
+
+        // Thêm lớp swing vào mỗi biểu tượng
+        icons.forEach(icon => {
+            icon.classList.add('swing');
+        });
+
+
       function setActive(element, value) {
           var links = document.querySelectorAll('.quick_product a');
           links.forEach(function(link) {

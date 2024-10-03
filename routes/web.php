@@ -21,6 +21,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
 use App\Http\Controllers\Clients\ContactController;
+use App\Http\Controllers\Clients\UserController as UserControllerClients;
 //product user
 use App\Http\Controllers\Clients\ProductController as ProductControllerUser;
 /*
@@ -109,6 +110,15 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');
     Route::get('bai-viet',[PostController::class,'post'])->name('bai-viet');
     Route::get('bai-viet/{id}',[PostController::class,'get_detail_post'])->name('get_bai_viet');
+    Route::prefix('thong-tin-ca-nhan')->group(function(){
+        Route::get('',[UserControllerClients::class,'get_info_user'])->name('info-user');
+        Route::get('/edit', [UserControllerClients::class,'edit'])->name('info-user.edit');
+        Route::post('/edit', [UserControllerClients::class,'update'])->name('info-user.update');
+
+        Route::get('dia-chi',[UserControllerClients::class,'get_info_address'])->name('info-user-address');
+
+    });
+    
 });
 Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
 Route::get('/getDanhMuc/{id}', [ProductController::class, 'getDanhMuc'])->name('getDanhMuc');

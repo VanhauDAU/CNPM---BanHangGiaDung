@@ -87,7 +87,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label for="don_gia" class="form-label">Giá (VNĐ):</label>
+                                <label for="don_gia" class="form-label">Giá bán(VNĐ):</label>
                                 <input type="number" name="don_gia" id="don_gia" class="form-control" value="{{ old('don_gia') }}">
                                 @error('don_gia')
                                     <small class="text-danger">{{ $message }}</small>

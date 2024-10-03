@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class PostController extends Controller
 {
     //
@@ -32,10 +33,6 @@ class PostController extends Controller
         if(!empty($request->id_danh_muc)){
             $nhom_SP = $request->id_danh_muc;
             $filters[] = ['sanpham.id_danh_muc', '=',$nhom_SP];
-        }
-        if(!empty($request->id_chuyen_muc)){
-            $nhom_SP = $request->id_chuyen_muc;
-            $filters[] = ['sanpham.id_chuyen_muc', '=',$nhom_SP];
         }
         if(!empty($request->keyword)){
             $keyword = $request->keyword;
@@ -68,10 +65,14 @@ class PostController extends Controller
     public function postAdd(Request $request){
         $request->validate([
             'tieu_de'=>'required',
-            'noi_dung'=>'required'
+            'anh_bia'=>'required',
+            'noi_dung'=>'required',
+            'slug'=>'unique:baiviet,slug'
         ],[
             'tieu_de.required'=>'Tiêu đề không được để trống',
+            'anh_bia.required'=>'Ảnh bìa không được để trống',
             'noi_dung.required'=>'Nội dung không được để trống',
+            'slug.unique'=>'Đường dẫn đã tồn tại, vui lòng đổi tiêu đề'
         ]);
         if ($request->has('anh_bia')) {
             $file = $request->anh_bia;  
@@ -85,10 +86,11 @@ class PostController extends Controller
         $post->noi_dung = $request->noi_dung;
         $post->anh_bia = $fileName;
         $post->created_at = now();
+        $post->updated_at = null;
         $post->user_id = Auth::user()->id;
-        $post->trang_thai = $request->trang_thai;
         $post->slug = $request->slug;
         $post->save();
+        // dd($post);
         return redirect()->route('admin.manage_post')->with('msg', 'Thêm mới bài viết thành công');
     }
     public function edit($post = 0){
@@ -124,6 +126,16 @@ class PostController extends Controller
         } else {
             $fileName = $request->hinh_anh_cu;
         }
+        // Kiểm tra trùng slug
+        $existingPost = DB::table('baiviet')
+            ->where('slug', $request->slug)
+            ->where('id_bai_viet', '!=', $id)
+            ->first();
+
+        if ($existingPost) {
+            toastr()->warning('Thất bại','Đường dẫn đã tồn tại!');
+            return back();
+        }
         $request->validate([
             'tieu_de' => 'required',
             'trang_thai' => 'required',
@@ -131,14 +143,16 @@ class PostController extends Controller
         ],[
             'tieu_de.required' => 'Tiêu đề bắt buộc phải nhập',
             'trang_thai.required' => 'Ảnh bắt buộc phải có',
-            'noi_dung.required' => 'Nội dung bắt buộc phải nhập',
+            'noi_dung.required' => 'Nội dung bắt buộc phải nhập'
         ]);
         $dataUpdate = [
             $request->tieu_de,
             $fileName,
             $request->trang_thai,
             $request->noi_dung,
+            $request->slug,
         ];
+        // dd($dataUpdate);
         $this->post->updatePost($dataUpdate, $id);
         return redirect()->route('getedit_post',['id'=>$id])->with('msg','Cập nhật bài viết thành công!');
     }

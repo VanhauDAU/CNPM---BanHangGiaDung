@@ -80,13 +80,16 @@
             <tbody class="tbody-listsp">
                 @if(!empty($ProductList))
                     @foreach ($ProductList as $key => $item)
+                    {{-- {{dd($ProductList)}} --}}
                     <tr>
                         <td>{{$key + 1}}</td>
                         <td>
                             <img src="{{asset('storage/products/img/'.$item->anh)}}" alt="" style="width: 50px">
                         </td>   
                         <td>
-                            <a href="{{route('home.chi_tiet_sp',$item->maSP)}}"  class="text-sp-hover">{{$item->ten_san_pham}}</a>
+                            <a href="{{route('home.chi_tiet_sp',$item->slug)}}"  class="text-sp-hover">
+                               {{ \Illuminate\Support\Str::limit($item->ten_san_pham,40)}}
+                            </a>
                         </td>
                         <td>{{$item->ten_NSX}}</td>
                         <td>{{$item->ten_danh_muc}}</td>

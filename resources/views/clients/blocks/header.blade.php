@@ -93,7 +93,7 @@
                         @else
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('register') }}">Tra cứu đơn hàng</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('register') }}">Lịch sử mua hàng</a></li>
-                            <li><a class="dropdown-item user-dropdown-item" href="{{route('admin.dashboard')}}">Thông tin tài khoản</a></li>
+                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.info-user')}}">Thông tin tài khoản</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

@@ -58,7 +58,7 @@ class Products extends Model
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
         INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
-        WHERE chitietdanhmucsp.id_chuyen_muc = ? 
+        WHERE chitietdanhmucsp.slug = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
     public function getAllNSX(){
@@ -70,7 +70,7 @@ class Products extends Model
         return DB::select('SELECT DISTINCT nhasanxuat.maNSX,nhasanxuat.ten_NSX,danhmucsanpham.id_danh_muc,danhmucsanpham.ten_danh_muc FROM nsx_danhmuc
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = nsx_danhmuc.id_danh_muc
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = nsx_danhmuc.maNSX
-        WHERE nsx_danhmuc.id_danh_muc =?',[$id]);
+        WHERE danhmucsanpham.slug =?',[$id]);
     }
     public function getDetailDM_CM_Nsx($id,$id2){
         return DB::select('SELECT * FROM nsx_danhmuc
@@ -84,7 +84,7 @@ class Products extends Model
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
         INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
-        WHERE chitietdanhmucsp.id_chuyen_muc = ? 
+        WHERE chitietdanhmucsp.slug = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
     }
     // tính số sao của sản phẩm

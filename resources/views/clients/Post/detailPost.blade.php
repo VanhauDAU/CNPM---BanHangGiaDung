@@ -1,37 +1,32 @@
 @extends('layouts.client')
 @section('title')
-    {{-- {{$title}} --}}
+    {{ $Post->tieu_de }}
 @endsection
+
 @section('content-clients')
     <div class="main-posts">
-        <div class="container mt-1" style="padding: 70px 0px 0px;"> 
-            <div class="row">
-                <div class="title-header text-center">
-                    <h1 class="running-text fs-2">DANH SÁCH BÀI VIẾT</h1>
-                </div>
-                @if(!empty($Post))
-                    @foreach($Post as $item)
-                        <div class="col-md-3">
-                            <a href="#">
-                                <div class="post-item border rounded p-3"style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;">
-                                    <div class="img-post text-center ">
-                                        <img src="https://cdnphoto.dantri.com.vn/FFb5drFbUNYVFWKGcnNG4Hz2NtA=/thumb_w/1920/2024/10/02/z58688653718681b7356f12f3b8301f20a778cfe40adc3-1727832481422.jpg" alt=""
-                                    style="max-width: 260px" class="rounded">
-                                    </div>
-                                    <div class="title-post">
-                                        <h1 style="font-size: 20px" class="mt-2">Tiêu đề bài viết</h1>
-                                    </div>
-                                    <div class="content-post">
-                                        <h3 style="font-size: 14px">Nội dung bài viết...</h3>
-                                    </div>
-                                    <div class="time-created">
-                                        <h6 style="font-size: 13px">Thời gian đăng: <mark>02/10/2024</mark></h6>
-                                    </div>
-                                </div>
-                            </a>
+        <div class="container mt-1" style="padding: 70px 0px 0px;">
+            <a href="{{route('home.bai-viet')}}" class="btn btn-success">Quay Lại</a>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="card-header">
+                            <h2>{{ $Post->tieu_de }}</h2> 
                         </div>
-                    @endforeach
-                @endif
+                        <div class="card-body">
+                            <p><strong>Người đăng:</strong> {{ $Post->ho_ten }}</p>
+                            <div class="time-post d-flex gap-4">
+                                <p style="font-size:15px; color:green"><strong>Ngày đăng:</strong> {{ \Carbon\Carbon::parse($Post->created_at)->format('d/m/Y H:i:s') }}</p> 
+                                @if($Post->updated_at == null)
+                                    
+                                @else
+                                    <p style="font-size:15px ;color: green"><strong>Ngày chỉnh sửa:</strong> {{ \Carbon\Carbon::parse($Post->updated_at)->format('d/m/Y H:i:s') }}</p></div> 
+                                @endif
+                            </div>
+                             <p>{!! $Post->noi_dung !!}</p> 
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,8 +34,25 @@
 
 @section('stylesheet')
     <style>
-        
-        
+        .card {
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1rem;
+        }
     </style>
-
 @endsection

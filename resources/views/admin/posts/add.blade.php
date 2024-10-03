@@ -33,7 +33,7 @@
                 <div class="row mb-3">
                     <div class="col-12">
                         <label for="tieu_de" class="form-label col-md-12">Tiêu đề:</label>
-                        <input type="text" class="form-control" name="tieu_de" id="tieu_de" placeholder="Tiêu đề....">
+                        <input type="text" class="form-control" name="tieu_de" id="tieu_de" placeholder="Tiêu đề...." value="{{old('tieu_de')}}">
                         @error('tieu_de')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -42,7 +42,7 @@
                 <div class="row mb-3">
                     <div class="col-12">
                         <label for="slug" class="form-label col-md-12">Đường dẫn:</label>
-                        <input type="text" class="form-control" name="slug" id="slug" readonly style="background-color:#ccc">
+                        <input type="text" class="form-control" name="slug" id="slug" readonly style="background-color:#ccc" value="{{olde('slug')}}">
                         @error('slug')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -53,19 +53,6 @@
                         <label for="anh_bia" class="form-label col-md-12">Ảnh bìa:</label>
                         <input type="file" class="form-control" name="anh_bia" id="anh_bia">
                         @error('anh_bia')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <label for="trang_thai" class="form-label col-md-12">Trạng thái bài viết:</label>
-                        <select name="trang_thai" id="trang_thai" class="form-control">
-                            <option value="0">Ẩn</option>
-                            <option value="1">Hiện</option>
-                        </select>
-
-                        @error('trang_thai')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

@@ -19,7 +19,7 @@
                     @else
                         <img src="{{$item->icon}}" alt="" style="width: 22px; margin-right: 10px">
                     @endif
-                    {{$item->ten_danh_muc}} <span style="margin-left:5px; font-size: 10px; margin-top: 9px; font-weight: bold"> ({{getDanhMucSP2($item->id_danh_muc)}} chuyên mục)</span>
+                    {{$item->ten_danh_muc}}
                     <i class="fa-solid fa-angles-right icon-submenu"></i>
                 </a>
             
@@ -33,7 +33,8 @@
                         @if(!empty($itemCategories) && count($itemCategories) > 0)
                             <div class="sub-category-container">
                                 @foreach($itemCategories as $category)
-                                    <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->slug, $category->slug]) }}">{{ $category->ten_chuyen_muc }}</a></li>
+                               
+                                    <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->slug, $category->slug]) }}">{{ $category->ten_chuyen_muc }} ({{getAllProductCM($category->id_chuyen_muc)}} sp)</a></li>
                                 @endforeach
                             </div>
                         @else

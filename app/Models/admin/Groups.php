@@ -40,7 +40,13 @@ class Groups extends Model
         ->get();
         return $groups;
     }
-    
+    public function getAllProductCM($id){
+        $groups = DB::table('sanpham')
+        ->where('id_chuyen_muc','=',$id)
+        ->where('trang_thai',1)
+        ->count();
+        return $groups;
+    }
     public function getAllChuyenMucSp(){
         $groups = DB::table($this->table5)
         ->orderBy('id_chuyen_muc','ASC')

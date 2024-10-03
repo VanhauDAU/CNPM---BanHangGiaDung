@@ -9,21 +9,9 @@
         <div class="container mt-1" style="padding: 56px 0px 0px;">  
         @endif
         <div class="main-products">
-        {{-- đường dẫn --}}
-        @if(!empty($productDetail->id_danh_muc))
-        <div class="breadcrumb d-flex align-items-center">
-            <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
-            <span class="separator">></span>
-            <a href="{{route('home.products.sanpham_id', $productDetail->id_danh_muc)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
-            
-            @if(!empty($productDetail->id_chuyen_muc) && !request()->routeIs('home.products.sanpham_id'))
-                <span class="separator">></span>
-                <a href="{{route('home.products.sanpham_id_id', [$productDetail->id_danh_muc, $productDetail->id_chuyen_muc])}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
-            @endif
-        </div>
-        @endif
+        
 
-        <div class="row">
+        <div class="row pt-4">
             @include('clients.blocks.categories')
             <!-- Danh sách sản phẩm -->
             <div class="col-md-9 product-list">

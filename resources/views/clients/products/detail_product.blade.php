@@ -8,11 +8,11 @@
     <div class="container mt-2" style="padding: 40px 0px 0px;">
             {{-- đường dẫn --}}
             <div class="breadcrumb d-flex align-items-center">
-                <i class="fa-solid fa-house"></i>
+                <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
                 <span class="separator">></span>
-                <a href="{{route('home.products.sanpham_id',$productDetail->id_danh_muc)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
+                <a href="{{--route('home.products.sanpham_id',$productDetail->id_danh_muc)--}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
                 <span class="separator">></span>
-                <a href="{{route('home.products.sanpham_id_id',[$productDetail->id_danh_muc,$productDetail->id_chuyen_muc])}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
+                <a href="{{--route('home.products.sanpham_id_id',[$productDetail->id_danh_muc,$productDetail->id_chuyen_muc])--}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
                 <span class="separator">></span>
                 <span class="current">{{$productDetail->ten_san_pham}}</span>
             </div> 
