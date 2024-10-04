@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clients;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\clients\Products;
+use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     //
@@ -55,7 +56,11 @@ class ProductController extends Controller
         foreach ($filters as $filter) {
             $products->where($filter[0], $filter[1], $filter[2]);
         }
-        $productDetail ='';
+        $productDetail =DB::table('danhmucsanpham')
+        ->select(DB::raw('danhmucsanpham.slug as slugDm, chitietdanhmucsp.slug as slugCm'),'danhmucsanpham.ten_danh_muc','chitietdanhmucsp.ten_chuyen_muc')
+        ->join('chitietdanhmucsp','chitietdanhmucsp.id_danh_muc','=','danhmucsanpham.id_danh_muc')
+        ->get()->first();
+        // dd($productDetail);
         $danhMucNsx = $this->products->getAllNSX();
         $allProduct = $this->products->getAllProductsMAIN();
         // dd($allProduct);
@@ -78,14 +83,12 @@ class ProductController extends Controller
         $filters[] = ['danhmucsanpham.slug', '=', $id];
         $filters[] = ['sanpham.trang_thai', '=', 1];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
-        $productDetail = $this->products->getDetail2($id);
+        $productDetail =DB::table('danhmucsanpham')
+        ->select(DB::raw('danhmucsanpham.slug as slugDm, chitietdanhmucsp.slug as slugCm'),'danhmucsanpham.ten_danh_muc','chitietdanhmucsp.ten_chuyen_muc')
+        ->join('chitietdanhmucsp','chitietdanhmucsp.id_danh_muc','=','danhmucsanpham.id_danh_muc')
+        ->where('danhmucsanpham.slug',$id)
+        ->get()->first();
         $danhMucNsx = $this->products->getDetailDM_Nsx($id);
-        
-        if(!empty($productDetail)){
-            $productDetail = $productDetail[0];
-        }
-        // dd($productDetail);
-        // dd($productList);
         return view('clients.products.index', compact('title', 'productList','productDetail','danhMucNsx'));
     }
     public function show2(Request $request, $id, $id2)
@@ -105,12 +108,18 @@ class ProductController extends Controller
         $filters[] = ['chitietdanhmucsp.slug', '=', $id2];
         $filters[] = ['sanpham.trang_thai', '=', 1];
         $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
-        $productDetail = $this->products->getDetail3($id2);
+        // $productDetail = $this->products->getDetail3($id2);
         $danhMucNsx = $this->products->getDetailDM_Nsx($id,$id2);
         // dd($danhMucNsx);
-        if(!empty($productDetail)){
-            $productDetail = $productDetail[0];
-        }
+        // if(!empty($productDetail)){
+        //     $productDetail = $productDetail[0];
+        // }
+        $productDetail =DB::table('danhmucsanpham')
+        ->select(DB::raw('danhmucsanpham.slug as slugDm, chitietdanhmucsp.slug as slugCm'),'danhmucsanpham.ten_danh_muc','chitietdanhmucsp.ten_chuyen_muc')
+        ->join('chitietdanhmucsp','chitietdanhmucsp.id_danh_muc','=','danhmucsanpham.id_danh_muc')
+        ->where('danhmucsanpham.slug',$id)
+        ->where('chitietdanhmucsp.slug',$id2)
+        ->get()->first();
         // dd($productDetail);
         return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword','danhMucNsx'));
     }

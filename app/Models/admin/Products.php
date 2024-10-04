@@ -9,6 +9,7 @@ class products extends Model
 {
     use HasFactory;
     protected $table ='sanpham';
+    protected $primaryKey = 'maSP';
     protected $tableDM ='danhmucsanpham';
     public function khuyenMais()
     {

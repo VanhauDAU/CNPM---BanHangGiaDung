@@ -23,11 +23,13 @@
                   
                   <!-- Cart Dropdown -->
                   <div class="dropdown text-center">
-                      <a href="{{Route('home.gio-hang')}}" class="btn ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fas fa-shopping-cart"></i> Giỏ Hàng (0)
+                      <a href="{{Route('home.cart.view')}}" class="btn ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="" aria-expanded="false">
+                          <i class="fas fa-shopping-cart"></i> Giỏ Hàng @if(!empty(session('cart'))) 
+                            ({{count(session('cart'))}}) @endif
                       </a>
                       <div class="dropdown-menu p-4" aria-labelledby="cartDropdown" style="left: -100px; top: 36px;border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 500px;">
                           <table class="table table-hover">
+                            @if(session('cart') && count(session('cart')) > 0)
                               <thead>
                                   <tr>
                                       <th scope="col">Ảnh</th>
@@ -36,20 +38,34 @@
                                   </tr>
                               </thead>
                               <tbody>
+                                @forEach(session('cart') as $id =>$item)
+                                <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark" >
                                   <tr>
                                       <td>
-                                          <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark">
-                                              <img src="{{asset('assets/general/img/login_sidebar.jpg')}}" alt="Sản phẩm 1" style="width: 50px; height: auto;" class="rounded me-3">
-                                          </a>
+                                          <img src="{{asset('storage/products/img/'. $item['anh'])}}" alt="{{$item['anh']}}" style="width: 50px; height: auto;" class="rounded me-3">
                                       </td>
-                                      <td>Sản phẩm 1</td>
-                                      <td>100.000đ</td>
+                                      <td>{{ \Illuminate\Support\Str::limit( $item['ten_san_pham'], 30)}}</td>
+                                      <td>
+                                        {{number_format($item['don_gia'],0,',','.')}}đ
+                                    </td>
                                   </tr>
+                                </a>
+
+                                  @endforeach
                               </tbody>
+                            @else
+                              <h5>KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG</h5>
+                            @endif
                           </table>
                           <div class="row d-flex justify-content-between align-items-center mt-3">
-                              <h5 class="col-6">Tổng tiền: <span>900.000đ</span></h5>
-                              <a class="btn btn-primary col-4" href="{{Route('home.gio-hang')}}">Xem Giỏ Hàng</a>
+                            @if(session('cart') && count(session('cart')) > 0)
+                            <h5 class="col-8">Tổng tiền: <span id="total-price" style="color: #28a745;">
+                                {{ number_format(array_sum(array_map(function($item) { return $item['don_gia'] * $item['so_luong']; }, session('cart'))), 0, ',', '.') }} đ</span>
+                            </h5>
+                              <a class="btn btn-primary col-4" href="{{Route('home.cart.view')}}">Xem Giỏ Hàng</a>
+                            @else
+                                <a class="btn btn-primary col-12" href="{{Route('home.products.index')}}">Xem Thêm Sản Phẩm</a>
+                            @endif
                           </div>
                       </div>
                   </div>

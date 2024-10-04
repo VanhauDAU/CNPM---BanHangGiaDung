@@ -42,7 +42,7 @@
                 <div class="row mb-3">
                     <div class="col-12">
                         <label for="slug" class="form-label col-md-12">Đường dẫn:</label>
-                        <input type="text" class="form-control" name="slug" id="slug" readonly style="background-color:#ccc" value="{{olde('slug')}}">
+                        <input type="text" class="form-control" name="slug" id="slug" readonly style="background-color:#ccc" value="{{old('slug')}}">
                         @error('slug')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror

@@ -7,11 +7,28 @@
         <div class="container mt-1" style="padding: 40px 0px 0px;">  
         @else
         <div class="container mt-1" style="padding: 56px 0px 0px;">  
-        @endif
+    @endif
         <div class="main-products">
-        
+        {{-- đường dẫn --}}
+        @if(!empty($productDetail))
+            <div class="breadcrumb d-flex align-items-center">
+                <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
+                
+                @if(Route::currentRouteName() == 'home.products.sanpham_id')
+                    <span class="separator">></span>
+                    <a href="{{route('home.products.sanpham_id',$productDetail->slugDm)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
+                @elseif(Route::currentRouteName() == 'home.products.sanpham_id_id')
+                    <span class="separator">></span>
+                    <a href="{{route('home.products.sanpham_id',$productDetail->slugDm)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
+                    <span class="separator">></span>
+                    <a href="{{route('home.products.sanpham_id_id',[$productDetail->slugDm,$productDetail->slugCm])}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
+                @endif
+            </div> 
+        @else
+            <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
+        @endif
 
-        <div class="row pt-4">
+        <div class="row pt-1">
             @include('clients.blocks.categories')
             <!-- Danh sách sản phẩm -->
             <div class="col-md-9 product-list">
@@ -56,9 +73,9 @@
                                         <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" style="object-fit: cover;padding: 8px;border-radius: 10px; width:auto">
                                         
                                         {{-- Kiểm tra trạng thái sản phẩm, nếu hết hàng thì hiển thị--}}
-                                        @if($product->so_luong_nhap == 0)
+                                        @if($product->so_luong_ton == 0)
                                             <div class="out-of-stock-label position-absolute top-0 start-0 bg-danger text-white px-3 py-1" style="border-radius: 0 0 10px 0; font-weight: bold;">
-                                                Sản phẩm tạm hết
+                                                Tạm hết hàng
                                             </div>
                                         @endif
                                         {{-- Kiểm tra trạng thái sản phẩm, nếu hết hàng thì hiển thị--}}
@@ -85,8 +102,26 @@
                                             <i class="fa-solid fa-star"></i>
                                         </div>
                                     </div>
-                                    <p class="text-danger fw-bold mb-1" style="font-size: 1.2rem;">{{ number_format($product->don_gia, 0, ',', '.') }}đ</p>
-                                    <a href="{{route('home.chi_tiet_sp',$product->maSP)}}" class="btn mt-1 btn-xemchitiet">Mua Ngay</a>
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                        <div class="col-md-6">
+                                            <p class="text-danger fw-bold mb-1" style="font-size: 1.2rem;">{{ number_format($product->don_gia, 0, ',', '.') }}đ</p>
+                                        </div>
+                                        <div class="col-md-6 text-end viewProduct align-middle">
+                                            <i class="fa-regular fa-eye" style="font-size: 15px"></i> 
+                                            <span style="font-size: 15px">100</span>
+                                        </div>
+                                    </div>
+                                    @if($product->so_luong_ton != 0)
+                                        <form action="{{ route('home.cart.add', $product->maSP) }}" method="post">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary btn-xemchitiet">Thêm vào giỏ hàng</button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('home.cart.add', $product->maSP) }}" method="post">
+                                            @csrf
+                                            <button type="submit" class="btn btn-warning btn-xemchitiet">Liên hệ</button>
+                                        </form>
+                                    @endif
                                 </div>
                             </a>
                         </div>

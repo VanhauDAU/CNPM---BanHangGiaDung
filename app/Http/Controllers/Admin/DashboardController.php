@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index(){
         $today = \Carbon\Carbon::today();
         $countContact = contacts::whereDate('created_at', $today)->count();
-
+        
         return view('admin.dashboard.index', compact('countContact'));
     }
     public function get_info_detail(){

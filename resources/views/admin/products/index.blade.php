@@ -72,8 +72,9 @@
                     <th>NSX</th>
                     <th>Loại</th>
                     <th>Giá</th>
+                    <th>Views</th>
                     <th>Loại</th>
-                    <th>Loại</th>
+                    <th>Ẩn/Hiện</th>
                     <th width="200px">Chức Năng</th>
                 </tr>
             </thead>
@@ -94,6 +95,7 @@
                         <td>{{$item->ten_NSX}}</td>
                         <td>{{$item->ten_danh_muc}}</td>
                         <td>{{number_format($item->don_gia,0,',','.')}} VNĐ</td>
+                        <td>{{$item->luot_xem}}</td>
                         <td>
                             @if($item->sp_noi_bat == 1)
                                 <h6 class="text-center bg-success p-1 border rounded text-white p-1">Nổi Bật</h6>

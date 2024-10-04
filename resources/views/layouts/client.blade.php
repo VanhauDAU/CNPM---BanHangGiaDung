@@ -55,6 +55,23 @@
           position: relative;
           background-color: #F3F3F3;
         }
+        body::-webkit-scrollbar {
+            width: 13px; 
+        }
+
+        body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #DA251C;
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
         .navbar .logo .bee{
             position: absolute;
             top:-13px;
@@ -144,8 +161,8 @@
     <a href="{{route('home.bai-viet')}}" class="button messenger-button" title="Tin Tức">
         <i class="fa-solid fa-newspaper"></i>
     </a>
-    <a href="https://zalo.me/your_zalo_number" class="button zalo-button" title="Khuyến Mãi">
-        <i class="fa-solid fa-ticket"></i>
+    <a href="#" class="button messenger-button" title="Khuyến Mãi">
+        <i class="fa-solid fa-message"></i>
     </a>
 </div>
 

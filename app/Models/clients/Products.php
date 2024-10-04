@@ -46,12 +46,13 @@ class Products extends Model
         return $products;
     }
     public function getDetail($id){
-        return DB::select('SELECT * FROM '.$this->table.' 
+        return DB::select('SELECT danhmucsanpham.slug as slugDm,chitietdanhmucsp.slug as slugCm,danhmucsanpham.ten_danh_muc,chitietdanhmucsp.ten_chuyen_muc,sanpham.*, nhasanxuat.* FROM sanpham
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
         INNER JOIN nhasanxuat ON nhasanxuat.maNSX = '.$this->table.'.maNSX 
         INNER JOIN chitietdanhmucsp ON chitietdanhmucsp.id_chuyen_muc = '.$this->table.'.id_chuyen_muc
         WHERE sanpham.slug = ? 
         ORDER BY '.$this->table.'.created_at DESC',[$id]);
+        // dd($test);
     }
     public function getDetail2($id){
         return DB::select('SELECT * FROM '.$this->table.' 

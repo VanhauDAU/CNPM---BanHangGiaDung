@@ -107,17 +107,23 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
-    Route::get('gio-hang',[ShoppingCartController::class,'giohang'])->name('gio-hang');
     Route::get('bai-viet',[PostController::class,'post'])->name('bai-viet');
     Route::get('bai-viet/{id}',[PostController::class,'get_detail_post'])->name('get_bai_viet');
-    Route::prefix('thong-tin-ca-nhan')->group(function(){
+    Route::prefix('tai-khoan')->group(function(){
         Route::get('',[UserControllerClients::class,'get_info_user'])->name('info-user');
         Route::get('/edit', [UserControllerClients::class,'edit'])->name('info-user.edit');
         Route::post('/edit', [UserControllerClients::class,'update'])->name('info-user.update');
 
         Route::get('dia-chi',[UserControllerClients::class,'get_info_address'])->name('info-user-address');
 
+        Route::get('doi-mat-khau', [UserControllerClients::class,'password_edit'])->name('password-user.edit');
+        Route::post('doi-mat-khau', [UserControllerClients::class,'password_update']);
+
     });
+    Route::post('/add-to-cart/{id}', [ShoppingCartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/gio-hang', [ShoppingCartController::class, 'viewCart'])->name('cart.view');
+    Route::post('/gio-hang/update/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
+    Route::delete('/gio-hang/remove/{id}', [ShoppingCartController::class, 'removeFromCart'])->name('cart.remove');
     
 });
 Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');

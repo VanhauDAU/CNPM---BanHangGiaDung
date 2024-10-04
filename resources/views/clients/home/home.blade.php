@@ -9,7 +9,7 @@
 @section('content-clients')
   <!-- Hero Section -->
     <div class="main-home mt-5">
-        <main class="container my-2">
+        <main class="container my-1">
             <!-- Danh mục sản phẩm -->
             <section class="category-section py-1">
                 <div class="container">
@@ -83,13 +83,12 @@
                                     </a>
                                 </div>
                             @endforeach
+                            {{-- <div class="row">
+                                <div style="display: flex; justify-content: center; height: 20px; font-size: 20px;">
+                                    {{$productList->links()}}
+                                </div> 
+                            </div> --}}
                         @endif
-                    </div>
-                    
-                    <div class="row">
-                        <div style="display: flex; justify-content: center; height: 20px; font-size: 20px;">
-                            {{-- {{$productList->links()}} --}}
-                        </div> 
                     </div>
                 </div>
             </div>

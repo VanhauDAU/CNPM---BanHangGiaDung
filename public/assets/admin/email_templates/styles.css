@@ -76,18 +76,6 @@ body {
     margin-bottom: 20px;
 }
 
-.footer {
-    width: 100%;
-    clear: both;
-    color: #999;
-    padding: 20px;
-}
-.footer a {
-    color: #999;
-}
-.footer p, .footer a, .footer unsubscribe, .footer td {
-    font-size: 12px;
-}
 
 /* -------------------------------------
     TYPOGRAPHY

@@ -5,14 +5,14 @@
 
 @section('content-clients')
 <div class="main-products">
-    <div class="container mt-2" style="padding: 40px 0px 0px;">
+    <div class="container mt-2" style="padding: 50px 0px 0px;">
             {{-- đường dẫn --}}
             <div class="breadcrumb d-flex align-items-center">
                 <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
                 <span class="separator">></span>
-                <a href="{{--route('home.products.sanpham_id',$productDetail->id_danh_muc)--}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
+                <a href="{{route('home.products.sanpham_id',$productDetail->slugDm)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
                 <span class="separator">></span>
-                <a href="{{--route('home.products.sanpham_id_id',[$productDetail->id_danh_muc,$productDetail->id_chuyen_muc])--}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
+                <a href="{{route('home.products.sanpham_id_id',[$productDetail->slugDm,$productDetail->slugCm])}}" class="breadcrumb-link">{{$productDetail->ten_chuyen_muc}}</a>
                 <span class="separator">></span>
                 <span class="current">{{$productDetail->ten_san_pham}}</span>
             </div> 
@@ -85,31 +85,48 @@
                                 <div class="row mt-2">
                                     <h6>Trạng thái: <span style="margin-left: 15px"> {{$productDetail->so_luong_ton > 0 ? ' Còn hàng' : ' Tạm hết hàng'}}</span></h6>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                            <label for="quantity" class="col-form-label me-2">Số lượng:</label>
-                                        <div class="input-group" style="width: 130px;">
-                                            <button class="btn btn-outline-secondary" type="button" onclick="decrement()">-</button>
-                                            <input type="number" id="stock-quantity" name="stock-quantity" min="1" max="100" value="1" class="form-control text-center">
-                                            <button class="btn btn-outline-secondary" type="button" onclick="increment()">+</button>
+                                @if($productDetail->so_luong_ton != 0)
+                                    <form action="{{ route('home.cart.add', $productDetail->maSP) }}" method="post">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <label for="so_luong" class="col-form-label me-2">Số lượng:</label>
+                                                <div class="input-group" style="width: 130px;">
+                                                    <input type="number" id="so_luong" name="so_luong" min="1" max="100" value="1" class="form-control text-center">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-end " style="margin-left: -50px">
+                                                    <button type="submit" id="add-to-cart" class="btn btn-success " ><i class="fas fa-shopping-cart"></i> Thêm vào giỏ</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="row mt-2">
+                                        <div class="btn-buy-wrap buy-now p-0">
+                                            <button type="button" class="btn-shopp-manual btn-buy btn-order button-buy w-100 d-flex justify-content-center align-items-center"style="background-color:#DA251C" id="btn-buy-prod" data-tips="Giao hàng toàn quốc">
+                                                <div class="col-md-1">
+                                                    <i class="fa-solid fa-cart-shopping fs-3"></i>
+                                                </div>
+                                                <div class="col-md-11">
+
+                                                    <h5 class="txt-shop m-0">
+                                                        <span class="txt-buy-now" style="font-size: 15px; margin-top: -5px"><span style="font-size: 20px">Mua Ngay</span><br/>
+                                                            (giao hàng tận nơi trên toàn quốc)
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 d-flex align-items-end ">
-                                        <button id="add-to-cart" class="btn btn-success" onclick="addToCart()" style="margin-left:-70px">
-                                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ
-                                        </button>
-                                    </div>
-                                    
-                                </div>
+                                @else
                                 <div class="row mt-2">
                                     <div class="btn-buy-wrap buy-now p-0">
-                                        <button type="button" class="btn-shopp-manual btn-buy btn-order button-buy w-100 d-flex justify-content-center align-items-center"style="background-color:#DA251C" id="btn-buy-prod" data-tips="Giao hàng toàn quốc">
+                                        <button type="button" class="btn-shopp-manual btn-buy btn-order button-buy w-100 d-flex justify-content-center align-items-center"style="background-color:green" id="btn-buy-prod" data-tips="Giao hàng toàn quốc">
                                             <div class="col-md-1">
                                                 <i class="fa-solid fa-cart-shopping fs-3"></i>
                                             </div>
                                             <div class="col-md-11">
                                                 <h5 class="txt-shop m-0">
-                                                    <span class="txt-buy-now" style="font-size: 15px; margin-top: -5px"><span style="font-size: 20px">Đặt mua</span><br/>
+                                                    <span class="txt-buy-now" style="font-size: 15px; margin-top: -5px"><span style="font-size: 20px">Liên Hệ</span><br/>
                                                         (giao hàng tận nơi trên toàn quốc)
                                                     </span>
                                                 </h5>
@@ -117,6 +134,7 @@
                                         </button>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="row mt-2">
                                     <div class="btn-buy-wrap buy-now p-0">
                                         <div class="border p-2 rounded w-100 d-flex justify-content-center align-items-center"style="background-color:white ;color:black;" id="btn-buy-prod" data-tips="Giao hàng toàn quốc">
@@ -167,15 +185,70 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-0 mt-4 p-0" style="background: #ccc">
-                    <div class="col-md-8 p-1">
-                        <h5 class="m-0 pt-2 pb-2">Thông tin sản phẩm</h5>
-                        <div class="mota bg-white p-3 rounded">
-                            {!!$productDetail->mo_ta!!}
+                <div class="row mt-4" style="border-radius: 25px; background-color:#D9D9D9;margin:0px -30px; padding: 10px 15px; padding-bottom: 25px">
+                    <div class="row m-0 mt-4"style="border-radius: 25px; background-color:white; padding: 15px 10px">
+                        <div class="col-md-7 p-1">
+                            <h5 class="m-0 pt-2 pb-2 fs-4 text-uppercase fw-bold">Thông tin sản phẩm</h5>
+                            <div class="mota bg-white p-3 rounded border" style="max-height: 600px; overflow-y:auto">
+                                {!!$productDetail->mo_ta!!}
+                            </div>
+                        </div>
+                        <div class="col-md-5 pt-1">
+                            
                         </div>
                     </div>
-                    <div class="col-md-4">
-        
+                    <div class="row m-0 mt-3 p-4" style="border-radius: 25px; background-color:white; padding: 15px 10px">
+                        <div class="col-md-12">
+                            <h5 class="text-capitalize fw-bold py-2 fs-3">Khách hàng nói về sản phẩm</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="row border rounded firtUserReview p-3 d-flex">
+                                    <div class="reviewFirst col-md-7">
+                                        <h3 style="font-size: 20px" >Trở thành người đầu tiên đánh giá về sản phẩm</h3>
+                                        <button class="btn btn-primary col-md-6 mt-3">Đánh giá về sản phẩm</button>
+                                    </div>
+                                    <div class="image-reviewFirst col-md-5">
+                                        <img src="https://fptshop.com.vn/img/imgStar.png?w=1920&q=100" alt="Đánh giá sản phẩm" style="width: 280px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-9  d-flex justify-content-between">
+                                <div class="col-md-2 d-flex justify-content-center align-items-center">
+                                    0 Bình Luận
+                                </div>
+                                
+                                <div class="col-md-5 rating-stars">
+                                    <input type="radio" name="rating" id="rating-6" value="6">
+                                    <label for="rating-6" class="star" data-value="6">Tất cả</label>
+
+                                    <input type="radio" name="rating" id="rating-5" value="5">
+                                    <label for="rating-5" class="star" data-value="5">5<i class="fa-solid fa-star"></i></label>
+                        
+                                    <input type="radio" name="rating" id="rating-4" value="4">
+                                    <label for="rating-4" class="star" data-value="4">4<i class="fa-solid fa-star"></i></label>
+                        
+                                    <input type="radio" name="rating" id="rating-3" value="3">
+                                    <label for="rating-3" class="star" data-value="3">3<i class="fa-solid fa-star"></i></label>
+                        
+                                    <input type="radio" name="rating" id="rating-2" value="2">
+                                    <label for="rating-2" class="star" data-value="2">2<i class="fa-solid fa-star"></i></label>
+                        
+                                    <input type="radio" name="rating" id="rating-1" value="1">
+                                    <label for="rating-1" class="star" data-value="1">1<i class="fa-solid fa-star"></i></label>
+                                </div>                           
+                            </div>
+                        </div>
+                        <form action="">
+                            <div class="row mt-3 ">
+                                <div class="col-9  d-flex">
+                                    <input type="text"  class="form-control" placeholder="Nhập nội dung bình luận">
+                                    <button type="submit">Gửi bình luận</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -220,11 +293,39 @@
     button:hover {
         background-color: #0056b3;
     }
+    .mota {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .mota::-webkit-scrollbar {
+        width: 10px; 
+    }
+
+    .mota::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .mota::-webkit-scrollbar-thumb {
+        background-color: #DA251C;
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+    }
+
+    .mota::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 
 </style>
 @endsection
 @section('js')
     <script>
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                stars.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
         document.addEventListener("DOMContentLoaded", function() {
         const finalQuantity = {{ $productDetail->so_luong_ton }};
         let currentQuantity = 100; 
@@ -258,37 +359,6 @@
         }
     }
 
-    function decrement() {
-        var quantityInput = document.getElementById('stock-quantity');
-        var currentValue = parseInt(quantityInput.value);
-        if (currentValue > 1) {
-            quantityInput.value = currentValue - 1;
-        }
-    }
-    function addToCart() {
-        const quantityInput = document.getElementById('stock-quantity');
-        const quantity = parseInt(quantityInput.value, 10);
-        if (quantity < 1) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi',
-                text: 'Số lượng phải lớn hơn 0!',
-            });
-            return;
-        }
-
-        // Thực hiện thao tác thêm sản phẩm vào giỏ hàng
-        // Giả sử bạn có một API hoặc một hàm để xử lý thêm vào giỏ hàng
-        // Ví dụ: gửi yêu cầu AJAX để thêm sản phẩm vào giỏ
-        console.log(`Thêm ${quantity} sản phẩm vào giỏ hàng!`);
-        Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            text: `Đã thêm ${quantity} sản phẩm vào giỏ hàng!`,
-        });
-
-        // Thực hiện thêm logic nếu cần thiết, như cập nhật giao diện
-    }
     const magnifier = document.getElementById("magnifier");
     const productImage = document.getElementById("product-image");
 

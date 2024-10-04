@@ -297,7 +297,10 @@ header .navbar form .txtQuery{
     color: transparent;
     position: relative;
     overflow: hidden;
+    background-color: white;
     transition: color 0.4s ease;
+    border: none;
+    width: 100%;
 }
 
 .btn-xemchitiet {
@@ -396,9 +399,10 @@ header .navbar form .txtQuery{
     font-family: 'Arial', sans-serif; 
     font-size: 16px; 
     color: #333;
-    margin: 10px 0; 
+    /* margin: 10px 0;  */
     background-color: #F2F2F2;
     padding: 5px;
+    margin:0;
 }
 
 .breadcrumb i {
@@ -460,49 +464,7 @@ header .navbar form .txtQuery{
     padding: 0px 30px;
     padding-bottom: 20px;
 }
-/* footer */
-.footer {
-    background-color: #343a40;
-    color: #ffffff;
-}
-.footer-title {
-    color: #EB2C23;
-    margin-bottom: 15px;
-}
 
-.footer a {
-    transition: color 0.3s;
-}
-
-.footer a:hover {
-    color: #EB2C23;
-}
-
-.payment-icon {
-    max-width: 50px;
-    margin: 0 5px;
-}
-
-/* endfooter */
-.image-magnifier-container {
-    position: relative;
-    display: inline-block; 
-}
-
-.product-image {
-    width: 100%;
-    height: auto; 
-}
-.magnifier {
-    position: absolute;
-    border: 3px solid #000; 
-    border-radius: 50%; 
-    cursor: none;
-    width: 200px; 
-    height: 200px; 
-    opacity: 0; 
-    pointer-events: none;
-}
 
 /* Modal Structure */
 .modal {
@@ -600,4 +562,32 @@ header .navbar form .txtQuery{
     }
 }
 
-    
+/* Khách hàng đánh giá đầu tiên */
+.firtUserReview{
+    background-color: #FFFBEB;
+}
+.rating-stars {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rating-stars input {
+    display: none; /* Ẩn các nút radio */
+}
+
+.rating-stars label {
+    cursor: pointer;
+    font-size: 17px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    border: 1px solid #D9D9D9;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.rating-stars label.selected {
+    color: #f5c518; /* Màu vàng khi được chọn */
+    border: 1px solid #f5c518;
+}
