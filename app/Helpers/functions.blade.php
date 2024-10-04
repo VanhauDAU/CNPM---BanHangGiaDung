@@ -92,5 +92,16 @@ function CountCmt($id) {
 
     return $countBinhluansp + $countKhvanglaiBinhluansp;
 }
-
+function get5Product($idCm,$maSP){
+    return DB::table('sanpham')
+    ->select('sanpham.*','nhasanxuat.ten_NSX','chitietdanhmucsp.ten_chuyen_muc')
+    ->join('chitietdanhmucsp','chitietdanhmucsp.id_chuyen_muc','=','sanpham.id_chuyen_muc')
+    ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX')
+    ->where('chitietdanhmucsp.id_chuyen_muc',$idCm)
+    ->where('maSP','!=',$maSP)
+    ->limit(5)
+    ->orderBy('sanpham.created_at','DESC')
+    ->get();
+    // dd($test);
+}
 

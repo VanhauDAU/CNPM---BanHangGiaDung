@@ -76,8 +76,8 @@
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="address">Địa Chỉ</label>
-                <textarea id="address" name="address" class="form-control" rows="3">{{ old('address') ?? $userDetail->dia_chi }}</textarea>
+                {{-- <label for="dia_chi">Địa Chỉ</label>
+                <textarea id="dia_chi" name="dia_chi" class="form-control" rows="3">{{ old('dia_chi') ?? $userDetail->dia_chi }}</textarea> --}}
                 <div class="mb-3 mt-3">
                     <label for="account_type">Loại Tài Khoản</label>
                     <select id="account_type" name="account_type" class="form-control">

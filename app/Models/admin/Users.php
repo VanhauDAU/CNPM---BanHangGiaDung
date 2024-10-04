@@ -59,7 +59,7 @@ class Users extends Model
         $timestamp = now();
         $data[] = $timestamp;
         $data[] = $timestamp; 
-        DB::insert('INSERT INTO taikhoan(username, password, ho_ten, ngay_sinh, so_dien_thoai, email, dia_chi, loai_tai_khoan, maCV,anh, created_at, updated_at) values (?,?,?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO taikhoan(username, password, ho_ten, ngay_sinh, so_dien_thoai, email, loai_tai_khoan, maCV,anh, created_at, updated_at) values (?,?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     
@@ -75,7 +75,7 @@ class Users extends Model
         $data[] = now(); // Thêm giá trị updated_at với thời gian hiện tại
         $data[] = $id; // Thêm id của người dùng cần cập nhật
         
-        return DB::update('UPDATE '.$this->table.' SET username = ?, password = ?, ho_ten = ?, ngay_sinh = ?, so_dien_thoai = ?, email = ?,gioi_tinh = ?,cccd= ?, dia_chi = ?, loai_tai_khoan = ?, maCV = ?,anh=?, updated_at = ? WHERE username = ?', $data);
+        return DB::update('UPDATE '.$this->table.' SET username = ?, password = ?, ho_ten = ?, ngay_sinh = ?, so_dien_thoai = ?, email = ?,gioi_tinh = ?,cccd= ?, loai_tai_khoan = ?, maCV = ?,anh=?, updated_at = ? WHERE username = ?', $data);
     }
     
     public function deleteUser($id){

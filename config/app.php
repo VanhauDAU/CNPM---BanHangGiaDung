@@ -195,7 +195,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        \Yoeunes\Toastr\ToastrServiceProvider::class
+        \Yoeunes\Toastr\ToastrServiceProvider::class,
+        Ichtrojan\Otp\OtpServiceProvider::class,
     ],
 
     /*
@@ -211,7 +212,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        'Sociallite'=>Laravel\Socialite\Facades\Socialite::class
+        'Sociallite'=>Laravel\Socialite\Facades\Socialite::class,
+        'Otp'=>Ichtrojan\Otp\Otp::class,
     ])->toArray(),
 
 ];

@@ -655,3 +655,42 @@ header .navbar form .txtQuery{
 .comment button:hover {
     text-decoration: underline; /* Gạch chân khi di chuột */
 }
+.image-container {
+    position: relative; /* Để các phần tử con có thể định vị tương đối */
+    overflow: hidden; /* Ẩn phần không nằm trong khung */
+}
+
+.fixed-size {
+    width: 100%; /* Ảnh lấp đầy khung */
+    height: auto; /* Chiều cao tự động để giữ tỉ lệ */
+    object-fit: cover; /* Đảm bảo ảnh vừa khung mà không bị biến dạng */
+    transition: opacity 0.3s ease; /* Hiệu ứng mờ khi hover */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 21px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
+    border-radius: 10px;
+}
+.image-container:hover .fixed-size {
+    opacity: 0.5; 
+}
+
+.image-container:hover .overlay {
+    opacity: 1;
+}
+
+.overlay-text {
+    color: white;
+    font-size: 1.2rem;
+    text-align: center; 
+}

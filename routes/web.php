@@ -1,29 +1,32 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Clients\HomeController;
-use Illuminate\Http\Response;
+use Ichtrojan\Otp\Otp;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\OrderController;
-use App\Http\Controllers\admin\StaffController;
-// use App\Http\Controllers\Admin\LoginController;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\Admin\Auth\LoginController;
-// user
-use App\Http\Controllers\Clients\LoginController as UserLoginController;
-use App\Http\Controllers\Clients\ShoppingCartController;
+use Illuminate\Support\Facades\Route;
+use App\Notifications\OtpNotification;
 use App\Http\Controllers\PostController;
 use Laravel\Socialite\Facades\Socialite;
-use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
-use App\Http\Controllers\Auth\LoginController as LoginController1;
-use App\Http\Controllers\Clients\ContactController;
-use App\Http\Controllers\Clients\UserController as UserControllerClients;
+use Illuminate\Support\Facades\Notification;
+// use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\StaffController;
+// user
+use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\admin\CommentController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Clients\ContactController;
+use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Clients\ShoppingCartController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\Auth\LoginController as LoginController1;
 //product user
+use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
+use App\Http\Controllers\Clients\LoginController as UserLoginController;
+use App\Http\Controllers\Clients\UserController as UserControllerClients;
 use App\Http\Controllers\Clients\ProductController as ProductControllerUser;
 /*
 |--------------------------------------------------------------------------
@@ -136,7 +139,17 @@ Route::prefix('posts')->name('posts.')->group(function(){
 });
 Auth::routes();
 Auth::routes(['verify' => true]);
-
+Route::get('test-otp', function(){
+    // $otp = (new Otp)->generate('levanhaum@gmail.com','numeric', 4, 10);
+    // $otp = (new Otp)->validate('levanhaum@gmail.com', 4035);
+    // $otp = generateOtp('levanhaum@gmail.com');
+    // dd(validateOtp('levanhaum@gmail.com',7396));
+    // Notification::route('mail','levanhaum@gmail.com')->notify(new OtpNotification($otp));
+    // dd($otp);
+}); 
+// Route::get('2fa',function(){
+//     return '<h2>2FA</h2>';
+// })->name('2fa');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 

@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="content-bottom p-2">
                                             <div class="title-post">
-                                                <h1 class="mt-2" style="font-size: 20px;">{{ $firstItem->tieu_de }}</h1>
+                                                <h1 class="mt-2 fw-bold" style="font-size: 20px;">{{ $firstItem->tieu_de }}</h1>
                                             </div>
                                             <div class="content-post">
                                                 <h3 style="font-size: 14px;">{!! \Illuminate\Support\Str::limit($firstItem->noi_dung, 300, '...') !!}</h3>
@@ -49,12 +49,12 @@
                             @foreach($otherPosts as $itemList)
                                 <a href="{{route('home.get_bai_viet',$itemList->slug)}}">
                                     <div class="PostsList col-12 mb-1 d-flex align-items-center">
-                                        <div class="col-3">
+                                        <div class="col-5">
                                             <img src="{{ asset('storage/posts/img/'.$itemList->anh_bia) }}" alt="" class="rounded" style="width: 100%; height: 130px; object-fix: cover;margin-right:10px">
                                         </div>
-                                        <div class="col-9 ms-2">
+                                        <div class="col-7 ms-2">
                                             <div class="title-post">
-                                                <h1 style="font-size: 16px;" class="mt-2">{!! \Illuminate\Support\Str::limit($itemList->tieu_de, 40, '...') !!}</h1>
+                                                <h1 style="font-size: 16px;" class="mt-2 fw-bold">{!! \Illuminate\Support\Str::limit($itemList->tieu_de, 40, '...') !!}</h1>
                                             </div>
                                             <div class="content-post">
                                                 <h3 style="font-size: 14px;">{!! \Illuminate\Support\Str::limit($itemList->noi_dung, 100, '...') !!}</h3>

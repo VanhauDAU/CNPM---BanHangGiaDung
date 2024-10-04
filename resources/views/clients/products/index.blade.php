@@ -13,7 +13,6 @@
         @if(!empty($productDetail))
             <div class="breadcrumb d-flex align-items-center">
                 <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
-                
                 @if(Route::currentRouteName() == 'home.products.sanpham_id')
                     <span class="separator">></span>
                     <a href="{{route('home.products.sanpham_id',$productDetail->slugDm)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>
@@ -66,6 +65,7 @@
                 <div class="row">
                     @if(!empty($productList) && count($productList) > 0)
                     @foreach ($productList as $product)
+                    {{-- {{dd($productList)}} --}}
                         <div class="col-6 col-md-4 col-lg-3" style="padding:0px 2px 0px ">
                             <a href="{{route('home.chi_tiet_sp',$product->slug)}}">
                                 <div class="product-item p-2 d-flex flex-column" style="border-radius: 10px; background-color: #fff; transition: transform 0.3s ease;">

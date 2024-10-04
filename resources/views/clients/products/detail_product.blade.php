@@ -194,7 +194,31 @@
                             </div>
                         </div>
                         <div class="col-md-5 pt-1">
-                            
+                            <h5 class="m-0 pt-2 pb-2 fs-4 text-uppercase fw-bold text-center">Sản phẩm liên quan</h5>
+                            <div class="list-product p-2">
+                                @if(!empty(get5Product($productDetail->id_chuyen_muc,$productDetail->maSP)))
+                                    @foreach(get5Product($productDetail->id_chuyen_muc,$productDetail->maSP) as $item)
+                                    <a href="{{route('home.chi_tiet_sp',$item->slug)}}">
+                                        {{-- {{dd(get5Product($productDetail->id_danh_muc,$productDetail->maSP))}} --}}
+                                        <div class="product-item p-2 rounded d-flex border">
+                                            <img src="{{asset('storage/products/img/'.$item->anh)}}" alt="" class="border rounded" style="width: auto; max-height:100px">
+                                            <div class="info-product ms-1">
+                                                <h5 style="font-size:13px">
+                                                    {{\Illuminate\Support\Str::limit($item->ten_san_pham,50)}}
+                                                </h5>
+                                                <div class="price fw-bold text-danger">
+
+                                                    {{number_format($item->don_gia)}}đ
+                                                </div>
+                                                <div class="brand mt-2" style="font-size: 14px">
+                                                    {{$item->ten_NSX}} || {{$item->ten_chuyen_muc}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="row m-0 mt-3 p-4" style="border-radius: 25px; background-color:white; padding: 15px 10px">

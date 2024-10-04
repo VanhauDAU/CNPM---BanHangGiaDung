@@ -22,7 +22,7 @@ class HomeController extends Controller
         $keyword = null;
         $products = $this->products->newQuery();
         $filters[] = ['sanpham.trang_thai', '=', 1];
-        $posts = adminPost::orderBy('created_at', 'desc')->where('trang_thai',1)->take(6)->get();
+        $posts = adminPost::orderBy('created_at', 'desc')->where('trang_thai',1)->take(4)->get();
         //end xử lý
         $sortType = '';
         $productList = $this->products->getAllProducts($filters, $keyword,$sortArr=null, self::_PER_PAGE);
