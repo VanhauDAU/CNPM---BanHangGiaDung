@@ -89,10 +89,8 @@ Route::prefix('admin')->group(function () {
         });
         Route::prefix('quan-ly-binh-luan')->group(function () {
             Route::get('', [CommentController::class, 'index'])->name('admin.manage_cmt');
-            Route::get('add', [CommentController::class, 'add'])->name('getadd_cmt');
-            Route::post('add', [CommentController::class, 'cmtAdd']);
             Route::get('edit/{id}', [CommentController::class, 'edit'])->name('getedit_cmt');
-            Route::post('edit/{id}', [CommentController::class, 'cmtEdit']);
+            Route::post('edit/{id}', [CommentController::class, 'cmtEdit'])->name('postedit_cmt');
             Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('getdelete_cmt');
         });
         Route::prefix('quan-ly-hoa-don')->group(function () {

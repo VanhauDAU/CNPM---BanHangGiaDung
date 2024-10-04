@@ -96,6 +96,9 @@
                     </div>
                 </div>
             </div>
+            <div class="header-top">
+                <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang03/dien-may/Banner-dien-may-1236x60.png" alt="" width="100%">
+            </div>
             <section class="product_poli_wrap mt-1 mb-3">
                 <div class="container">
                     <div class="product_poli m-0">

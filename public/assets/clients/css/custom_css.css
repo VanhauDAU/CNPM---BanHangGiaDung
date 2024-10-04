@@ -226,7 +226,7 @@ header .navbar form .txtQuery{
 .sub-category li:hover a{
     color: green;
     text-decoration: none;
-    padding: 5px;
+    /* padding: 5px; */
     font-weight: 600;
 }
 .list-group-item:hover .sub-category {
@@ -239,15 +239,28 @@ header .navbar form .txtQuery{
     color: transparent;
     transition: all .5s ease;
 }
-.category-link:hover:hover .icon-submenu{
+/* .category-link:hover:hover .icon-submenu{
     color:#007bff ;
     transform: translateX(5px);
-}
+} */
 /* product item */
 .new-product-label {
     background: linear-gradient(90deg, #f80, #e00); /* Tạo màu chuyển gradient từ cam sang đỏ */
     font-size: 14px;
     padding: 5px 15px;
+    color: white;
+    border-radius: 5px;
+    text-transform: uppercase;
+    display: inline-block;
+    position: relative;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+.new-product-label1 {
+    background-color: #D9AFD9;
+    background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+
+    font-size: 8px;
     color: white;
     border-radius: 5px;
     text-transform: uppercase;

@@ -11,6 +11,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class CommentController extends Controller
 {
     //
+    private $comments;
+    public function __construct()
+    {
+        $this->comments = new comments();
+    }
     public function store(Request $request, $id) {
         // dd($request->all());
         if (Auth::check()) {
@@ -39,15 +44,15 @@ class CommentController extends Controller
                 'gioi_tinh.required' => 'Bạn chưa chọn giới tính',
                 'noi_dung.required' => 'Bạn chưa nhập bình luận',
             ]);
-            DB::table('khvanglai_binhluansp')->insert([
+            Comments::create([
+                'user_id' => null,
+                'maSP' => $id,
                 'ho_ten' => $request->ho_ten,
                 'so_dien_thoai' => $request->so_dien_thoai,
                 'email' => $request->email,
                 'gioi_tinh' => $request->gioi_tinh,
                 'maSP' => $id,
                 'noi_dung' => $request->noi_dung,
-                'created_at' => now(),
-                
             ]);
             toastr()->success('Thành công', 'Bình luận của bạn đã gửi thành công!');
         }
@@ -56,43 +61,91 @@ class CommentController extends Controller
     public function index() {
         $title = 'QUẢN LÝ BÌNH LUẬN';
     
-        $comment1 = DB::table('binhluansp')
-            ->select('taikhoan.ho_ten', 'binhluansp.*', 'sanpham.ten_san_pham', 'sanpham.slug')
-            ->join('sanpham', 'sanpham.maSP', '=', 'binhluansp.maSP')
-            ->join('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
-            ->get();
-
-        $comment2 = DB::table('khvanglai_binhluansp')
-            ->select('khvanglai_binhluansp.*', 'sanpham.ten_san_pham', 'sanpham.slug as slug')
-            ->join('sanpham', 'sanpham.maSP', '=', 'khvanglai_binhluansp.maSP')
-            ->get();
-
-        $commentList = $comment1->merge($comment2);
+        $commentList = DB::table('binhluansp')
+        ->select('taikhoan.ho_ten', 'binhluansp.*', 'sanpham.ten_san_pham', 'sanpham.slug')
+        ->join('sanpham', 'sanpham.maSP', '=', 'binhluansp.maSP')
+        ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
+        ->orderBy('created_at','DESC')
+        ->get();
         // dd($commentList);
+
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 5; 
+        $perPage = 7; 
         $currentItems = $commentList->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $commentList = new LengthAwarePaginator($currentItems, $commentList->count(), $perPage, $currentPage, [
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
-    
         return view('admin.comments.index', compact('title', 'commentList'));
     }
-    
-    public function add(){
-
-    }
-    public function cmtAdd(Request $request){
-
-    }
     public function edit($id){
+        $title = "CẬP NHẬT BÀI VIẾT";
+        if(!empty($id)){
+            $cmtDetail = DB::table('binhluansp')
+            ->select('taikhoan.*', 'binhluansp.*', 'sanpham.ten_san_pham', 'sanpham.slug')
+            ->join('sanpham', 'sanpham.maSP', '=', 'binhluansp.maSP')
+            ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
+            ->where('binhluansp.id','=',$id)
+            ->orderBy('binhluansp.created_at','DESC')
+            ->get();
+            // dd($cmtDetail);
+            if(!empty($cmtDetail[0])){
+                $cmtDetail = $cmtDetail[0];
+            }else{
+                return redirect()->route('admin.manage_user')->with('msg','Bình luận không tồn tại!');
+            }
+        }else{
+            return redirect()->route('admin.manage_user')->with('msg','Mã Bình luận Không Tồn Tại');
+        }
+        return view('admin.comments.edit', compact('title','cmtDetail'));
+    }
+    public function cmtEdit(Request $request, $id)
+    {
+        if (empty($id)) {
+            return back()->with('msg', 'Liên kết không tồn tại');
+        }
 
-    }
-    public function cmtEdit(Request $request, $id){
+        $updated = DB::table('binhluansp')
+            ->where('id', $id)
+            ->update([
+                'trang_thai' => $request->trang_thai,
+                'updated_at' => now(),
+            ]);
 
+        if ($updated) {
+            toastr()->success('Thành công', 'Cập nhật trạng thái thành công!');
+        } else {
+            toastr()->error('Thất bại', 'Cập nhật trạng thái không thành công!');
+        }
+
+        return redirect()->route('getedit_cmt', ['id' => $id]);
     }
-    public function delete($id){
-        
+
+    public function delete($id)
+    {
+        if (!empty($id)) {
+            $userDetail = DB::table('binhluansp')->where('id', $id)->first();
+
+            if (!empty($userDetail)) {
+                $deleteuser = DB::table('binhluansp')->where('id', $id)->delete();
+
+                if ($deleteuser) {
+                    $msg = 'Xóa bình luận thành công';
+                    toastr()->success('Thành công', $msg);
+                } else {
+                    $msg = 'Bạn không thể xóa bình luận lúc này, vui lòng thử lại sau!';
+                    toastr()->error('Thất bại', $msg);
+                }
+            } else {
+                $msg = 'Bình luận không tồn tại!';
+                toastr()->warning('Cảnh báo', $msg);
+            }
+        } else {
+            $msg = 'Liên kết không tồn tại';
+            toastr()->warning('Cảnh báo', $msg);
+        }
+
+        return redirect()->route('admin.manage_cmt')->with('msg', $msg);
     }
+
 
 }

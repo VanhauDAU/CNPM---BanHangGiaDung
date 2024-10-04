@@ -181,7 +181,11 @@
             <a href=""><i class="fa-brands fa-telegram" style="color:#3AAFE1;"></i></a>
         </div>
     </div>
+    
     @yield('content-clients')
+    <div class="header-top">
+        <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang10/10-10/Banner-10-10-1236x60.png" alt="" width="100%">
+    </div>
     <!-- Footer -->
     @include('Clients.blocks.footer')
     @yield('js')

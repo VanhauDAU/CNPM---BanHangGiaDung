@@ -27,7 +27,6 @@
                     <div class="row col-sm-12">
                         <div class="col-sm-4">
                             @php
-                        // Kiểm tra nếu id_danh_muc không rỗng
                         $itemCategories = !empty($item->id_danh_muc) ? getChuyenMuc1($item->id_danh_muc) : [];
                         @endphp
                         @if(!empty($itemCategories) && count($itemCategories) > 0)

@@ -1,5 +1,7 @@
 <!-- ============================================== HEADER ============================================== -->
+
 <header class="header-style-1">
+    
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg shadow-sm py-3 fixed-top">
       <div class="container">

@@ -84,13 +84,7 @@ function CountCmt($id) {
         ->where('trang_thai', 1)
         ->where('maSP', $id) 
         ->count();
-
-    $countKhvanglaiBinhluansp = DB::table('khvanglai_binhluansp')
-        ->where('trang_thai', 1)
-        ->where('maSP', $id) 
-        ->count();
-
-    return $countBinhluansp + $countKhvanglaiBinhluansp;
+    return $countBinhluansp;
 }
 function get5Product($idCm,$maSP){
     return DB::table('sanpham')
@@ -99,7 +93,6 @@ function get5Product($idCm,$maSP){
     ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX')
     ->where('chitietdanhmucsp.id_chuyen_muc',$idCm)
     ->where('maSP','!=',$maSP)
-    ->limit(5)
     ->orderBy('sanpham.created_at','DESC')
     ->get();
     // dd($test);

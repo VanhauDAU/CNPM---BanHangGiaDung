@@ -195,7 +195,7 @@
                         </div>
                         <div class="col-md-5 pt-1">
                             <h5 class="m-0 pt-2 pb-2 fs-4 text-uppercase fw-bold text-center">Sản phẩm liên quan</h5>
-                            <div class="list-product p-2">
+                            <div class="list-product p-2 mota " style="max-height: 600px; overflow-y:auto">
                                 @if(!empty(get5Product($productDetail->id_chuyen_muc,$productDetail->maSP)))
                                     @foreach(get5Product($productDetail->id_chuyen_muc,$productDetail->maSP) as $item)
                                     <a href="{{route('home.chi_tiet_sp',$item->slug)}}">
@@ -331,10 +331,20 @@
                                                 
                                             </strong>
                                             <p class="mb-1">{{ $comment->noi_dung }}</p>
-                                            <small class="text-muted">
-                                                {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
-                                            </small>
-                                            <button class="btn btn-link p-0" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                            <div class="row d-flex align-items-center">
+                                                <div class="timeCmt">
+                                                    <small class="text-muted" style="font-size: 10px">
+                                                        TG Bình Luận: {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
+                                                        <br/>
+                                                        TG Duyệt: {{ \Carbon\Carbon::parse($comment->updated_at)->format('d-m-Y H:i:s') }}
+                                                    </small>
+                                                </div>
+                                                <div class="replyCmt ms-auto">
+                                                    <button class="btn btn-primary text-white mt-2" style="padding: 1px 15px" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                                </div>
+                                            </div>
+                                            
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -405,11 +415,18 @@
                                                                 <span class="nhanvien-cmt">[NHÂN VIÊN]</span>
                                                             @endif
                                                         </strong>
-                                                        <p class="mb-1">{{ $comment->noi_dung }}</p>
-                                                        <small class="text-muted">
-                                                            {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
-                                                        </small>
-                                                        <button class="btn btn-link p-0" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                                        <div class="row d-flex align-items-center">
+                                                            <div class="timeCmt">
+                                                                <small class="text-muted" style="font-size: 12px">
+                                                                    TG Bình Luận: {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
+                                                                    <br/>
+                                                                    TG Duyệt: {{ \Carbon\Carbon::parse($comment->updated_at)->format('d-m-Y H:i:s') }}
+                                                                </small>
+                                                            </div>
+                                                            <div class="replyCmt ms-auto">
+                                                                <button class="btn btn-primary text-white mt-2" style="padding: 1px 15px" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -505,6 +522,9 @@
 
     .gap-3 {
         gap: 10px;
+    }
+    .replyCmt:hover button{
+        text-decoration: none;
     }
 </style>
 @endsection

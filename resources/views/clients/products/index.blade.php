@@ -77,6 +77,10 @@
                                             <div class="out-of-stock-label position-absolute top-0 start-0 bg-danger text-white px-3 py-1" style="border-radius: 0 0 10px 0; font-weight: bold;">
                                                 Tạm hết hàng
                                             </div>
+                                        @elseif(\Carbon\Carbon::now()->month == 10)
+                                            <div class="new-product-label1 position-absolute top-0 start-0 text-white px-3 py-1" style="font-weight: bold;">
+                                                CHÀO THÁNG 10
+                                            </div>
                                         @endif
                                         {{-- Kiểm tra trạng thái sản phẩm, nếu hết hàng thì hiển thị--}}
                                         @if($product->created_at >= \Carbon\Carbon::now()->subDays(3))
@@ -84,6 +88,12 @@
                                                 SẢN PHẨM MỚI
                                             </div>
                                         @endif
+                                        {{-- @if (\Carbon\Carbon::now()->month == 10)
+                                            <div class="new-product-label1 position-absolute bottom-0 start-0 text-white px-3 py-1" style="font-weight: bold;">
+                                                CHÀO THÁNG 10
+                                            </div>
+                                        @endif --}}
+
                                         {{-- phần trăm giảm giá--}}
                                         @if(number_format((($product->don_gia_goc - $product->don_gia) / $product->don_gia_goc)*100) > 0 && $product->so_luong_nhap >0)
                                             <div class="new-product-label2 position-absolute top-0 end-0 text-red px-3 py-1" style="font-weight: bold;">
