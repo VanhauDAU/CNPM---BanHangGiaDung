@@ -70,7 +70,7 @@
                             <a href="{{route('home.chi_tiet_sp',$product->slug)}}">
                                 <div class="product-item p-2 d-flex flex-column" style="border-radius: 10px; background-color: #fff; transition: transform 0.3s ease;">
                                     <div class="img-container position-relative d-flex justify-content-center align-items-center" style="min-height: 200px;width: auto;overflow: hidden; border:1px solid #ccc;border-radius:20px">
-                                        <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" style="object-fit: cover;padding: 8px;border-radius: 10px; width:auto">
+                                        <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" class="img-fluid" alt="{{ $product->ten_san_pham }}" style="object-fit: cover;padding: 8px;border-radius: 10px;max-height: 200px;width:auto">
                                         
                                         {{-- Kiểm tra trạng thái sản phẩm, nếu hết hàng thì hiển thị--}}
                                         @if($product->so_luong_ton == 0)

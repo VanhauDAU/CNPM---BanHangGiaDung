@@ -62,6 +62,17 @@
             </ul>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#" id="commentDropdown" data-bs-toggle="collapse" data-bs-target="#commentSubMenu" aria-expanded="false">
+                <i class="fa-solid fa-message swing"></i> QL Bình Luận
+                <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
+            </a>
+            <ul class="collapse" id="commentSubMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.manage_post')}}">Xem - Xóa</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#promotionSubMenu" aria-expanded="false">
                 <i class="fas fa-tags"></i> QL Khuyến Mãi
                 <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>

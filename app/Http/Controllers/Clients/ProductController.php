@@ -136,7 +136,7 @@ class ProductController extends Controller
             return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         $commentSP1 = DB::table('binhluansp')
-            ->select('taikhoan.ho_ten', 'taikhoan.provider', 'taikhoan.anh', 'binhluansp.*')
+            ->select('taikhoan.ho_ten','taikhoan.maCV', 'taikhoan.provider', 'taikhoan.anh', 'binhluansp.*')
             ->join('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
             ->where('binhluansp.maSP', $productDetail->maSP)
             ->where('binhluansp.trang_thai', 1)

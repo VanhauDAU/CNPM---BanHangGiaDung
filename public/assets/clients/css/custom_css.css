@@ -607,6 +607,46 @@ header .navbar form .txtQuery{
     border-radius: 50%; /* Hình ảnh tròn */
     margin-right: 10px; /* Khoảng cách bên phải của hình ảnh */
 }
+.img-usercmt {
+    border: 3px solid red; /* Thiết lập màu viền ban đầu */
+    animation: colorChange3 2s infinite;
+}
+/* Hiệu ứng đẹp cho chữ */
+.admin-cmt {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #f093fb, #f5576c);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: glow 1.5s ease-in-out infinite alternate;
+  }
+  
+  .nhanvien-cmt {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    background: linear-gradient(45deg, #43e97b, #38f9d7);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: glow 1.5s ease-in-out infinite alternate;
+  }
+  
+@keyframes glow {
+    0% {
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+    100% {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.8);
+    }
+  }
+  
+@keyframes colorChange3 {
+    0% { border-color: red; }
+    25% { border-color: blue; }
+    50% { border-color: green; }
+    75% { border-color: yellow; }
+    100% { border-color: red; }
+}
 
 .comment button {
     color: #007bff; /* Màu chữ cho nút trả lời */

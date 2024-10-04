@@ -207,7 +207,7 @@
                                     <div class="row border rounded firtUserReview p-3 d-flex">
                                         <div class="reviewFirst col-md-7">
                                             <h3 style="font-size: 20px" >Trở thành người đầu tiên đánh giá về sản phẩm</h3>
-                                            <button class="btn btn-primary col-md-6 mt-3">Đánh giá về sản phẩm</button>
+                                            <button class="btn btn-primary col-md-6 mt-3" onclick="checkLoginAndRedirect()">Đánh giá về sản phẩm</button>
                                         </div>
                                         <div class="image-reviewFirst col-md-5">
                                             <img src="https://fptshop.com.vn/img/imgStar.png?w=1920&q=100" alt="Đánh giá sản phẩm" style="width: 280px">
@@ -215,16 +215,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                                function checkLoginAndRedirect() {
+                                    // Giả định bạn có một biến JavaScript để kiểm tra trạng thái đăng nhập
+                                    const isLoggedIn = @json(Auth::check());
+
+                                    if (!isLoggedIn) {
+                                        // Nếu chưa đăng nhập, hiển thị thông báo
+                                        alert("Bạn cần đăng nhập để đánh giá sản phẩm!");
+                                        window.location.href = '/login'; // Thay đổi đường dẫn theo trang đăng nhập của bạn
+                                    } else {
+                                        // Nếu đã đăng nhập, thực hiện hành động khác, ví dụ, mở form đánh giá
+                                        // openReviewForm(); // Hàm mở form đánh giá nếu bạn có
+                                        console.log("Đã đăng nhập, mở form đánh giá.");
+                                    }
+                                }
+                            </script>
                         @else
                         @endif
                         <div class="row mt-3">
                             <div class="col-md-12  d-flex justify-content-between">
                                 <div class="col-md-2 d-flex justify-content-center align-items-center">
-                                    @if(!empty(CountCmt($productDetail->maSP)))
-                                        {{CountCmt($productDetail->maSP)}} Bình Luận
-                                    @else
-                                        0 Bình Luận
-                                    @endif
+                                    
                                 </div>
                                 
                                 <div class="col-md-4 rating-stars">
@@ -260,7 +272,15 @@
                         </form>
                         <div class="row mt-4">
                             <hr>
-                            <h4>Bình luận:</h4>
+                            <h4>Bình luận: 
+                                <span class="running-text" style="font-size: 20px">
+                                    @if(!empty(CountCmt($productDetail->maSP)))
+                                        {{CountCmt($productDetail->maSP)}} Bình Luận
+                                    @else
+                                        0 Bình Luận
+                                    @endif
+                                </span>
+                            </h4>
                             <div class="cmt-scroll" style="height: 400px">
                             @foreach ($commentSP as $comment)
                                 <div class="comment mb-3 border p-2 rounded">
@@ -274,9 +294,18 @@
                                                 {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten }}
                                             @endif
                                             "
-                                          class="rounded-circle" width="40" height="40">
+                                          class="rounded-circle img-usercmt" width="40" height="40">
                                         <div class="ml-3">
-                                            <strong>{{ $comment->ho_ten }}</strong>
+                                            <strong>{{ $comment->ho_ten }}
+                                                    @if($comment->provider =="vanglai")
+                                                    <span style="color: #015958"> [Khách Vãng Lai]</span>
+                                                    @elseif(!empty($comment->maCV == 1))
+                                                        <span class="admin-cmt">[ADMIN]</span>
+                                                    @elseif(!empty($comment->maCV == 2 || $comment->maCV == 3) )
+                                                        <span class="nhanvien-cmt">[NHÂN VIÊN]</span>
+                                                    @endif
+                                                
+                                            </strong>
                                             <p class="mb-1">{{ $comment->noi_dung }}</p>
                                             <small class="text-muted">
                                                 {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
@@ -331,7 +360,7 @@
                                             @foreach ($commentSP as $comment)
                                             <div class="comment mb-3 border p-2 rounded">
                                                 <div class="d-flex align-items-start">
-                                                    <img src="
+                                                    <img style="img-usercmt" src="
                                                         @if(!empty($comment->provider == "google"))
                                                            {{$comment->anh}}
                                                         @elseif($comment->provider =="vanglai")
@@ -342,7 +371,16 @@
                                                         "
                                                       class="rounded-circle" width="40" height="40">
                                                     <div class="ml-3">
-                                                        <strong>{{ $comment->ho_ten }}</strong>
+                                                        <strong>
+                                                            {{ $comment->ho_ten }} 
+                                                            @if($comment->provider =="vanglai")
+                                                            <span style="color: #015958"> [Khách Vãng Lai]</span>
+                                                            @elseif(!empty($comment->maCV == 1))
+                                                                <span class="admin-cmt">[ADMIN]</span>
+                                                            @elseif(!empty($comment->maCV == 2 || $comment->maCV == 3) )
+                                                                <span class="nhanvien-cmt">[NHÂN VIÊN]</span>
+                                                            @endif
+                                                        </strong>
                                                         <p class="mb-1">{{ $comment->noi_dung }}</p>
                                                         <small class="text-muted">
                                                             {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
