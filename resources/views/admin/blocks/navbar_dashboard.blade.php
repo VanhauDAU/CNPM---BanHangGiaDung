@@ -68,7 +68,7 @@
             </a>
             <ul class="collapse" id="commentSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.manage_post')}}">Xem - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.manage_cmt')}}">Xem - Xóa</a>
                 </li>
             </ul>
         </li>

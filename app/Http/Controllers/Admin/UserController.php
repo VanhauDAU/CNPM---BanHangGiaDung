@@ -55,6 +55,7 @@ class UserController extends Controller
         ];
         //end xử lý
         $userList = $this->users->getAllUsers($filters, $keyword,$sortArr, self::_PER_PAGE);
+        // dd($userList);
         return view('admin.users.index', compact('title', 'userList','sortType'));
     }
     public function get_add_user(){

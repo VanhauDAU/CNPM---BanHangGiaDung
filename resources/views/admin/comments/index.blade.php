@@ -15,11 +15,6 @@
                 {{ session('msg') }}
             </div>
         @endif
-
-        <div class="d-flex justify-content-between mb-2">
-            <a href="{{ route('getadd_post') }}" class="btn btn-primary">Thêm bài viết</a>
-        </div>
-
         <form action="" method="get" class="mb-3 border-top pt-3">
             <div class="row align-items-center">
                 <div class="col-sm-1">
@@ -28,7 +23,7 @@
                         <h4 class="mb-0 fs-6">Bộ Lọc</h4>
                     </label>
                 </div>
-                <div class="col-sm-2">
+                {{-- <div class="col-sm-2">
                     <select class="form-select" name="chuc_vu" id="chuc_vu">
                         <option value="0">Người đăng</option>
                         @if(!empty(getAllUserPost()))
@@ -37,10 +32,10 @@
                             @endforeach
                         @endif
                     </select>
-                </div>
-                <div class="col-sm-3">
+                </div> --}}
+                {{-- <div class="col-sm-3">
                     <input type="search" class="form-control" name="keyword" id="keyword" placeholder="Nhập tìm kiếm..." value="{{request()->keyword}}">
-                </div>
+                </div> --}}
                 <div class="col-sm-2">
                     <button class="btn btn-primary btn-block" type="submit">Tìm kiếm</button>
                 </div>
@@ -49,52 +44,45 @@
 
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
+                <tr class="align-middle">
                     <th style="width:3%;"><a href="">STT</a></th>
-                    <th><a href="">Ảnh</a></th>
-                    <th><a href="">Tiêu đề</a></th>
                     <th><a href="">Người đăng</a></th>
-                    <th><a href="">Ngày đăng</a></th>
-                    <th><a href="">Ngày cập nhật</a></th>
+                    <th><a href="">Sản phẩm</a></th>
+                    <th><a href="">Nội dung</a></th>
                     <th><a href="">Trạng thái</a></th>
+                    <th><a href="">Ngày bình luận</a></th>
                     <th style="width: 200px;"><a href="">Hành động</a></th>
                 </tr>
             </thead>
             <tbody>
-                @if(!empty($PostList))
-                    @foreach ($PostList as $key => $item)
+                @if(!empty($commentList))
+                    @foreach ($commentList as $key => $item)
                     <tr class="align-middle">
                         <td>{{$key + 1}}</td>
-                        <td><img src="{{asset('storage/posts/img/'.$item->anh_bia)}}" alt="" style="width: 100px">
-                        </td>
-                        <td>
-                            {!! \Illuminate\Support\Str::limit($item->tieu_de,30) !!}
-                        </td>
-                            {{-- {!! \Illuminate\Support\Str::limit($item->noi_dung, 50) !!} --}}
                         <td>{{$item->ho_ten}}</td>
                         <td>
-                            {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}
+                            {{$item->ten_san_pham}}
+                            {{-- {!! \Illuminate\Support\Str::limit($item->tieu_de,30) !!} --}}
+                        </td>
+                        <td>{{$item->noi_dung}}</td>
+                        <td>
+                            @if($item->trang_thai == 1)
+                                Đã Duyệt
+                            @else
+                                Chưa Duyệt
+                            @endif
                         </td>
                         <td>
-                            @if(empty($item->updated_at))
+                            @if(empty($item->created_at))
                                 <i class="fa-solid fa-xmark"></i>
                             @else
-                                {{ \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y')}}
+                                {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}
                             @endif
-                        </td>
-                        <td>
-                            @if($item->trang_thai == 0)
-                                <h6 class="bg-danger p-1 text-white rounded" style="min-width: 30px;">ẨN</h6>
-                            @else
-                                <h6 class="bg-success p-1 text-white rounded" style="min-width: 30px;">HIỆN</h6>
-                            @endif
-                            
-
                         </td>
                         <td>
                             {{-- <a href="{{ route('info', ['id'=>$item->username]) }}" class="btn btn-info btn-sm">Xem</a> --}}
-                            <a href="{{ route('getedit_post', ['id'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{route('getdelete_post',['id'=>$item->id_bai_viet]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
+                            <a href="{{-- route('getedit_post', ['id'=>$item->id_bai_viet]) --}}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{{--route('getdelete_post',['id'=>$item->id_bai_viet]) --}}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger btn-sm delete-user" data-form="delete-form-{{$key}}">Xóa</button>
@@ -104,36 +92,16 @@
                     @endforeach
                 @else
                 <tr>
-                    <td colspan="8" class="text-center">KHÔNG CÓ NGƯỜI DÙNG</td>
+                    <td colspan="7" class="text-center">KHÔNG CÓ BÌNH LUẬN NÀO</td>
                 </tr>
                 @endif
             </tbody>
         </table>
         <div class="d-flex justify-content-center mt-3">
-            {{$PostList->links()}}
+            {{$commentList->links()}}
         </div>  
     </div>
 </div>
 <script>
-    document.querySelectorAll('.delete-user').forEach(button => {
-    button.addEventListener('click', (event) => {
-        event.preventDefault();
-        const formId = event.target.getAttribute('data-form');
-        const form = document.getElementById(formId);
-        Swal.fire({
-            title: "Bạn có chắc chắn muốn xóa?",
-            text: "Bạn sẽ không thể hoàn tác điều này!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Đồng ý!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
-        });
-    });
-});
 </script>
 @endsection

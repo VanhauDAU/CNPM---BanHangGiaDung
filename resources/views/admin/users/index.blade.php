@@ -60,7 +60,7 @@
                     <th><a href="">SĐT</a></th>
                     <th><a href="?sort-by=email&sort-type={{$sortType}}">Email</a></th>
                     {{-- <th><a href="">Địa Chỉ</a></th> --}}
-                    <th style="width: 200px;"><a href="">Chức năng</a></th>
+                    <th style="width: 200px;"><a href="">Hành động</a></th>
                 </tr>
             </thead>
             <tbody>

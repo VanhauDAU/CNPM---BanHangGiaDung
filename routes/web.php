@@ -87,6 +87,14 @@ Route::prefix('admin')->group(function () {
             Route::post('edit/{id}', [PostControllerAdmin::class, 'postEdit']);
             Route::delete('delete/{id}', [PostControllerAdmin::class, 'delete'])->name('getdelete_post');
         });
+        Route::prefix('quan-ly-binh-luan')->group(function () {
+            Route::get('', [CommentController::class, 'index'])->name('admin.manage_cmt');
+            Route::get('add', [CommentController::class, 'add'])->name('getadd_cmt');
+            Route::post('add', [CommentController::class, 'cmtAdd']);
+            Route::get('edit/{id}', [CommentController::class, 'edit'])->name('getedit_cmt');
+            Route::post('edit/{id}', [CommentController::class, 'cmtEdit']);
+            Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('getdelete_cmt');
+        });
         Route::prefix('quan-ly-hoa-don')->group(function () {
             Route::get('', [OrderController::class, 'manage_order'])->name('admin.manage_order');
             Route::get('add', [OrderController::class, 'get_add_order'])->name('getadd_order');

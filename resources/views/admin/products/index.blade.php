@@ -75,7 +75,7 @@
                     <th>Views</th>
                     <th>Loại</th>
                     <th>Ẩn/Hiện</th>
-                    <th width="200px">Chức Năng</th>
+                    <th width="200px">Hành động</th>
                 </tr>
             </thead>
             <tbody class="tbody-listsp">

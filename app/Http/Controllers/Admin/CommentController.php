@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class CommentController extends Controller
 {
     //
@@ -51,4 +53,46 @@ class CommentController extends Controller
         }
         return redirect()->back();
     }
+    public function index() {
+        $title = 'QUẢN LÝ BÌNH LUẬN';
+    
+        $comment1 = DB::table('binhluansp')
+            ->select('taikhoan.ho_ten', 'binhluansp.*', 'sanpham.ten_san_pham', 'sanpham.slug')
+            ->join('sanpham', 'sanpham.maSP', '=', 'binhluansp.maSP')
+            ->join('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
+            ->get();
+
+        $comment2 = DB::table('khvanglai_binhluansp')
+            ->select('khvanglai_binhluansp.*', 'sanpham.ten_san_pham', 'sanpham.slug as slug')
+            ->join('sanpham', 'sanpham.maSP', '=', 'khvanglai_binhluansp.maSP')
+            ->get();
+
+        $commentList = $comment1->merge($comment2);
+        // dd($commentList);
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 5; 
+        $currentItems = $commentList->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $commentList = new LengthAwarePaginator($currentItems, $commentList->count(), $perPage, $currentPage, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
+    
+        return view('admin.comments.index', compact('title', 'commentList'));
+    }
+    
+    public function add(){
+
+    }
+    public function cmtAdd(Request $request){
+
+    }
+    public function edit($id){
+
+    }
+    public function cmtEdit(Request $request, $id){
+
+    }
+    public function delete($id){
+        
+    }
+
 }
