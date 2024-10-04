@@ -79,3 +79,18 @@ function getChuyenMucCountByNSXAndDanhMuc($maNSX, $idDanhMuc)
     $groups = new Groups();
     return $groups->getChuyenMucCountByNSXAndDanhMuc($maNSX, $idDanhMuc);
 }
+function CountCmt($id) {
+    $countBinhluansp = DB::table('binhluansp')
+        ->where('trang_thai', 1)
+        ->where('maSP', $id) 
+        ->count();
+
+    $countKhvanglaiBinhluansp = DB::table('khvanglai_binhluansp')
+        ->where('trang_thai', 1)
+        ->where('maSP', $id) 
+        ->count();
+
+    return $countBinhluansp + $countKhvanglaiBinhluansp;
+}
+
+

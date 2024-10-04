@@ -591,3 +591,27 @@ header .navbar form .txtQuery{
     color: #f5c518; /* Màu vàng khi được chọn */
     border: 1px solid #f5c518;
 }
+/* bình luận sản phẩm */
+.comment {
+    background-color: #f9f9f9; /* Màu nền cho bình luận */
+    border: 1px solid #ddd; /* Đường viền nhẹ */
+    border-radius: 5px; /* Bo góc */
+    
+}
+.cmt-scroll{
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.comment img {
+    border-radius: 50%; /* Hình ảnh tròn */
+    margin-right: 10px; /* Khoảng cách bên phải của hình ảnh */
+}
+
+.comment button {
+    color: #007bff; /* Màu chữ cho nút trả lời */
+}
+
+.comment button:hover {
+    text-decoration: underline; /* Gạch chân khi di chuột */
+}

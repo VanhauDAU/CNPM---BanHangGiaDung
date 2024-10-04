@@ -198,29 +198,36 @@
                         </div>
                     </div>
                     <div class="row m-0 mt-3 p-4" style="border-radius: 25px; background-color:white; padding: 15px 10px">
-                        <div class="col-md-12">
-                            <h5 class="text-capitalize fw-bold py-2 fs-3">Khách hàng nói về sản phẩm</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="row border rounded firtUserReview p-3 d-flex">
-                                    <div class="reviewFirst col-md-7">
-                                        <h3 style="font-size: 20px" >Trở thành người đầu tiên đánh giá về sản phẩm</h3>
-                                        <button class="btn btn-primary col-md-6 mt-3">Đánh giá về sản phẩm</button>
-                                    </div>
-                                    <div class="image-reviewFirst col-md-5">
-                                        <img src="https://fptshop.com.vn/img/imgStar.png?w=1920&q=100" alt="Đánh giá sản phẩm" style="width: 280px">
+                        @if(CountCmt($productDetail->maSP) == 0)
+                            <div class="col-md-12">
+                                <h5 class="text-capitalize fw-bold py-2 fs-3">Khách hàng nói về sản phẩm</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="row border rounded firtUserReview p-3 d-flex">
+                                        <div class="reviewFirst col-md-7">
+                                            <h3 style="font-size: 20px" >Trở thành người đầu tiên đánh giá về sản phẩm</h3>
+                                            <button class="btn btn-primary col-md-6 mt-3">Đánh giá về sản phẩm</button>
+                                        </div>
+                                        <div class="image-reviewFirst col-md-5">
+                                            <img src="https://fptshop.com.vn/img/imgStar.png?w=1920&q=100" alt="Đánh giá sản phẩm" style="width: 280px">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                        @endif
                         <div class="row mt-3">
-                            <div class="col-md-9  d-flex justify-content-between">
+                            <div class="col-md-12  d-flex justify-content-between">
                                 <div class="col-md-2 d-flex justify-content-center align-items-center">
-                                    0 Bình Luận
+                                    @if(!empty(CountCmt($productDetail->maSP)))
+                                        {{CountCmt($productDetail->maSP)}} Bình Luận
+                                    @else
+                                        0 Bình Luận
+                                    @endif
                                 </div>
                                 
-                                <div class="col-md-5 rating-stars">
+                                <div class="col-md-4 rating-stars">
                                     <input type="radio" name="rating" id="rating-6" value="6">
                                     <label for="rating-6" class="star" data-value="6">Tất cả</label>
 
@@ -241,14 +248,116 @@
                                 </div>                           
                             </div>
                         </div>
-                        <form action="">
-                            <div class="row mt-3 ">
-                                <div class="col-9  d-flex">
-                                    <input type="text"  class="form-control" placeholder="Nhập nội dung bình luận">
-                                    <button type="submit">Gửi bình luận</button>
+                        @if (Auth::check())
+                        <form action="{{ route('home.chi_tiet_sp.comment', $productDetail->maSP) }}" method="POST">
+                            @csrf
+                            <div class="row mt-3 mb-3">
+                                <div class="col-md-9 d-flex gap-3">
+                                    <input type="text" class="form-control flex-grow-1 " name="noi_dung" id="noi_dung" placeholder="Nhập nội dung bình luận">
+                                    <button type="submit" class="btn btn-primary col-2 bg-black">Gửi bình luận</button>
                                 </div>
                             </div>
                         </form>
+                        <div class="row mt-4">
+                            <hr>
+                            <h4>Bình luận:</h4>
+                            <div class="cmt-scroll" style="height: 400px">
+                            @foreach ($commentSP as $comment)
+                                <div class="comment mb-3 border p-2 rounded">
+                                    <div class="d-flex align-items-start">
+                                        <img src="
+                                            @if(!empty($comment->provider == "google"))
+                                                {{$comment->anh}}
+                                            @elseif($comment->provider =="vanglai")
+                                                https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
+                                            @else
+                                                {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten }}
+                                            @endif
+                                            "
+                                          class="rounded-circle" width="40" height="40">
+                                        <div class="ml-3">
+                                            <strong>{{ $comment->ho_ten }}</strong>
+                                            <p class="mb-1">{{ $comment->noi_dung }}</p>
+                                            <small class="text-muted">
+                                                {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
+                                            </small>
+                                            <button class="btn btn-link p-0" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            </div>
+                        </div>
+                        @else
+                        <!-- Form Bình Luận -->
+                        <form id="commentForm" action="{{ route('home.chi_tiet_sp.comment', $productDetail->maSP) }}" method="POST">
+                            @csrf
+                            <div class="row mt-3 mb-3">
+                                <div class="col-md-6">
+                                    <h5>Thông tin bình luận</h5>
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <input type="text" class="form-control mb-2" name="ho_ten" placeholder="Nhập họ tên">
+                                    @error('ho_ten')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <input type="email" class="form-control mb-2" name="email" placeholder="Nhập email">
+                                    <input type="text" class="form-control mb-2" name="so_dien_thoai" placeholder="Nhập số điện thoại">
+                                    <select name="gioi_tinh" class="form-control mb-2">
+                                        <option value="">Chọn giới tính</option>
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                        <option value="2">Khác</option>
+                                    </select>
+                                    <textarea class="form-control mb-2" name="noi_dung" placeholder="Nhập nội dung bình luận"></textarea>
+                                    <button id="showCommentForm" class="btn btn-primary col-12 bg-black">Gửi bình luận</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mt-4">
+                                        <hr>
+                                        @if(CountCmt($productDetail->maSP) == 0)
+                                            <h4>Chưa có bình luận của khách hàng về bài viết này!</h4>
+                                        @else
+                                            <h4>Bình luận:</h4>
+                                        @endif
+                                        <div class="cmt-scroll" style="height: 400px">
+                                            @foreach ($commentSP as $comment)
+                                            <div class="comment mb-3 border p-2 rounded">
+                                                <div class="d-flex align-items-start">
+                                                    <img src="
+                                                        @if(!empty($comment->provider == "google"))
+                                                           {{$comment->anh}}
+                                                        @elseif($comment->provider =="vanglai")
+                                                            https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
+                                                        @else
+                                                            {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten }}
+                                                        @endif
+                                                        "
+                                                      class="rounded-circle" width="40" height="40">
+                                                    <div class="ml-3">
+                                                        <strong>{{ $comment->ho_ten }}</strong>
+                                                        <p class="mb-1">{{ $comment->noi_dung }}</p>
+                                                        <small class="text-muted">
+                                                            {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
+                                                        </small>
+                                                        <button class="btn btn-link p-0" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -314,11 +423,39 @@
     .mota::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+    form .form-control {
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 14px;
+    }
 
+    form button {
+        padding: 10px 30px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    form button:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+
+    .gap-3 {
+        gap: 10px;
+    }
 </style>
 @endsection
 @section('js')
     <script>
+
+        function replyToComment(commentId) {
+            // Hiển thị một form nhập nội dung trả lời cho bình luận
+            // Bạn có thể sử dụng modal hoặc một form inline
+            alert('Trả lời bình luận ID: ' + commentId);
+            // Thực hiện logic để hiển thị form nhập bình luận mới
+        }
+
         const stars = document.querySelectorAll('.star');
         stars.forEach(star => {
             star.addEventListener('click', function() {

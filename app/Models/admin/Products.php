@@ -11,6 +11,7 @@ class products extends Model
     protected $table ='sanpham';
     protected $primaryKey = 'maSP';
     protected $tableDM ='danhmucsanpham';
+    
     public function khuyenMais()
     {
         return $this->belongsToMany(Promotion::class, 'sanpham_khuyenmai', 'san_pham_id', 'khuyen_mai_id');

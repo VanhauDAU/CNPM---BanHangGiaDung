@@ -135,9 +135,26 @@ class ProductController extends Controller
         }else{
             return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
+        $commentSP1 = DB::table('binhluansp')
+            ->select('taikhoan.ho_ten', 'taikhoan.provider', 'taikhoan.anh', 'binhluansp.*')
+            ->join('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
+            ->where('binhluansp.maSP', $productDetail->maSP)
+            ->where('binhluansp.trang_thai', 1)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        // Lấy bình luận từ bảng khvanglai_binhluansp
+        $commentSP2 = DB::table('khvanglai_binhluansp')
+            ->select('ho_ten', 'gioi_tinh', 'email', 'khvanglai_binhluansp.*')
+            ->where('maSP', $productDetail->maSP)
+            ->where('khvanglai_binhluansp.trang_thai', 1)
+            ->get();
+
+        // Kết hợp hai mảng kết quả
+        $commentSP = $commentSP1->merge($commentSP2)->sortByDesc('created_at');
         $title=$productDetail->ten_san_pham;
-        // dd($productDetail);
-        return view('clients.products.detail_product', compact('title','productDetail'));
+        // dd($commentSP);
+        return view('clients.products.detail_product', compact('title','productDetail','commentSP'));
     }
 
 }
