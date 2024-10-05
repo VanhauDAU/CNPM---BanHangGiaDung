@@ -22,6 +22,7 @@ use App\Http\Controllers\Clients\ContactController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Clients\ShoppingCartController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
 //product user
 use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
@@ -113,7 +114,9 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::get('', [ProductControllerUser::class, 'index'])->name('index');
         Route::get('/{id}', [ProductControllerUser::class, 'show'])->name('sanpham_id');
         Route::get('/{id_danh_muc}/{id_chuyen_muc}', [ProductControllerUser::class, 'show2'])->name('sanpham_id_id');
+        Route::get('/{id_danh_muc}/{id_chuyen_muc}/{id_NSX}', [ProductControllerUser::class, 'show3'])->name('sanpham_id_id_id');
     });
+    Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('/chi-tiet-san-pham/{id}/comment', [CommentController::class, 'store'])->name('chi_tiet_sp.comment');
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
@@ -135,10 +138,13 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::get('/gio-hang', [ShoppingCartController::class, 'viewCart'])->name('cart.view');
     Route::post('/gio-hang/update/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/gio-hang/remove/{id}', [ShoppingCartController::class, 'removeFromCart'])->name('cart.remove');
+
+    Route::get('/{id}', [BrandController::class, 'getBrand'])->name('getBrand');
     
 });
 Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
 Route::get('/getDanhMuc/{id}', [ProductController::class, 'getDanhMuc'])->name('getDanhMuc');
+
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){
     Route::get('/', [PostController::class,'index'])->name('index');

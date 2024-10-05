@@ -1,6 +1,6 @@
 <nav class="sidebar p-3" id="sidebar" style="min-width:240px">
     <div class="text-center mb-4">
-        <a href="{{route('home.index')}}"><img src="{{asset('assets/general/img/logoShop_bl.png')}}" alt="Logo" class="img-fluid rounded-circle" width="80"></a>
+        <a target="_blank" href="{{route('home.index')}}"><img src="{{asset('assets/general/img/logoShop_bl.png')}}" alt="Logo" class="img-fluid rounded-circle" width="80"></a>
         <h4 style="font-size: 15px;margin-top:15px;font-weight:600; text-transform:uppercase">Chào, {{Auth::user()->ho_ten}}</h4>
         <h5 style="font-size: 15px;font-weight:600; text-transform:uppercase">{{Auth::user()->Chucvu->ten_chuc_vu}}</h5>
     </div>

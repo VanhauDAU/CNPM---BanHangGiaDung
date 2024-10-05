@@ -164,6 +164,15 @@
         @yield('content-admin')
     </div>
 </div>
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: "Thành công!",
+            text: "{{ session('success') }}",
+            icon: "success"
+        });
+    </script>
+@endif
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -306,6 +315,7 @@
         
         
     </script>
+    
 @yield('js')
         
 </body>

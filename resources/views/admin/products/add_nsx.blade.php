@@ -45,11 +45,24 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        
+                        <div class="mb-3">
+                            <label for="slugNSX" class="form-label">Đường dẫn:</label>
+                            <input type="text" name="slugNSX" id="slugNSX" class="form-control" value="{{ old('slugNSX') }}" readonly style="background-color:#ccc">
+                            @error('slugNSX')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                         <div class="mb-3">
                             <label for="so_dien_thoai" class="form-label">Số điện thoại:</label>
                             <input type="text" name="so_dien_thoai" id="so_dien_thoai" class="form-control" value="{{ old('so_dien_thoai') }}">
                             @error('so_dien_thoai')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="logo" class="form-label">Logo:</label>
+                            <input type="file" name="logo" id="logo" class="form-control" >
+                            @error('logo')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -88,6 +101,7 @@
                 <thead>
                     <tr>
                         <th>STT</th>
+                        <th>Logo</th>
                         <th>Tên Nhà Sản Xuất</th>
                         <th>Số Điện Thoại</th>
                         <th>Email</th>
@@ -99,6 +113,7 @@
                     @foreach(getAllNSX() as $key =>$item)
                         <tr>
                             <td>{{ $key+1 }}</td>
+                            <td><img style="width: 100px" src="{{ asset('storage/brands/img/'.$item->logo) }}" alt=""></td>
                             <td>{{ $item->ten_NSX }}</td>
                             <td>{{ $item->so_dien_thoai }}</td>
                             <td>{{ $item->email }}</td>
@@ -144,5 +159,25 @@
         });
     });
 });
+    function removeVietnameseTones(str) {
+            return str
+                .normalize('NFD') 
+                .replace(/[\u0300-\u036f]/g, '') 
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D'); 
+        }
+        function generateSlug(value) {
+            let slug = removeVietnameseTones(value); 
+            return slug
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        }
+        const nameInput = document.getElementById('ten_NSX');
+        const slugInput = document.getElementById('slugNSX');
+        nameInput.addEventListener('input', function() {
+            slugInput.value = generateSlug(nameInput.value);
+        });
 </script>
 @endsection

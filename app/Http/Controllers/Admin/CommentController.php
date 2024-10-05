@@ -28,8 +28,8 @@ class CommentController extends Controller
                 'user_id' => Auth::id(),
                 'maSP' => $id,
                 'noi_dung' => $request->noi_dung,
+                'provider' => null,
             ]);
-            toastr()->success('Thành công', 'Bình luận của bạn đã gửi thành công!');
         } else {
             $request->validate([
                 'ho_ten' => 'required|max:255',
@@ -44,19 +44,18 @@ class CommentController extends Controller
                 'gioi_tinh.required' => 'Bạn chưa chọn giới tính',
                 'noi_dung.required' => 'Bạn chưa nhập bình luận',
             ]);
+
             Comments::create([
                 'user_id' => null,
                 'maSP' => $id,
-                'ho_ten' => $request->ho_ten,
-                'so_dien_thoai' => $request->so_dien_thoai,
-                'email' => $request->email,
-                'gioi_tinh' => $request->gioi_tinh,
-                'maSP' => $id,
+                'ho_ten_KHVL' => $request->ho_ten,
+                'so_dien_thoai_KHVL' => $request->so_dien_thoai,
+                'email_KHVL' => $request->email,
+                'gioi_tinh_KHVL' => $request->gioi_tinh,
                 'noi_dung' => $request->noi_dung,
             ]);
-            toastr()->success('Thành công', 'Bình luận của bạn đã gửi thành công!');
         }
-        return redirect()->back();
+        return redirect()->back()->with('success','Bình luận của bạn đã được gửi, chờ phê duyệt!');
     }
     public function index() {
         $title = 'QUẢN LÝ BÌNH LUẬN';
@@ -75,6 +74,7 @@ class CommentController extends Controller
         $commentList = new LengthAwarePaginator($currentItems, $commentList->count(), $perPage, $currentPage, [
             'path' => LengthAwarePaginator::resolveCurrentPath(),
         ]);
+        
         return view('admin.comments.index', compact('title', 'commentList'));
     }
     public function edit($id){

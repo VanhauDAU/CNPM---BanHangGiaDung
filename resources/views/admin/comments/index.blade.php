@@ -48,7 +48,7 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{route('home.chi_tiet_sp',$item->slug)}}" style="text-decoration: none; color: black">
+                            <a target="_blank" href="{{route('home.chi_tiet_sp',$item->slug)}}" style="text-decoration: none; color: black">
                                 {!! \Illuminate\Support\Str::limit($item->ten_san_pham,20) !!}
                             </a>
                         </td>

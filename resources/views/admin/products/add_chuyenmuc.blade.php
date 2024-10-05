@@ -35,18 +35,20 @@
                         {{session('msg')}}
                     </div>
                 @endif
-
                 <div class="row col-12">
                     <div class="mb-6">
                         <label for="ten_danh_muc" class="form-label">Chọn Danh Mục:</label>
                         <select name="ten_danh_muc" id="ten_danh_muc" class="form-control mb-4">
+                            <option value="">Chọn Danh Mục</option>
                             @if(!empty(getAllDanhMucSp2()))
                                 @foreach(getAllDanhMucSp2() as $item)
-                                    <option value="{{$item->id_danh_muc}}" {{request()->ten_danh_muc = $item->ten_danh_muc ? 'selected' : false}}>{{$item->ten_danh_muc}}</option>
+                                    <option value="{{$item->id_danh_muc}}" {{ request()->ten_danh_muc == $item->id_danh_muc ? 'selected' : '' }}>
+                                        {{$item->ten_danh_muc}}
+                                    </option>
                                 @endforeach
-
                             @endif
                         </select>
+
                         @error('ten_danh_muc')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -63,6 +65,13 @@
                         <label for="slug" class="form-label">Đường dẫn:</label>
                         <input type="text" name="slug" id="slug" class="form-control" readonly style="background-color: #d3d3d3" value="">
                         @error('slug')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="mb-6 mb-4">
+                        <label for="anh" class="form-label">Ảnh đại diện chuyên mục:</label>
+                        <input type="file" name="anh" id="anh" class="form-control" value="">
+                        @error('anh')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

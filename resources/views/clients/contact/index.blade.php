@@ -4,7 +4,8 @@
 @endsection
 @section('content-clients')
 <main>
-    <div class="container-contact container" style="margin-top:100px;margin-bottom: 50px">
+<div class="main-products">
+    <div class="container mt-2" style="padding: 80px 0px 0px;">
         <div class="title-contact">
             <div class="body-title">
                 <h2 class="title running-text">Liên hệ</h2>
@@ -112,6 +113,7 @@
             </div>
         </div>
     </div>
+</div>
 </main>
 
 @endsection

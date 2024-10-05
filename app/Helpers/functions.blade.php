@@ -38,6 +38,23 @@ function getAllChuyenMucSp(){
     $group = new Groups;
     return $group->getAllChuyenMucSp();
 }
+function CountChuyenMucNSX($id,$maNSX){
+    return DB::table('nsx_danhmuc')
+    ->where('id_danh_muc',$id)
+    ->where('maNSX',$maNSX)
+    ->count();
+}
+function CountSanPhamNSX($maNSX){
+    return DB::table('sanpham')
+    ->where('maNSX',$maNSX)
+    ->count();
+}
+function CountSanPhamCM($maNSX,$idDm){
+    return DB::table('sanpham')
+    ->where('maNSX',$maNSX)
+    ->where('id_chuyen_muc',$idDm)
+    ->count();
+}
 function isAdminActive($username){
     $count = admin::where('username', $username)->where('loai_tai_khoan',1)->count();
     if($count > 0){
@@ -66,14 +83,6 @@ function getChuyenMuc1($id){
     $groups = new Groups();
     return $groups->getChuyenMuc1($id);
 }
-function getChuyenMuc2($id){
-    $groups = new Groups();
-    return $groups->getChuyenMuc2($id);
-}
-function getChuyenMuc3($id){
-    $groups = new Groups();
-    return $groups->getChuyenMuc3($id);
-}
 function getChuyenMucCountByNSXAndDanhMuc($maNSX, $idDanhMuc)
 {
     $groups = new Groups();
@@ -97,4 +106,14 @@ function get5Product($idCm,$maSP){
     ->get();
     // dd($test);
 }
-
+function getAllChuyenMucNSX($slug){
+    return DB::table('nhasanxuat')
+    ->join('nsx_danhmuc', 'nsx_danhmuc.maNSX', '=', 'nhasanxuat.maNSX')
+    ->join('chitietdanhmucsp', 'chitietdanhmucsp.id_chuyen_muc', '=', 'nsx_danhmuc.id_chuyen_muc')
+    ->join('danhmucsanpham', 'danhmucsanpham.id_danh_muc', '=', 'nsx_danhmuc.id_danh_muc')
+    ->join('sanpham', 'sanpham.id_chuyen_muc', '=', 'chitietdanhmucsp.id_chuyen_muc')
+    ->where('nhasanxuat.slug', $slug)
+    ->distinct()
+    ->select('chitietdanhmucsp.*', 'nhasanxuat.*','nhasanxuat.slug as slugNSX','danhmucsanpham.slug as slugDm','chitietdanhmucsp.slug as slugCm')
+    ->get();
+}

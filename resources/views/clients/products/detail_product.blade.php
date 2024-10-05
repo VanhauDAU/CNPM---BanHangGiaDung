@@ -18,8 +18,12 @@
             </div> 
             <div class="row ps-2">
                 <div class="img-product col-md-5 image-magnifier-container">
-                    <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" id="product-image" class="product-image img-fluid" alt="{{ $productDetail->ten_san_pham }}" style="object-fit: cover;padding: 19px;border-radius: 10px; width:auto">
-                    <div class="magnifier" id="magnifier"></div>
+                    <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" id="product-image" class="product-image img-fluid rounded" alt="{{ $productDetail->ten_san_pham }}" style="object-fit: cover;padding: 19px;border-radius: 15px; width:auto">
+                    <div class="img-magnifier-glass"></div> <!-- Kính lúp -->
+                    <button class="ms-3" onclick="scrollToComments()">Xem đánh giá</button>
+                    <img alt="Giá online (off 15/10)" loading="lazy" decoding="async" data-nimg="fill" class="relative w-auto object-contain ms-5" sizes="100vw" 
+                    srcset="https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=640&amp;q=100 640w, https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=750&amp;q=100 750w, https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=828&amp;q=100 828w, https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=1080&amp;q=100 1080w, https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=1200&amp;q=100 1200w, https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=1920&amp;q=100 1920w" src="https://cdn2.fptshop.com.vn/svg/Badge_Chi_tiet_Online_sieu_re_26298fd98f.svg?w=1920&amp;q=100" 
+                    style="height: 40px; width: 80px; inset: 0px; color: transparent;">
                 </div>
                 <div class="info-general-product col-md-7 ps-0">
                     <div class="name-product">
@@ -181,7 +185,21 @@
                                         </div>
                                     </div>
                                 </aside>
+                                <a href="tel:0777464347">
+                                    <div class="row p-3 align-items-center">
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-phone fa-lg fs-2 text-danger shake"></i>
+                                        </div>
+                                        <div class="col">
+                                            <h6>
+                                                Gọi <span style="color: red; font-weight: bold;">0777.46.43.47</span> để được tư vấn 
+                                                <span style="font-size: 14px;">(Không miễn phí)</span>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -201,7 +219,7 @@
                                     <a href="{{route('home.chi_tiet_sp',$item->slug)}}">
                                         {{-- {{dd(get5Product($productDetail->id_danh_muc,$productDetail->maSP))}} --}}
                                         <div class="product-item p-2 rounded d-flex border">
-                                            <img src="{{asset('storage/products/img/'.$item->anh)}}" alt="" class="border rounded" style="width: auto; max-height:100px">
+                                            <img loading="lazy" src="{{asset('storage/products/img/'.$item->anh)}}" alt="" class="border rounded" style="min-width: 150px; max-height:100px">
                                             <div class="info-product ms-1">
                                                 <h5 style="font-size:13px">
                                                     {{\Illuminate\Support\Str::limit($item->ten_san_pham,50)}}
@@ -221,7 +239,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row m-0 mt-3 p-4" style="border-radius: 25px; background-color:white; padding: 15px 10px">
+                    <div class="row m-0 mt-4 p-4" id="comments" style="border-radius: 25px; background-color:white; padding: 15px 10px">
                         @if(CountCmt($productDetail->maSP) == 0)
                             <div class="col-md-12">
                                 <h5 class="text-capitalize fw-bold py-2 fs-3">Khách hàng nói về sản phẩm</h5>
@@ -259,8 +277,11 @@
                         @endif
                         <div class="row mt-3">
                             <div class="col-md-12  d-flex justify-content-between">
-                                <div class="col-md-2 d-flex justify-content-center align-items-center">
-                                    
+                                <div class="col-md-4 d-flex align-items-center">
+                                    @if(Auth::check())
+                                        <img src="{{asset('storage/users/img/'.Auth::user()->anh)}}" alt="" class="me-3 border-circle border-primary" style="width: 50px; border-color: red">
+                                        Bình luận với tư cách: <span class="fw-bold">{{Auth::user()->ho_ten}}</span>
+                                    @endif
                                 </div>
                                 
                                 <div class="col-md-4 rating-stars">
@@ -315,12 +336,12 @@
                                             @elseif($comment->provider =="vanglai")
                                                 https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
                                             @else
-                                                {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten }}
+                                                {{ asset('storage/users/img/'.$comment->anh) }}" alt=""
                                             @endif
                                             "
                                           class="rounded-circle img-usercmt" width="40" height="40">
                                         <div class="ml-3">
-                                            <strong>{{ $comment->ho_ten }}
+                                            <strong>{{ $comment->ho_ten_KH ??  $comment->ho_ten_KHVL}}
                                                     @if($comment->provider =="vanglai")
                                                     <span style="color: #015958"> [Khách Vãng Lai]</span>
                                                     @elseif(!empty($comment->maCV == 1))
@@ -343,8 +364,6 @@
                                                     <button class="btn btn-primary text-white mt-2" style="padding: 1px 15px" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
                                                 </div>
                                             </div>
-                                            
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -358,7 +377,7 @@
                             <div class="row mt-3 mb-3">
                                 <div class="col-md-6">
                                     <h5>Thông tin bình luận</h5>
-                                    @if ($errors->any())
+                                    {{-- @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>
                                                 @foreach ($errors->all() as $error)
@@ -366,7 +385,7 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                     <input type="text" class="form-control mb-2" name="ho_ten" placeholder="Nhập họ tên">
                                     @error('ho_ten')
                                         <small class="text-danger">{{ $message }}</small>
@@ -400,13 +419,13 @@
                                                         @elseif($comment->provider =="vanglai")
                                                             https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
                                                         @else
-                                                            {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten }}
+                                                            {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten_KH ?? $comment->ho_ten_KHVL }}
                                                         @endif
                                                         "
                                                       class="rounded-circle" width="40" height="40">
                                                     <div class="ml-3">
                                                         <strong>
-                                                            {{ $comment->ho_ten }} 
+                                                            {{ $comment->ho_ten_KH ?? $comment->ho_ten_KHVL }} 
                                                             @if($comment->provider =="vanglai")
                                                             <span style="color: #015958"> [Khách Vãng Lai]</span>
                                                             @elseif(!empty($comment->maCV == 1))
@@ -415,6 +434,7 @@
                                                                 <span class="nhanvien-cmt">[NHÂN VIÊN]</span>
                                                             @endif
                                                         </strong>
+                                                        <p class="mb-1">{{ $comment->noi_dung }}</p>
                                                         <div class="row d-flex align-items-center">
                                                             <div class="timeCmt">
                                                                 <small class="text-muted" style="font-size: 12px">
@@ -431,15 +451,27 @@
                                                 </div>
                                             </div>
                                             @endforeach
+                                            @if (session('success'))
+                                                <script>
+                                                    Swal.fire({
+                                                        title: "Thành công!",
+                                                        text: "{{ session('success') }}",
+                                                        icon: "success"
+                                                    });
+                                                </script>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
                         @endif
+                        
                     </div>
                 </div>
             </div>
+            
+        </div>
     </div>
 <div>
 @endsection
@@ -530,7 +562,11 @@
 @endsection
 @section('js')
     <script>
-
+         function scrollToComments() {
+            document.getElementById('comments').scrollIntoView({
+            behavior: 'smooth'  // Di chuyển mượt mà
+            });
+        }
         function replyToComment(commentId) {
             // Hiển thị một form nhập nội dung trả lời cho bình luận
             // Bạn có thể sử dụng modal hoặc một form inline
@@ -577,29 +613,36 @@
             });
         }
     }
+    const img = document.getElementById("product-image");
+    const glass = document.querySelector(".img-magnifier-glass");
 
-    const magnifier = document.getElementById("magnifier");
-    const productImage = document.getElementById("product-image");
-
-    productImage.addEventListener("mousemove", function (e) {
-        const x = e.pageX - productImage.offsetLeft; 
-        const y = e.pageY - productImage.offsetTop; 
-
-        // Tính toán vị trí kính lúp
-        magnifier.style.left = x - magnifier.offsetWidth / 2 + "px";
-        magnifier.style.top = y - magnifier.offsetHeight / 2 + "px";
-        magnifier.style.opacity = 1; // Hiện kính lúp
-
-        // Tính toán tỷ lệ zoom
-        const zoomFactor = 2; // Hệ số zoom
-        magnifier.style.backgroundImage = `url(${productImage.src})`;
-        magnifier.style.backgroundSize = `${productImage.width * zoomFactor}px ${productImage.height * zoomFactor}px`;
-        magnifier.style.backgroundPosition = `-${x * zoomFactor - magnifier.offsetWidth / 2}px -${y * zoomFactor - magnifier.offsetHeight / 2}px`;
+    img.addEventListener("mousemove", magnify);
+    glass.addEventListener("mousemove", magnify);
+    img.addEventListener("mouseleave", () => {
+        glass.style.opacity = 0; 
     });
 
-    productImage.addEventListener("mouseleave", function () {
-        magnifier.style.opacity = 0; // Ẩn kính lúp khi rời chuột
-    });
+    function magnify(e) {
+        const pos = getCursorPos(e);
+        const x = pos.x;
+        const y = pos.y;
 
+        glass.style.left = x - glass.offsetWidth / 2 + "px";
+        glass.style.top = y - glass.offsetHeight / 2 + "px";
+        glass.style.opacity = 1;
+
+        glass.style.backgroundImage = `url('${img.src}')`;
+        const zoom = 2;
+        glass.style.backgroundSize = img.width * zoom + "px " + img.height * zoom + "px";
+        glass.style.backgroundPosition = "-" + (x * zoom) + "px -" + (y * zoom) + "px";
+    }
+
+    function getCursorPos(e) {
+        const rect = img.getBoundingClientRect();
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+        };
+    }
     </script>
 @endsection

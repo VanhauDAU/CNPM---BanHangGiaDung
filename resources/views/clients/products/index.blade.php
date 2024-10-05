@@ -56,10 +56,18 @@
                             <button class="btn btn-primary" >Tìm Kiếm</button>
                         </div>
                     </div>
-                    <div class="row_sort mb-3 text-center quick_product gap-2">
-                        <a href="?sort=tangdan" class="{{ request('sort') == 'tangdan' ? 'active' : '' }}">Giá tăng dần</a>
+                    <div class="row_sort mb-3 text-center quick_product gap-2 d-flex align-items-center justify-content-between">
+                        <div class="sort-btn">
+                            <a href="?sort=tangdan" class="{{ request('sort') == 'tangdan' ? 'active' : '' }}">Giá tăng dần</a>
                         <a href="?sort=giamdan" class="{{ request('sort') == 'giamdan' ? 'active' : '' }}">Giá giảm dần</a>
                         <a href="?sort=moinhat" class="{{ request('sort') == 'moinhat' ? 'active' : '' }}">Mới nhất</a>
+                        </div>
+                        @if(!empty($imgBrand))
+                            {{-- {{dd($product->logo)}} --}}
+                                <div class="brand-logo me-3">
+                                    <img src="{{asset('storage/brands/img/'.$imgBrand->logo)}}" alt="" width="200px">
+                                </div>
+                        @endif
                     </div>
                 </form>
                 <div class="row">
@@ -82,12 +90,13 @@
                                                 CHÀO THÁNG 10
                                             </div>
                                         @endif
-                                        {{-- Kiểm tra trạng thái sản phẩm, nếu hết hàng thì hiển thị--}}
-                                        @if($product->created_at >= \Carbon\Carbon::now()->subDays(3))
+                                        @if(\Carbon\Carbon::now()->diffInDays($product->created_at) <= 2)
                                             <div class="new-product-label position-absolute bottom-0 end-0 text-white px-3 py-1" style="font-weight: bold;">
                                                 SẢN PHẨM MỚI
                                             </div>
                                         @endif
+
+
                                         {{-- @if (\Carbon\Carbon::now()->month == 10)
                                             <div class="new-product-label1 position-absolute bottom-0 start-0 text-white px-3 py-1" style="font-weight: bold;">
                                                 CHÀO THÁNG 10

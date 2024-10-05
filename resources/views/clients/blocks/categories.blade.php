@@ -1,5 +1,5 @@
 <!-- Danh mục sản phẩm -->
-<div class="col-lg-3 categories mt-3">
+<div class="col-lg-3 categories mt-1">
     <h4 class="mb-4">
         <i class="fas fa-bars"></i> Danh Mục Sản Phẩm
     </h4>
@@ -25,47 +25,18 @@
             
                 <ul class="sub-category">
                     <div class="row col-sm-12">
-                        <div class="col-sm-4">
                             @php
                         $itemCategories = !empty($item->id_danh_muc) ? getChuyenMuc1($item->id_danh_muc) : [];
                         @endphp
                         @if(!empty($itemCategories) && count($itemCategories) > 0)
                             <div class="sub-category-container">
                                 @foreach($itemCategories as $category)
-                               
-                                    <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->slug, $category->slug]) }}">{{ $category->ten_chuyen_muc }} ({{getAllProductCM($category->id_chuyen_muc)}} sp)</a></li>
+                                    <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->slug, $category->slugCm]) }}">{{ $category->ten_chuyen_muc }} ({{getAllProductCM($category->id_chuyen_muc)}} sp)</a></li>
                                 @endforeach
                             </div>
                         @else
                             <h4 class="running-text">Không có chuyên mục nào</h4>
                         @endif
-                        </div>
-                        <div class="col-sm-4">
-                            @php
-                            // Kiểm tra nếu id_danh_muc không rỗng
-                            $itemCategories = !empty($item->id_danh_muc) ? getChuyenMuc2($item->id_danh_muc) : [];
-                            @endphp
-                            @if(!empty($itemCategories) && count($itemCategories) > 0)
-                                <div class="sub-category-container">
-                                    @foreach($itemCategories as $category)
-                                        <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col-sm-4">
-                            @php
-                            // Kiểm tra nếu id_danh_muc không rỗng
-                            $itemCategories = !empty($item->id_danh_muc) ? getChuyenMuc3($item->id_danh_muc) : [];
-                            @endphp
-                            @if(!empty($itemCategories) && count($itemCategories) > 0)
-                                <div class="sub-category-container">
-                                    @foreach($itemCategories as $category)
-                                        <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->id_danh_muc, $category->id_chuyen_muc]) }}">{{ $category->ten_chuyen_muc }}</a></li>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
                     </div>
                 </ul>                
             </li>

@@ -123,7 +123,37 @@ class ProductController extends Controller
         // dd($productDetail);
         return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword','danhMucNsx'));
     }
+    public function show3(Request $request, $id, $id2,$id3)
+    {
+        $filters = [];
+        $keyword = null;
+        $title = 'SẢN PHẨM';
+        if (!empty($request->nsx)) {
+            $maNSX = $request->nsx;
+            $filters[] = ['sanpham.maNSX', '=', $maNSX];
+        }
+        if (!empty($request->keyword)) {
+            $keyword = $request->keyword;
+        }
 
+        $filters[] = ['danhmucsanpham.slug', '=', $id];
+        $filters[] = ['chitietdanhmucsp.slug', '=', $id2];
+        $filters[] = ['nhasanxuat.slug', '=', $id3];
+        $filters[] = ['sanpham.trang_thai', '=', 1];
+        $productList = $this->products->getAllProducts($filters, $keyword, [], self::_PER_PAGE);
+        $danhMucNsx = $this->products->getDetailDM_Nsx($id,$id2);
+        $productDetail =DB::table('danhmucsanpham')
+        ->select(DB::raw('danhmucsanpham.slug as slugDm, chitietdanhmucsp.slug as slugCm'),'danhmucsanpham.ten_danh_muc','chitietdanhmucsp.ten_chuyen_muc')
+        ->join('chitietdanhmucsp','chitietdanhmucsp.id_danh_muc','=','danhmucsanpham.id_danh_muc')
+        ->where('danhmucsanpham.slug',$id)
+        ->where('chitietdanhmucsp.slug',$id2)
+        ->get()->first();
+        $imgBrand =DB::table('nhasanxuat')
+        ->where('slug',$id3)
+        ->get()->first();
+        // dd($imgBrand);
+        return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword','danhMucNsx','imgBrand'));
+    }
     public function detail_product($id){
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);
@@ -136,7 +166,7 @@ class ProductController extends Controller
             return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         $commentSP = DB::table('binhluansp')
-        ->select('taikhoan.ho_ten', 'taikhoan.maCV', 'taikhoan.provider', 'taikhoan.anh', 'binhluansp.*')
+        ->select('taikhoan.ho_ten as ho_ten_KH', 'taikhoan.maCV', 'taikhoan.provider', 'taikhoan.anh', 'binhluansp.*')
         ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
         ->where('binhluansp.maSP', $productDetail->maSP)
         ->where('binhluansp.trang_thai', 1)

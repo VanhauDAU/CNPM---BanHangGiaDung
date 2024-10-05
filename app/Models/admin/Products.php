@@ -74,7 +74,7 @@ class products extends Model
     public function addNSX($data){
         $timestamp = now();
         $data[] = $timestamp;
-        DB::insert('INSERT INTO nhasanxuat(ten_NSX, dia_chi, email, so_dien_thoai, created_at) values (?,?,?,?,?)', $data);
+        DB::insert('INSERT INTO nhasanxuat(ten_NSX, dia_chi, email, so_dien_thoai,logo,slug, created_at) values (?,?,?,?,?,?,?)', $data);
     }
     public function addDM($data){
         $timestamp = now();
@@ -84,7 +84,7 @@ class products extends Model
     public function addCM($data){
         $timestamp = now();
         $data[] = $timestamp;
-        DB::insert('INSERT INTO chitietdanhmucsp(id_danh_muc, ten_chuyen_muc, slug, created_at) values (?,?,?,?)', $data);
+        DB::insert('INSERT INTO chitietdanhmucsp(id_danh_muc, ten_chuyen_muc, slug,anh_cm, created_at) values (?,?,?,?,?)', $data);
     }
     public function addCM_NSX($data){
         DB::insert('INSERT INTO nsx_danhmuc(maNSX, id_danh_muc, id_chuyen_muc) values (?,?,?)', $data);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Clients;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\Models\clients\Products;
 use App\Models\admin\Post as adminPost;
 class HomeController extends Controller
@@ -31,12 +31,19 @@ class HomeController extends Controller
         // dd($productList);
         // dd($posts);
         $danhMucNsx = $this->products->getAllNSX();
+        $brand = DB::table('nhasanxuat')
+        ->join('nsx_danhmuc', 'nsx_danhmuc.maNSX', '=', 'nhasanxuat.maNSX')
+        ->select('nhasanxuat.*') 
+        ->distinct()
+        ->get();
+
+        // dd($brand);
         if(!empty($request->keyword)){
             $keyword = $request->keyword;
             $products->where('ten_san_pham', 'like', '%' . $keyword . '%');
-            return view('clients.products.index', compact('title', 'productList','danhMucNsx','allProduct'));
+            return view('clients.products.index', compact('title', 'productList','danhMucNsx','allProduct','brand'));
         }
-        return view('clients.home.home', compact('title', 'productList','sortType','posts','allProduct'));
+        return view('clients.home.home', compact('title', 'productList','sortType','posts','allProduct','brand'));
     }
     public function products(){
         $this->data['title'] = 'SẢN PHẨM';

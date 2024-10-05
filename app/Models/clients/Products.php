@@ -10,7 +10,8 @@ class Products extends Model
     use HasFactory;
     protected $table = 'sanpham';
     public function getAllProductsMAIN(){
-        return DB::table($this->table)->select('sanpham.*')->get();
+        return DB::table($this->table)->select('sanpham.*','nhasanxuat.ten_NSX')
+        ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX') ->inRandomOrder()->get();
     }
     
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){

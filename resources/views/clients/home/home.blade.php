@@ -33,8 +33,24 @@
                                 @endif
                             </div>
                             <div class="row" style="margin-top: -30px">
-                                <div class="col-12 text-center">
-                                    <p>Xin chào, đây là danh sách sản phẩm</p>
+                                <div class="product-list-home text-center">
+                                    @if(!empty($allProduct))
+                                        @foreach($allProduct as $item)
+                                            <a href="{{route('home.chi_tiet_sp',$item->slug)}}">
+                                                <div class="product-item-home" >
+                                                    <img src="{{asset('storage/products/img/'.$item->anh)}}" alt="{{$item->ten_san_pham}}"class="rounded">
+                                                    <h4 class="name-product">{{\Illuminate\Support\Str::limit($item->ten_san_pham, 30)}}</h4>
+                                                    <div class="price d-flex align-items-center justify-content-between">
+                                                        <h6 class="price-product"><s>{{number_format($item->don_gia_goc)}}đ</s></h6>
+                                                        <h4 class="price-sale-product">{{number_format($item->don_gia)}}đ</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="branch-onproduct">
+                                                    {{$item->ten_NSX}}
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -67,7 +83,7 @@
                                                 <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" 
                                                      class="img-fluid" 
                                                      alt="{{ $product->ten_san_pham }}" 
-                                                     style="border-radius: 10px; width: auto;transition: transform 0.3s;min-height: 130px">
+                                                     style="border-radius: 10px; width: auto;transition: transform 0.3s;max-height: 100px">
                                             </div>
                     
                                             <h6 class="text-center text-truncate" style="min-height: 40px; overflow: hidden; 
@@ -96,6 +112,23 @@
                     </div>
                 </div>
             </div>
+            <div class="listBrand">
+            <div class="row d-flex justify-content-between align-items-center ">
+                <div class="row">
+                    <h5 style="padding: 10px; margin-left: 10px; display:inline; background-color:#DA251C;color:white; font-weight: 600;" class="text-center rounded">THƯƠNG HIỆU HỢP TÁC</h5>
+                </div>
+                @if(!empty($brand))
+                @foreach($brand as $item)
+                        <div class="col-2" style="min-height: 90px">
+                            <a href="{{ route('home.getBrand',$item->slug)}}">
+                                <img src="{{asset('storage/brands/img/'.$item->logo)}}" alt="" style="width: 170px;padding:15px;">
+                            </a>
+                        </div>
+                    
+                @endforeach
+            @endif
+            </div>
+        </div>
             <div class="header-top">
                 <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang03/dien-may/Banner-dien-may-1236x60.png" alt="" width="100%">
             </div>
@@ -178,40 +211,7 @@
               </div>
           </div>
         </section>
-    <!-- Modal Structure -->
-    <div id="popupModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Welcome to our Website</h2>
-            <p>This is a beautiful centered popup.</p>
-        </div>
-    </div>
-@endsection
-@section('stylesheet')
-<style>
-    body{
-        background: url('/assets/general/img/banner_background.png');
-        /* background-size: cover; */
-        background-attachment: fixed;
-        margin: 0; 
-    }
-    .image-container {
-        perspective: 1000px; /* Tạo chiều sâu cho hiệu ứng 3D */
-    }
-
-    .image-container img {
-        transition: transform 0.6s; /* Thêm hiệu ứng chuyển tiếp cho hình ảnh */
-    }
-
-    .image-container:hover img {
-        transform: rotateY(15deg); /* Lật hình ảnh theo trục Y khi di chuột */
-    }
-
-    .image-container:hover .image-overlay {
-        opacity: 1; /* Hiện overlay khi di chuột */
-    }
-    
-</style>
+        
 @endsection
 {{-- js --}}
 @section('js')
@@ -246,6 +246,11 @@
             modal.style.display = "none";
         }
     }
-
+    $('.product-list-home').slick({
+        infinite: true,
+        slidesToShow: 5,
+        slidesToScroll: 3,
+        Accessibility: true
+    });
 </script>
 @endsection

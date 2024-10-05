@@ -118,11 +118,21 @@ class ProductController extends Controller
         return view('admin.products.add_nsx', $this->data);
     }
     public function post_add_NSX(NSXRequest $request){
+        $fileName = null;
+        if ($request->has('logo')) {
+            $file = $request->logo;  
+            $ext = $file->getClientOriginalExtension();  
+            $fileName = time().'-'.$ext;
+            $file->move(public_path('storage/brands/img'), $fileName);
+            // $anh = 'storage/products/img'.$file;
+        }
         $dataInsert=[
             $request->ten_NSX,
             $request->dia_chi,
             $request->email,
-            $request->so_dien_thoai
+            $request->so_dien_thoai,
+            $fileName,
+            $request->slugNSX,
         ]; 
         $this->products->addNSX($dataInsert);
         return redirect()->route('getadd_product')->with('msg', 'Thêm mới nhà sản xuất thành công');
@@ -166,8 +176,8 @@ class ProductController extends Controller
             $request->id_chuyen_muc,
         ];
         $this->products->addCM_NSX($dataInsert);
-        toastr()->success('Thành công','Thêm chuyên mục cho NSX thành công');
-        return redirect()->route('getadd_cm_nsx');
+        
+        return redirect()->route('getadd_cm_nsx')->with('success','Thêm chuyên mục cho NSX thành công');
     }
     public function post_add_DM(Request $request){
         request()->validate([
@@ -190,6 +200,14 @@ class ProductController extends Controller
         return redirect()->route('getadd_dm')->with('msg','Thêm mới danh mục thành công');
     }
     public function post_add_CM(Request $request){
+        $fileName = null;
+        if ($request->has('anh')) {
+            $file = $request->anh;  
+            $ext = $file->getClientOriginalExtension();  
+            $fileName = time().'-'.$ext;
+            $file->move(public_path('storage/products/img'), $fileName);
+            // $anh = 'storage/products/img'.$file;
+        }
         request()->validate([
             'ten_danh_muc'=>'required',
             'ten_chuyen_muc'=>'required',
@@ -203,9 +221,10 @@ class ProductController extends Controller
             $request->ten_danh_muc,
             $request->ten_chuyen_muc,
             $request->slug,
+            $fileName
         ];
         $this->products->addCM($dataInsert);
-        return redirect()->route('getadd_cm')->with('msg','Thêm mới danh mục thành công');
+        return redirect()->route('getadd_cm')->with('success','Thêm mới danh mục thành công');
     }
     public function withValidator($validator){
         $validator->after(function ($validator) {
