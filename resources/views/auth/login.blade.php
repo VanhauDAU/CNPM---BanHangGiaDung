@@ -4,10 +4,10 @@
 <div class="container col-md-12" style="width:100%">
     <div class="row justify-content-center">
         <div class="content col-md-8" style="display:flex; justify-content:between">
-            <div class="image-side">
-                <img src="{{ asset('assets/general/img/login_sidebar.jpg') }}" alt="" class="overlay-image" style="border-radius: 15px;">
-                <img src="{{ asset('assets/general/img/login_sidebar2.jpg') }}" alt="" class="overlay-image" style="border-radius: 15px;">
-                <img src="{{ asset('assets/general/img/login_sidebar3.jpg') }}" alt="" class="overlay-image" style="border-radius: 15px;">
+            <div class="image-side" >
+                <img src="{{ asset('assets/general/img/login_sidebar.jpg') }}" alt="" class="overlay-image img1" style="border-radius: 15px;">
+                <img src="{{ asset('assets/general/img/login_sidebar2.jpg') }}" alt="" class="overlay-image img2" style="border-radius: 15px;">
+                <img src="{{ asset('assets/general/img/login_sidebar3.jpg') }}" alt="" class="overlay-image img3" style="border-radius: 15px;">
             </div>
             
             <div class="form-side form-login">

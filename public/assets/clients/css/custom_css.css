@@ -942,5 +942,83 @@ header .navbar form .txtQuery{
 .PostsList{
     border-radius: 10px;
 }
-  
-  
+/* .product-list-danhmuc {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+}
+
+.product-item-danhmuc {
+    flex: 1 1 200px;
+    margin: 10px;
+} */
+.slider-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex; 
+    transition: transform 0.5s ease;
+}
+.product-item-danhmuc{
+    transition: all .5s ease;
+}
+.product-item-danhmuc:hover{
+    translate: 0px -8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.product-item-danhmuc {
+    flex: 0 0 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.img-product-danhmuc img {
+    width: 100%;
+    height: auto;
+    max-height: 170px;
+    object-fit: contain;
+    border-radius: 10px; 
+}
+
+.product-item-danhmuc h6 {
+    text-align: center;
+}
+.slider-container button {
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background-color: white;
+    border: none;
+    font-size: 18px; 
+    cursor: pointer; 
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.prev {
+    left: 30px;
+}
+
+.next {
+    right: 0px;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: red;
+}
+/* brand */
+.item-brand{
+    transition: all .4s ease;
+}
+.item-brand:hover{
+    translate: 0px -10px;
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+}
+

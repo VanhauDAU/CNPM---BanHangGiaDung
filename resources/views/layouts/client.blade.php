@@ -150,7 +150,8 @@
         .swing {
             animation: swing 1s infinite; /* Thay đổi thời gian nếu cần */
         }
-
+         /* đăng ký */
+        
 
         </style>
     @yield('stylesheet')
@@ -264,7 +265,50 @@
                 }
             ]
             });
-            
+            function showSlide(slider, index) {
+                const slides = slider.querySelectorAll('.product-item-danhmuc');
+                const totalSlides = slides.length;
+
+                // Kiểm tra và điều chỉnh chỉ số slide
+                if (totalSlides === 0) return; // Nếu không có sản phẩm thì không làm gì cả
+
+                // Điều chỉnh currentSlide
+                if (index >= Math.ceil(totalSlides / 2)) {
+                    index = Math.ceil(totalSlides / 2) - 1; // Giới hạn không vượt quá số lượng slide
+                } else if (index < 0) {
+                    index = 0; // Không cho phép lui về trước quá 0
+                }
+
+                // Di chuyển slider
+                slider.style.transform = 'translateX(' + (-index * (100 / 5)) + '%)'; // Chia cho số lượng item muốn hiển thị
+            }
+
+            // Hàm thay đổi slide
+            function changeSlide(slider, direction) {
+                const totalSlides = slider.querySelectorAll('.product-item-danhmuc').length;
+                if (totalSlides === 0) return; // Nếu không có sản phẩm thì không làm gì cả
+                const currentSlide = parseInt(slider.getAttribute('data-current-slide')) || 0; // Lấy currentSlide từ attribute
+
+                const newSlide = currentSlide + direction * 2; // Tăng hoặc giảm currentSlide theo hướng và lướt 2 sản phẩm
+                slider.setAttribute('data-current-slide', newSlide); // Cập nhật currentSlide
+
+                showSlide(slider, newSlide);
+            }
+
+            // Gán sự kiện cho các nút
+            document.querySelectorAll('.slider-container').forEach(container => {
+                const slider = container.querySelector('.slider');
+                
+                container.querySelector('.prev').addEventListener('click', function() {
+                    changeSlide(slider, -1);
+                });
+                
+                container.querySelector('.next').addEventListener('click', function() {
+                    changeSlide(slider, 1);
+                });
+            });
+
+
     </script>
 
     <!-- Bootstrap JS -->

@@ -128,6 +128,51 @@
                     @endif
                 </div>
             </div>
+            
+            {{-- DANH SÁCH SẢN PHẨM CỦA DANH MỤC ĐÓ (GIỚI HẠN 5 DANH MỤC ĐẦU) --}}
+            @if(!empty(get5DanhMuc()))
+                @foreach(get5DanhMuc() as $itemDm)
+                    <div class="row bg-white p-3 my-3 rounded slider-container">
+                        <div class="row d-flex">
+                            <h5 class="fw-bold">Sản phẩm {{$itemDm->ten_danh_muc}}  <i class="fa-brands fa-firefox-browser" style="color: red"></i></h5>
+                        </div>
+                        @if(!empty(getProductDm($itemDm->id_danh_muc)))
+                            <div class="product-list-danhmuc d-flex slider" data-current-slide="0">
+                                @foreach(getProductDm($itemDm->id_danh_muc) as $itemProductDM)
+                                    <div class="product-item-danhmuc border rounded p-2 col-2">
+                                        <a href="{{route('home.chi_tiet_sp',$itemProductDM->slug)}}">
+                                            <div class="img-product-danhmuc text-center p-1" style="width:100%; min-height: 170px">
+                                                <img src="{{asset('storage/products/img/'.$itemProductDM->anh)}}" alt="" style="width: 100%">
+                                            </div>
+                                            <h6 class="title-product-danhmuc" style="font-size: 13px">
+                                                {{ \Illuminate\Support\Str::limit($itemProductDM->ten_san_pham, 45) }}
+                                            </h6>
+                                            <h6 class="brand-products-danhmuc" style="color:green">{{$itemProductDM->ten_NSX}}</h6>
+                                            <div class="row price-product-danhmuc">
+                                                <h6 style="color:red; font-size: 14px; font-weight: 700; margin: 0;display:flex; justify-content: space-between; min-height: 18px">
+                                                    <s style="color: black; font-size: 12px">{{number_format($itemProductDM->don_gia_goc)}}đ</s>{{number_format($itemProductDM->don_gia)}}đ
+                                                </h6>
+                                                <div class="list-star mt-2" style="font-size: 14px; display: flex; color:orange">
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>   
+                                @endforeach
+                            </div>
+                            <button class="prev">❮</button>
+                            <button class="next">❯</button>   
+                        @endif     
+                    </div>
+                @endforeach
+            @endif
+
+            
+            {{-- DANH SÁCH NHÃN HÀNG --}}
             <div class="listBrand">
                 <div class="row d-flex justify-content-between align-items-center">
                     <div class="row">
@@ -135,7 +180,7 @@
                     </div>
                     @if(!empty($brand))
                     @foreach($brand as $item)
-                            <div class="col-2 d-flex align-items-center" style="min-height: 90px">
+                            <div class="col-2 d-flex align-items-center item-brand" style="min-height: 90px">
                                 <a href="{{ route('home.getBrand',$item->slug)}}">
                                     <img src="{{asset('storage/brands/img/'.$item->logo)}}" alt="" style="width: 170px;padding:15px;">
                                 </a>
@@ -145,6 +190,8 @@
                 @endif
                 </div>
             </div>
+
+
             {{-- <div class="header-top">
                 <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang03/dien-may/Banner-dien-may-1236x60.png" alt="" width="100%">
             </div> --}}
@@ -268,5 +315,7 @@
         slidesToScroll: 3,
         Accessibility: true
     });
+    
+
 </script>
 @endsection

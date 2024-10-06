@@ -122,3 +122,24 @@ function getAllChuyenMucNSX($slug){
     ->select('chitietdanhmucsp.*', 'nhasanxuat.*','nhasanxuat.slug as slugNSX','danhmucsanpham.slug as slugDm','chitietdanhmucsp.slug as slugCm')
     ->get();
 }
+// Lấy ra danh mục (5 danh mục random)
+function get5DanhMuc(){
+    return DB::table('danhmucsanpham')
+        ->select('danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc') 
+        ->join('sanpham', 'sanpham.id_danh_muc', '=', 'danhmucsanpham.id_danh_muc')
+        ->groupBy('danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc')
+        ->inRandomOrder()
+        ->take(5)
+        ->get();
+}
+
+// cái này lấy ra danh sach sản phẩm dựa vào danh mục đó
+function getProductDm($id){
+    return DB::table('sanpham')
+    ->select('sanpham.*','nhasanxuat.ten_NSX')
+    ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX')
+    ->where('id_danh_muc' ,$id)
+    ->inRandomOrder()
+    ->take(10)
+    ->get();
+}

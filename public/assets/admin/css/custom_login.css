@@ -20,7 +20,7 @@ body {
     min-width: 400px; /* Chiều rộng tối thiểu */
 }
 .image-side img {
-    width: 100%; /* Hình ảnh sẽ tự động điều chỉnh theo chiều rộng */
+    width: 100%;
     height: auto;
 }
 .form-side {
@@ -50,4 +50,36 @@ form h2 {
     .image-side {
         display: none;
     }
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px); /* Nhích lên cao hơn */
+    }
+    60% {
+        transform: translateY(-15px); /* Nhích lên ít hơn */
+    }
+}
+
+.image-side .img1,
+.image-side .img2,
+.image-side .img3 {
+    width: 100%;
+    height: auto;
+    animation: bounce 2s ease-in-out infinite; /* Sử dụng easing để làm mượt */
+}
+
+/* Tạo hiệu ứng nhấp nhô khác nhau cho từng hình ảnh */
+.image-side .img1 {
+    animation-delay: 0s; /* Không có độ trễ */
+}
+
+.image-side .img2 {
+    animation-delay: 0.2s; /* Độ trễ 0.2 giây */
+}
+
+.image-side .img3 {
+    animation-delay: 0.4s; /* Độ trễ 0.4 giây */
 }

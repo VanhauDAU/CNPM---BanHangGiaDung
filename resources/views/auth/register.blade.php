@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-5 d-flex justify-content-center align-items-center" style="width:100vw;" >
             <div class="image-side" style="max-width: 300px">
-                <img src="{{asset('assets/admin/img/login_sidebar.png')}}" alt="">
+                <img id="loginImage" src="{{ asset('assets/admin/img/login_sidebar2.jpg') }}" alt="" style="border-radius: 20px">
             </div>
             <div class="card ms-5 form-register"style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; min-width: 400px;" >
                 <div class="card-header text-center"><strong>Đăng Ký Tài Khoản</strong></div>
@@ -113,20 +113,12 @@
 
 @section('stylesheet')
 <style>
-    body {
-        overflow: hidden;
+ /* đăng ký */
+    #loginImage {
+        transition: transform 0.5s ease-in-out;
     }
-    .form-register{
-        transition: .5s ease;
-    }
-    .form-register:hover{
-        translate: 0 -4px;
-        cursor: pointer;
-    }
-
-    .submit-register:hover{
-        background-color: #0B5ED7;
-        color:white;
+    #loginImage.zoom {
+        transform: scale(1.1);
     }
 </style>
 @endsection
