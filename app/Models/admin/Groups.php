@@ -34,6 +34,13 @@ class Groups extends Model
         ->get();
         return $groups;
     }
+    public function getAllDanhMucSp1(){
+        $groups = DB::table($this->table2)
+        ->orderBy('id_danh_muc','ASC')
+        ->limit(10)
+        ->get();
+        return $groups;
+    }
     public function getAllDanhMucSp2(){
         $groups = DB::table($this->table2)
         ->orderBy('created_at','DESC')

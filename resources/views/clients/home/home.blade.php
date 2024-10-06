@@ -58,7 +58,7 @@
                 </div>
                 {{-- SẢN PHẨM NỔI BẬT --}}
             </section>
-            <div class="row mt-4">
+            <div class="row mt-3">
                 <div class="col-lg-12" id="featured-products">
                     <!-- Featured Products -->
                     <h5 class="mb-4 running-text text-center text-uppercase">
@@ -112,27 +112,43 @@
                     </div>
                 </div>
             </div>
-            <div class="listBrand">
-            <div class="row d-flex justify-content-between align-items-center ">
-                <div class="row">
-                    <h5 style="padding: 10px; margin-left: 10px; display:inline; background-color:#DA251C;color:white; font-weight: 600;" class="text-center rounded">THƯƠNG HIỆU HỢP TÁC</h5>
+            {{-- DANH MỤC HOT --}}
+            <div class="row py-4 text-center bg-white mb-4 rounded wow">
+                <h3 class="py-3 text-danhmuchot">DANH MỤC HOT TẠI SHOP </h3>
+                <div class="row ListDanhMucHot py-3 pt-3 text-center">
+                    @if(!empty(getAllDanhMucSp1()))
+                        @foreach(getAllDanhMucSp1() as $item)
+                        <a href="{{route('home.products.sanpham_id',$item->slug)}}">
+                            <div class="Danhmuc-item text-center d-flex p-3 align-items-center" style="width: 300px;min-height: 130px; border-radius: 20px; background-color:#FFD154">
+                                <img src="{{$item->icon}}" alt="" width="80px">
+                                <h5 class="ms-3 fw-bold" style="color: #002795">{{$item->ten_danh_muc}}</h5>
+                            </div>
+                        </a>
+                        @endforeach
+                    @endif
                 </div>
-                @if(!empty($brand))
-                @foreach($brand as $item)
-                        <div class="col-2" style="min-height: 90px">
-                            <a href="{{ route('home.getBrand',$item->slug)}}">
-                                <img src="{{asset('storage/brands/img/'.$item->logo)}}" alt="" style="width: 170px;padding:15px;">
-                            </a>
-                        </div>
-                    
-                @endforeach
-            @endif
             </div>
-        </div>
-            <div class="header-top">
+            <div class="listBrand">
+                <div class="row d-flex justify-content-between align-items-center">
+                    <div class="row">
+                        <h5 style="padding: 10px; margin-left: 10px; display:inline; background-color:#DA251C;color:white; font-weight: 600;font-size:30px" class=" text-center rounded">THƯƠNG HIỆU HỢP TÁC</h5>
+                    </div>
+                    @if(!empty($brand))
+                    @foreach($brand as $item)
+                            <div class="col-2 d-flex align-items-center" style="min-height: 90px">
+                                <a href="{{ route('home.getBrand',$item->slug)}}">
+                                    <img src="{{asset('storage/brands/img/'.$item->logo)}}" alt="" style="width: 170px;padding:15px;">
+                                </a>
+                            </div>
+                        
+                    @endforeach
+                @endif
+                </div>
+            </div>
+            {{-- <div class="header-top">
                 <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang03/dien-may/Banner-dien-may-1236x60.png" alt="" width="100%">
-            </div>
-            <section class="product_poli_wrap mt-1 mb-3">
+            </div> --}}
+            <section class="product_poli_wrap mt-1 mb-3 rounded">
                 <div class="container">
                     <div class="product_poli m-0">
                         <div class="row">

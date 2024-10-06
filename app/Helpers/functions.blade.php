@@ -22,6 +22,10 @@ function getAllDanhMucSp(){
     $group = new Groups;
     return $group->getAllDanhMucSp();
 }
+function getAllDanhMucSp1(){
+    $group = new Groups;
+    return $group->getAllDanhMucSp1();
+}
 function CountDanhMuc(){
     $group = new Groups;
     return $group->CountDanhMuc();
@@ -106,6 +110,7 @@ function get5Product($idCm,$maSP){
     ->get();
     // dd($test);
 }
+
 function getAllChuyenMucNSX($slug){
     return DB::table('nhasanxuat')
     ->join('nsx_danhmuc', 'nsx_danhmuc.maNSX', '=', 'nhasanxuat.maNSX')

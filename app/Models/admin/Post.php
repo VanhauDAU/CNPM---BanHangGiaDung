@@ -5,10 +5,12 @@ use App\Models\admin\Users;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'baiviet';
+    protected $primaryKey = 'id_bai_viet';
     public function postBy()
     {
         return DB::table('baiviet')

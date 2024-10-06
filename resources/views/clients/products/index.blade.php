@@ -12,7 +12,7 @@
         {{-- đường dẫn --}}
         @if(!empty($productDetail))
             <div class="breadcrumb d-flex align-items-center">
-                <a href="{{route('home.products.index')}}"><i class="fa-solid fa-house"></i></a>
+                <a href="{{route('home.index')}}"><i class="fa-solid fa-house"></i></a>
                 @if(Route::currentRouteName() == 'home.products.sanpham_id')
                     <span class="separator">></span>
                     <a href="{{route('home.products.sanpham_id',$productDetail->slugDm)}}" class="breadcrumb-link">{{$productDetail->ten_danh_muc}}</a>

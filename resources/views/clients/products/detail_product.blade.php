@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="brand">
-                        <h6 style="font-size: 15px">Thương hiệu: <mark>{{$productDetail->ten_NSX}} | {{$productDetail->ten_chuyen_muc}}</mark></h6>
+                        <h6 style="font-size: 15px">Thương hiệu: <mark><a href="{{route('home.getBrand',$productDetail->slug)}}">{{$productDetail->ten_NSX}}</a> | {{$productDetail->ten_chuyen_muc}}</mark></h6>
                     </div>
                         <div class="row">
                             <div class="col-8">

@@ -16,47 +16,11 @@ class PostController extends Controller
     {
         $this->post = $post;
     }
-    public function index2(){
-        $title ='Danh Sách Bài Viết';
-        $lists = $this->post->postBy();
-        return view('admin.posts.index', compact('title','lists'));
-    }
     public function index(Request $request){
         $title = 'DANH SÁCH BÀI VIẾT';
         $post = new Post();
-        $filters =[];
-        $keyword = null;
-        if(!empty($request->nsx)){
-            $ma_NSX = $request->nsx;
-            $filters[] = ['sanpham.maNSX', '=',$ma_NSX];
-        }
-        if(!empty($request->id_danh_muc)){
-            $nhom_SP = $request->id_danh_muc;
-            $filters[] = ['sanpham.id_danh_muc', '=',$nhom_SP];
-        }
-        if(!empty($request->keyword)){
-            $keyword = $request->keyword;
-        }
-        //Xử lý logic sắp xếp theo cột
-        $sortBy = $request->input('sort-by');
-        $sortType = $request->input('sort-type');
-        $arrSort =['ASC', 'DESC'];
-        if(!empty($sortType) & in_array($sortType,$arrSort)){
-            if($sortType=='DESC'){
-                $sortType ='ASC';
-            }else{
-                $sortType ='DESC';
-            }
-        }else{
-            $sortType ='ASC';
-        }
-        $sortArr =[
-            'sortBy'=>$sortBy,
-            'sortType'=>$sortType
-        ];
-        //end xử lý
-        $PostList = $post->getAllPosts($filters, $keyword,$sortArr, self::_PER_PAGE);
-        return view('admin.posts.index', compact('title', 'PostList','sortType'));
+        $PostList = $post->withTrashed()->orderBy('deleted_at','ASC')->get();
+        return view('admin.posts.index', compact('title', 'PostList'));
     }
     public function add(){
         return view('admin.posts.add');
@@ -126,7 +90,6 @@ class PostController extends Controller
         } else {
             $fileName = $request->hinh_anh_cu;
         }
-        // Kiểm tra trùng slug
         $existingPost = DB::table('baiviet')
             ->where('slug', $request->slug)
             ->where('id_bai_viet', '!=', $id)
@@ -157,27 +120,40 @@ class PostController extends Controller
         return redirect()->route('getedit_post',['id'=>$id])->with('msg','Cập nhật bài viết thành công!');
     }
     public function delete($id = 0){
-        if(!empty($id)){
-            $postDetail = $this->post->getDetail($id);
-            // dd($userDetail[0]);
-            if(!empty($postDetail[0])){
-                $deletepost = $this->post->deletePost($id);
-                if($deletepost){
-                    $msg = 'Xóa bài viết thành công';
-                }else{
-                    $msg = 'Bạn không thể xóa bài viết lúc này, vui lòng thử lại sau!';
-                }
+        // $status = Post::where('id_bai_viet',$id)->delete();
+        // dd($status);
+    }
+    public function handelDeleteAny(Request $request){
+        $deleteArr = $request->delete;
+        if(!empty($deleteArr)){
+            $status = Post::destroy($deleteArr);
+            if($status){
+                $msg ='Đã xóa '.count($deleteArr).' bài viết';
             }else{
-                $msg ='Sản phẩm không tồn tại!';
+                $msg ='Bạn không thể xóa vào lúc này, vui lòng thử lại sau!';
             }
         }else{
-            $msg = 'Liên kết không tồn tại';
+            $msg ='Vui lòng chọn bài viết muốn xóa';
         }
-        if($msg ='Xóa bài viết thành công'){
-            toastr()->success('Thành công','Xóa bài viết thành công');
-        }else{
-            toastr()->warning('Cảnh báo','Xóa bài viết thất bại');
+        toastr()->warning('Thông báo',$msg);
+        return redirect()->route('admin.manage_post');
+    }
+    public function restore($id){
+        $status = Post::withTrashed()->where('id_bai_viet',$id)->first();
+        if(!empty($status)){
+            $status->restore();
+            toastr()->success('Thành công','Khôi phục thành công!');
+            return redirect()->route('admin.manage_post');
         }
+    }
+    public function forceDelete($id){
+        $Post = Post::onlyTrashed()->where('id_bai_viet',$id)->first();
+        if(!empty($Post)){
+            $Post->forceDelete();
+            toastr()->success('Thành công','Đã xóa vĩnh viễn bài viết');
+            return redirect()->route('admin.manage_post');
+        }
+        toastr()->warning('Thất bại','Không thể xóa bài viết');
         return redirect()->route('admin.manage_post');
     }
 }

@@ -18,9 +18,7 @@ class PostController extends Controller
         
     }
     public function post(){
-        $Post = DB::table('baiviet')
-        ->orderBy('created_at','DESC')
-        ->get();
+        $Post = Post::all();
         // dd($Post);
         return view('clients.post.index',compact('Post'));
     }

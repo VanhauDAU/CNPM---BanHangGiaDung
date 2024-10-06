@@ -41,23 +41,20 @@
                         @endif
                     </div>
 
-                    <div class="col-5">
+                    <div class="col-5" >
                         @if(!empty($Post))
                             @php
-                                $otherPosts = $Post->slice(1, 5);
+                                $otherPosts = $Post->slice(1, 4);
                             @endphp
                             @foreach($otherPosts as $itemList)
                                 <a href="{{route('home.get_bai_viet',$itemList->slug)}}">
-                                    <div class="PostsList col-12 mb-1 d-flex align-items-center">
+                                    <div class="PostsList col-12 mb-1 d-flex align-items-center" >
                                         <div class="col-5">
                                             <img src="{{ asset('storage/posts/img/'.$itemList->anh_bia) }}" alt="" class="rounded" style="width: 100%; height: 130px; object-fix: cover;margin-right:10px">
                                         </div>
                                         <div class="col-7 ms-2">
                                             <div class="title-post">
-                                                <h1 style="font-size: 16px;" class="mt-2 fw-bold">{!! \Illuminate\Support\Str::limit($itemList->tieu_de, 40, '...') !!}</h1>
-                                            </div>
-                                            <div class="content-post">
-                                                <h3 style="font-size: 14px;">{!! \Illuminate\Support\Str::limit($itemList->noi_dung, 100, '...') !!}</h3>
+                                                <h1 style="font-size: 16px;" class="mt-2 fw-bold">{!! \Illuminate\Support\Str::limit($itemList->tieu_de, 60, '...') !!}</h1>
                                             </div>
                                             <div class="time-created">
                                                 <h6 style="font-size: 13px;">Thời gian đăng: <mark>{{ \Carbon\Carbon::parse($itemList->created_at)->format('d-m-Y H:i:s') }}</mark></h6>

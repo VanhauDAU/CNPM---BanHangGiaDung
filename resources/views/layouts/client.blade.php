@@ -37,10 +37,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- sweetAlert2 --}}
-  <script src="
+    <!-- Animate.css -->
+    <script src="
     https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{{asset('assets/clients/css/custom_css.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/clients/css/custom_css.css')}}">
     <!-- Custom CSS -->
     <style>
         *{
@@ -234,22 +235,47 @@
                 nextArrow: '<button type="button" class="slick-next">Next</button>',
             });
         });
-        
+        $('.ListDanhMucHot').slick({
+            centerMode: true,
+            centerPadding: '10px',
+            autoplay: true,
+            autoplaySpeed: 3000,
+            infinite: true,
+            slidesToShow: 3,
+            arrows: false,
+            responsive: [
+                {
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '20px',
+                    slidesToShow: 3
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '20px',
+                    slidesToShow: 1
+                }
+                }
+            ]
+            });
+            
     </script>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- script của slick --}}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
     <script>
-        // Lấy tất cả các biểu tượng trong các nút
         const icons = document.querySelectorAll('.floating-buttons .button i');
-
-        // Thêm lớp swing vào mỗi biểu tượng
         icons.forEach(icon => {
             icon.classList.add('swing');
         });
-
-
       function setActive(element, value) {
           var links = document.querySelectorAll('.quick_product a');
           links.forEach(function(link) {

@@ -86,7 +86,13 @@ Route::prefix('admin')->group(function () {
             Route::post('add', [PostControllerAdmin::class, 'postAdd']);
             Route::get('edit/{id}', [PostControllerAdmin::class, 'edit'])->name('getedit_post');
             Route::post('edit/{id}', [PostControllerAdmin::class, 'postEdit']);
-            Route::delete('delete/{id}', [PostControllerAdmin::class, 'delete'])->name('getdelete_post');
+
+            Route::post('delete-any', [PostControllerAdmin::class, 'handelDeleteAny'])->name('posts.delete-any');
+
+            Route::get('restore/{id}',[PostControllerAdmin::class, 'restore'])->name('posts.restore');
+
+            Route::get('force-delete/{id}',[PostControllerAdmin::class, 'forceDelete'])->name('posts.force-delete');
+
         });
         Route::prefix('quan-ly-binh-luan')->group(function () {
             Route::get('', [CommentController::class, 'index'])->name('admin.manage_cmt');
@@ -139,7 +145,7 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::post('/gio-hang/update/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/gio-hang/remove/{id}', [ShoppingCartController::class, 'removeFromCart'])->name('cart.remove');
 
-    Route::get('/{id}', [BrandController::class, 'getBrand'])->name('getBrand');
+    Route::get('nhan-hang/{id}', [BrandController::class, 'getBrand'])->name('getBrand');
     
 });
 Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
