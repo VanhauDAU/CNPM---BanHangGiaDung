@@ -265,6 +265,46 @@
                 }
             ]
             });
+            $('.list-product-hot').slick({
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                prevArrow: false, 
+                nextArrow: false,
+                autoplay: true,
+                autoplaySpeed: 4000,
+                infinite: true,
+                responsive: [
+                    {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                    },
+                    {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+                });
             function showSlide(slider, index) {
                 const slides = slider.querySelectorAll('.product-item-danhmuc');
                 const totalSlides = slides.length;
@@ -363,7 +403,25 @@
                 toast.show();
             @endif
         });
-        
+         const sound = document.getElementById('sound');
+        const playSoundLink = document.getElementById('playSoundLink');
+        playSoundLink.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            localStorage.setItem('playSound', 'true'); 
+            window.location.href = playSoundLink.href; 
+        });
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('playSound') === 'true') {
+                sound.currentTime = 0; 
+                sound.play()
+                    .then(() => {
+                        localStorage.removeItem('playSound'); 
+                    })
+                    .catch(error => {
+                        console.error("Không thể phát âm thanh: ", error);
+                    });
+            }
+        });
     </script>
 </body>
 

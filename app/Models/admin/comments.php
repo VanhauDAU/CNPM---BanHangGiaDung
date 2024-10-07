@@ -9,7 +9,7 @@ class comments extends Model
 {
     protected $table ='binhluansp';
     use HasFactory;
-    protected $fillable =['user_id', 'maSP','noi_dung','ho_ten_KHVL','so_dien_thoai_KHVL','email_KHVL','gioi_tinh_KHVL','trang_thai'];
+    protected $fillable =['user_id', 'maSP','noi_dung','ho_ten_KHVL','so_dien_thoai_KHVL','email_KHVL','gioi_tinh_KHVL','trang_thai','provider'];
     public function users(){
         return $this->belongsTo(Users::class);
     }

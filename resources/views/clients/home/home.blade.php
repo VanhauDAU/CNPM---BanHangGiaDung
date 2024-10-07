@@ -58,6 +58,7 @@
                 </div>
                 {{-- SẢN PHẨM NỔI BẬT --}}
             </section>
+            {{-- SẢN PHẨM NỔI BẬT --}}
             <div class="row mt-3">
                 <div class="col-lg-12" id="featured-products">
                     <!-- Featured Products -->
@@ -66,25 +67,25 @@
                         Sản Phẩm Nổi Bật
                         <span class="icon-effect"><i class="fas fa-star"></i></span>
                     </h5>
-                    <div class="row my-4 justify-content-center p-3 rounded" style="background: #F29F05">
+                    <div class="row list-product-hot my-4 justify-content-center p-3" style="background: #F29F05;border-radius: 20px">
                         @if(!empty(sanphamnoibat()))
                             @foreach (sanphamnoibat() as $product)
-                                <div class="col-6 col-md-4 col-lg-2 mb-3 gap-1">
+                                <div class="col-6 col-md-4 col-lg-2 gap-1">
                                     <a href="{{route('home.chi_tiet_sp',$product->slug)}}" class="product-link text-decoration-none">
-                                        <div class="product-item shadow-sm p-3 d-flex flex-column" 
+                                        <div class="product-item shadow-sm p-3" 
                                              style="border-radius: 10px; transition: transform 0.3s ease; background-color: #f8f9fa; 
                                              height: 100%; position: relative; overflow: hidden;">
-                    
                                             {{-- @if($product->khuyen_mai) <!-- Kiểm tra xem có khuyến mãi hay không -->
                                                 <span class="badge bg-danger position-absolute" style="top: 10px; left: 10px; z-index: 10;">Khuyến Mãi</span>
                                             @endif --}}
                                             
-                                            <div class="img-container text-center mb-3" style=" overflow: hidden;">
+                                            <div class="img-container text-center mb-3" style="overflow: hidden; width: 100%; display: flex; justify-content: center; align-items: center;">
                                                 <img src="{{ asset('storage/products/img/' . $product->anh) ?: 'https://via.placeholder.com/150' }}" 
                                                      class="img-fluid" 
                                                      alt="{{ $product->ten_san_pham }}" 
-                                                     style="border-radius: 10px; width: auto;transition: transform 0.3s;max-height: 100px">
+                                                     style="border-radius: 10px; width: auto; max-width: 100%; max-height: 100px; object-fit: contain; transition: transform 0.3s;">
                                             </div>
+                                            
                     
                                             <h6 class="text-center text-truncate" style="min-height: 40px; overflow: hidden; 
                                                  text-overflow: ellipsis; white-space: nowrap;">{{ $product->ten_san_pham }}</h6>
@@ -113,7 +114,7 @@
                 </div>
             </div>
             {{-- DANH MỤC HOT --}}
-            <div class="row py-4 text-center bg-white mb-4 rounded wow">
+            <div class="row py-4 text-center bg-white mb-4 rounded" >
                 <h3 class="py-3 text-danhmuchot">DANH MỤC HOT TẠI SHOP </h3>
                 <div class="row ListDanhMucHot py-3 pt-3 text-center">
                     @if(!empty(getAllDanhMucSp1()))
@@ -128,10 +129,6 @@
                     @endif
                 </div>
             </div>
-            {{-- DANH SÁCH CHUYÊN MỤC (PHÂN BỐ CỤC RA) --}}
-
-            
-            
             {{-- DANH SÁCH SẢN PHẨM CỦA DANH MỤC ĐÓ (GIỚI HẠN 5 DANH MỤC ĐẦU) --}}
             @if(!empty(get5DanhMuc()))
                 @foreach(get5DanhMuc() as $itemDm)
@@ -146,7 +143,7 @@
                                     <div class="product-item-danhmuc border rounded p-2 col-2">
                                         <a href="{{route('home.chi_tiet_sp',$itemProductDM->slug)}}">
                                             <div class="img-product-danhmuc text-center p-1" style="width:100%; min-height: 170px">
-                                                <img src="{{asset('storage/products/img/'.$itemProductDM->anh)}}" alt="" style="width: 100%">
+                                                <img src="{{asset('storage/products/img/'.$itemProductDM->anh)}}" loading="lazy" alt="" style="width: 100%">
                                             </div>
                                             <h6 class="title-product-danhmuc" style="font-size: 13px">
                                                 {{ \Illuminate\Support\Str::limit($itemProductDM->ten_san_pham, 45) }}

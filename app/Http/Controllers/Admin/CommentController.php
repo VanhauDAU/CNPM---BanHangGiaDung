@@ -53,6 +53,7 @@ class CommentController extends Controller
                 'email_KHVL' => $request->email,
                 'gioi_tinh_KHVL' => $request->gioi_tinh,
                 'noi_dung' => $request->noi_dung,
+                'provider' => 'vanglai',
             ]);
         }
         return redirect()->back()->with('success','Bình luận của bạn đã được gửi, chờ phê duyệt!');

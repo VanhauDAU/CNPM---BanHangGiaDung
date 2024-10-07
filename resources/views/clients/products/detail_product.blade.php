@@ -18,7 +18,7 @@
             </div> 
             <div class="row ps-2">
                 <div class="img-product col-md-5 image-magnifier-container">
-                    <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" id="product-image" class="product-image img-fluid rounded" alt="{{ $productDetail->ten_san_pham }}" style="object-fit: cover;padding: 19px;border-radius: 15px; width:auto">
+                    <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" id="product-image" class=" w-100 product-image img-fluid rounded" alt="{{ $productDetail->ten_san_pham }}" style="object-fit: cover;padding: 19px;border-radius: 15px; width:auto">
                     <div class="img-magnifier-glass"></div> <!-- Kính lúp -->
                     <button class="ms-3" onclick="scrollToComments()">Xem đánh giá</button>
                     <img alt="Giá online (off 15/10)" loading="lazy" decoding="async" data-nimg="fill" class="relative w-auto object-contain ms-5" sizes="100vw" 

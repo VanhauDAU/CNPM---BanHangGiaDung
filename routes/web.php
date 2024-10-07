@@ -123,7 +123,6 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::get('/{id_danh_muc}/{id_chuyen_muc}/{id_NSX}', [ProductControllerUser::class, 'show3'])->name('sanpham_id_id_id');
     });
     Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
-    Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('/chi-tiet-san-pham/{id}/comment', [CommentController::class, 'store'])->name('chi_tiet_sp.comment');
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
