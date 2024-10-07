@@ -326,52 +326,134 @@
                                     @endif
                                 </span>
                             </h4>
-                            <div class="cmt-scroll" style="height: 400px">
-                            @foreach ($commentSP as $comment)
-                                <div class="comment mb-3 border p-2 rounded">
-                                    <div class="d-flex align-items-start">
-                                        <img src="
-                                            @if(!empty($comment->provider == "google"))
-                                                {{$comment->anh}}
-                                            @elseif($comment->provider =="vanglai")
-                                                https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
-                                            @else
-                                                {{ asset('storage/users/img/'.$comment->anh) }}" alt=""
-                                            @endif
+                            {{-- BÌNH LUẬN ĐÃ ĐĂNG NHẬP --}}
+                            <div class="cmt-scroll">
+                                @foreach ($commentSP as $comment)
+                                    <div class="comment mb-4 border p-3 rounded">
+                                        <div class="d-flex align-items-start">
+                                            <img src="
+                                                @if(!empty($comment->providerGG == 'google'))
+                                                    {{ $comment->anh }}
+                                                @elseif($comment->providerGG == 'account')
+                                                    {{ asset('storage/users/img/' . $comment->anh) }}
+                                                @else
+                                                    https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
+                                                @endif
                                             "
-                                          class="rounded-circle img-usercmt" width="40" height="40">
-                                        <div class="ml-3">
-                                            <strong>{{ $comment->ho_ten_KH ??  $comment->ho_ten_KHVL}}
-                                                    @if($comment->provider =="vanglai")
-                                                    <span style="color: #015958"> [Khách Vãng Lai]</span>
-                                                    @elseif(!empty($comment->maCV == 1))
-                                                        <span class="admin-cmt">[ADMIN]</span>
-                                                    @elseif(!empty($comment->maCV == 2 || $comment->maCV == 3) )
-                                                        <span class="nhanvien-cmt">[NHÂN VIÊN]</span>
+                                            alt="" class="rounded-circle img-usercmt" width="50" height="50">
+                                            <div class="ml-3">
+                                                <strong>{{ $comment->ho_ten_KH ??  $comment->ho_ten_KHVL}}
+                                                    @if($comment->providerGG == 'google' || $comment->providerGG == 'account')
+                                                        @if(!empty($comment->loai_tai_khoan == 0))
+                                                            <span class="badge bg-success">[KHÁCH HÀNG]</span>
+                                                        @elseif(!empty($comment->maCVMain == 1))
+                                                            <span class="badge bg-danger">[ADMIN]</span>      
+                                                        @elseif(!empty($comment->maCVMain == 2 || $comment->maCVMain == 3))
+                                                            <span class="badge bg-info">[NHÂN VIÊN]</span>
+                                                        @endif
+                                                    @else
+                                                        <span class="badge bg-success">[KHÁCH HÀNG VÃNG LAI]</span>
                                                     @endif
-                                                
-                                            </strong>
-                                            <p class="mb-1">{{ $comment->noi_dung }}</p>
-                                            <div class="row d-flex align-items-center">
-                                                <div class="timeCmt">
-                                                    <small class="text-muted" style="font-size: 10px">
-                                                        TG Bình Luận: {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
+                                                </strong>
+                                                <p class="mb-2">{{ $comment->noi_dung }}</p>
+                                                <div class="d-flex align-items-center">
+                                                    <small class="text-muted" style="font-size: 11px">
+                                                        Bình luận: {{ \Carbon\Carbon::parse($comment->created_at)->format('d-m-Y H:i:s') }}
                                                         <br/>
-                                                        TG Duyệt: {{ \Carbon\Carbon::parse($comment->updated_at)->format('d-m-Y H:i:s') }}
+                                                        Duyệt: {{ \Carbon\Carbon::parse($comment->updated_at)->format('d-m-Y H:i:s') }}
                                                     </small>
+                                                    <button class="btn btn-link text-primary ms-auto reply-btn" data-comment-id="{{ $comment->id }}" style="padding: 2px 10px; margin: 0 !important">Trả lời</button>
                                                 </div>
-                                                <div class="replyCmt ms-auto">
-                                                    <button class="btn btn-primary text-white mt-2" style="padding: 1px 15px" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
+                                                <!-- Form trả lời chỉ hiển thị khi người dùng nhấn vào nút "Trả lời" -->
+                                                <div id="replyFormContainer_{{ $comment->id }}" class="reply-form-container mt-2" style="display: none;">
+                                                    <h6 style="color:red">Bạn đang trả lời {{ $comment->ho_ten_KH ??  $comment->ho_ten_KHVL}}</h6>
+                                                    <form action="{{route('home.comment.reply')}}" class="replyForm d-flex align-items-start" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="maSP" id="" value="{{$productDetail->maSP}}">
+                                                        <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                                                        <textarea class="form-control" name="noi_dung" rows="2" placeholder="Nhập câu trả lời của bạn..." required></textarea>
+                                                        <button type="submit" class="btn btn-primary ms-2 text-white">Gửi</button>
+                                                    </form>
                                                 </div>
+                                                {{-- Hiển thị phản hồi cho bình luận này --}}
+                                                @if(isset($comment->replies) && !$comment->replies->isEmpty())
+                                                    <div class="replies mt-2">
+                                                        @foreach($comment->replies as $reply)
+                                                            @if($reply->trang_thai !=0)
+                                                                <div class="reply d-flex align-items-start border-start ps-3 ms-3 mb-2" style="font-size: 0.9em;"> <!-- Giảm kích thước chữ -->
+                                                                    <img src="
+                                                                    @if(!empty($reply->providerReply == 'google'))
+                                                                        {{ $reply->anh }}
+                                                                    @else
+                                                                        {{ asset('storage/users/img/' . $reply->anh) }}
+                                                                    @endif
+                                                                    " 
+                                                                    alt="{{ $reply->ho_ten_KH }}" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                                                                    <div>
+                                                                        <strong>{{ $reply->ho_ten_KH }}</strong>
+                                                                        @if($reply->maCVReply == 1)
+                                                                            <span class="badge bg-danger">[ADMIN]</span>      
+                                                                        @elseif($reply->maCVReply == 2 || $reply->maCVReply == 3)
+                                                                            <span class="badge bg-info">[NHÂN VIÊN]</span>
+                                                                        @elseif($reply->maCVReply == 4)
+                                                                            <span class="badge bg-success">[KHÁCH HÀNG]</span>
+                                                                        @endif
+                                                                        <p>{{ $reply->noi_dung }}</p>
+                                                                        <small>{{ \Carbon\Carbon::parse($reply->created_at)->format('d/m/Y H:i') }}</small>
+                                                                        <!-- Nút trả lời cho bình luận con -->
+                                                                        <button class="btn btn-link text-primary ms-auto reply-btn-con" data-reply-id="{{ $reply->id }}" style="padding: 2px 10px; margin: 0 !important">Trả lời</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Form trả lời cho bình luận con -->
+                                                                <div id="replyFormContainerCon_{{ $reply->id }}" class="reply-form-container mt-2 ms-5 mb-3" style="display: none;">
+                                                                    <h6 style="color:red">Bạn đang trả lời {{ $reply->ho_ten_KH }}</h6>
+                                                                    <form action="{{ route('home.comment.reply') }}" class="replyForm d-flex align-items-start" method="POST">
+                                                                        @csrf
+                                                                        <input type="hidden" name="maSP" value="{{ $productDetail->maSP }}">
+                                                                        <input type="hidden" name="parent_id" value="{{ $reply->id }}">
+                                                                        <textarea class="form-control" name="noi_dung" rows="2" placeholder="Nhập câu trả lời của bạn..." required></textarea>
+                                                                        <button type="submit" class="btn btn-primary ms-2 text-white">Gửi</button>
+                                                                    </form>
+                                                                </div>
+                                                                {{-- HIỂN THỊ BÌNH LUẬN CON CỦA BÌNH LUẬN CON --}}
+                                                                @if(isset($reply->replies2) && !$reply->replies2->isEmpty())
+                                                                    {{-- {{dd($reply->replies2)}} --}}
+                                                                    <div class="replies mt-2 ms-5">
+                                                                        @foreach($reply->replies2 as $reply2) <!-- Thay đổi từ $comment->replies2 sang $reply->replies2 -->
+                                                                            @if($reply2->trang_thai !=0)
+                                                                                <div class="reply d-flex align-items-start border-start ps-3 ms-3 mb-2" style="font-size: 0.9em;">
+                                                                                    <img src="{{ !empty($reply2->providerReply2 == 'google') ? $reply2->anhReply2 : asset('storage/users/img/' . $reply2->anhReply2) }}" 
+                                                                                        alt="{{ $reply2->ho_ten_KH }}" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                                                                                    <div>
+                                                                                        <strong>{{ $reply2->ho_ten_KH }}</strong>
+                                                                                        @if($reply2->maCVReply2 == 1)
+                                                                                            <span class="badge bg-danger">[ADMIN]</span>      
+                                                                                        @elseif($reply2->maCVReply2 == 2 || $reply2->maCVReply2 == 3)
+                                                                                            <span class="badge bg-info">[NHÂN VIÊN]</span>
+                                                                                        @elseif($reply2->maCVReply2 == 4)
+                                                                                            <span class="badge bg-success">[KHÁCH HÀNG]</span>
+                                                                                        @endif
+                                                                                        <p>{{ $reply2->noi_dung }}</p>
+                                                                                        <small>{{ \Carbon\Carbon::parse($reply2->created_at)->format('d/m/Y H:i') }}</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </div>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
                             </div>
+                            
                         </div>
                         @else
-                        <!-- Form Bình Luận -->
+                        <!-- BÌNH LUẬN CHƯA ĐĂNG NHẬP -->
                         <form id="commentForm" action="{{ route('home.chi_tiet_sp.comment', $productDetail->maSP) }}" method="POST">
                             @csrf
                             <div class="row mt-3 mb-3">
@@ -414,24 +496,28 @@
                                             <div class="comment mb-3 border p-2 rounded">
                                                 <div class="d-flex align-items-start">
                                                     <img style="img-usercmt" src="
-                                                        @if(!empty($comment->provider == "google"))
-                                                           {{$comment->anh}}
-                                                        @elseif($comment->provider =="vanglai")
-                                                            https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
+                                                        @if(!empty($comment->providerGG == 'google'))
+                                                            {{ $comment->anh }}
+                                                        @elseif($comment->providerGG == 'account')
+                                                            {{ asset('storage/users/img/' . $comment->anh) }}
                                                         @else
-                                                            {{ asset('storage/users/img/'.$comment->anh) }}" alt="{{ $comment->ho_ten_KH ?? $comment->ho_ten_KHVL }}
+                                                            https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg
                                                         @endif
                                                         "
                                                       class="rounded-circle" width="40" height="40">
                                                     <div class="ml-3">
                                                         <strong>
                                                             {{ $comment->ho_ten_KH ?? $comment->ho_ten_KHVL }} 
-                                                            @if($comment->provider =="vanglai")
-                                                            <span style="color: #015958"> [Khách Vãng Lai]</span>
-                                                            @elseif(!empty($comment->maCV == 1))
-                                                                <span class="admin-cmt">[ADMIN]</span>
-                                                            @elseif(!empty($comment->maCV == 2 || $comment->maCV == 3) )
-                                                                <span class="nhanvien-cmt">[NHÂN VIÊN]</span>
+                                                            @if($comment->providerGG == 'google' || $comment->providerGG == 'account')
+                                                                @if(!empty($comment->loai_tai_khoan == 0))
+                                                                    <span class="badge bg-success">[KHÁCH HÀNG]</span>
+                                                                @elseif(!empty($comment->maCVMain == 1))
+                                                                    <span class="badge bg-danger">[ADMIN]</span>      
+                                                                @else
+                                                                    <span class="badge bg-info">[NHÂN VIÊN]</span>
+                                                                @endif
+                                                            @else
+                                                                    <span class="badge bg-success">[KHÁCH HÀNG VÃNG LAI]</span>
                                                             @endif
                                                         </strong>
                                                         <p class="mb-1">{{ $comment->noi_dung }}</p>
@@ -443,10 +529,44 @@
                                                                     TG Duyệt: {{ \Carbon\Carbon::parse($comment->updated_at)->format('d-m-Y H:i:s') }}
                                                                 </small>
                                                             </div>
-                                                            <div class="replyCmt ms-auto">
+                                                            {{-- <div class="replyCmt ms-auto">
                                                                 <button class="btn btn-primary text-white mt-2" style="padding: 1px 15px" onclick="replyToComment('{{ $comment->id }}')">Trả lời</button>
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
+                                                        {{-- Hiển thị phản hồi cho bình luận này --}}
+                                                @if(isset($comment->replies) && !$comment->replies->isEmpty())
+                                                <div class="replies mt-2">
+                                                    @foreach($comment->replies as $reply)
+                                                        @if($reply->trang_thai !=0)
+                                                            <div class="reply d-flex align-items-start border-start ps-3 ms-3 mb-2">
+
+                                                                <img src="
+                                                                @if(!empty($reply->providerReply == 'google'))
+                                                                    {{ $reply->anh }}
+                                                                @else
+                                                                    {{ asset('storage/users/img/' . $reply->anh) }}"
+                                                                @endif
+                                                                " 
+                                                                alt="{{ $reply->ho_ten_KH }}" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                                                                
+                                                                <div>
+                                                                   {{-- {{ dd($comment)}} --}}
+                                                                    <strong>{{ $reply->ho_ten_KH }}</strong>
+                                                                    @if($reply->maCVReply == 1)
+                                                                        <span class="badge bg-danger">[ADMIN]</span>   
+                                                                    @elseif($reply->maCVReply == 4)
+                                                                        <span class="badge bg-success">[KHÁCH HÀNG]</span>
+                                                                    @else
+                                                                        <span class="badge bg-info">[NHÂN VIÊN]</span>
+                                                                    @endif
+                                                                    <p>{{ $reply->noi_dung }}</p>
+                                                                    <small>{{ \Carbon\Carbon::parse($reply->created_at)->format('d/m/Y H:i') }}</small>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -466,7 +586,6 @@
                             </div>
                         </form>
                         @endif
-                        
                     </div>
                 </div>
             </div>
@@ -566,12 +685,6 @@
             document.getElementById('comments').scrollIntoView({
             behavior: 'smooth'  // Di chuyển mượt mà
             });
-        }
-        function replyToComment(commentId) {
-            // Hiển thị một form nhập nội dung trả lời cho bình luận
-            // Bạn có thể sử dụng modal hoặc một form inline
-            alert('Trả lời bình luận ID: ' + commentId);
-            // Thực hiện logic để hiển thị form nhập bình luận mới
         }
 
         const stars = document.querySelectorAll('.star');

@@ -1,6 +1,12 @@
 @extends('layouts.client')
 @section('title')
-    {{$title}}
+    {{$title}} 
+    {{-- @if(!empty(request()->routeIs('home.products.sanpham_id')))
+        {{ Str::upper($productDetail->ten_danh_muc) }}
+    @endif --}}
+    @if(request()->routeIs('home.products.sanpham_id_id'))
+        {{ Str::upper($productDetail->ten_chuyen_muc) }}
+    @endif
 @endsection
 @section('content-clients')
     @if(!empty($productDetail->id_danh_muc))

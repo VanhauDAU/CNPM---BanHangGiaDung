@@ -195,6 +195,7 @@
     @include('Clients.blocks.footer')
     @yield('js')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js" integrity="sha512-eP8DK17a+MOcKHXC5Yrqzd8WI5WKh6F1TIk5QZ/8Lbv+8ssblcz7oGC8ZmQ/ZSAPa7ZmsCU4e/hcovqR8jfJqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -347,8 +348,21 @@
                     changeSlide(slider, 1);
                 });
             });
-
-
+            $(document).ready(function() {
+                $(document).on('click', '.reply-btn', function() {
+                    var commentId = $(this).data('comment-id');
+                    // Hiển thị/ẩn form trả lời tương ứng với bình luận
+                    console.log("Nhấn vào nút trả lời, ID bình luận: " + commentId);
+                    $('#replyFormContainer_' + commentId).toggle();
+                });
+            });
+            document.querySelectorAll('.reply-btn-con').forEach(button => {
+                button.addEventListener('click', function() {
+                    const commentId = this.getAttribute('data-comment-id') || this.getAttribute('data-reply-id');
+                    const replyFormContainer = document.getElementById(`replyFormContainerCon_${commentId}`);
+                    replyFormContainer.style.display = replyFormContainer.style.display === 'none' ? 'block' : 'none';
+                });
+            });
     </script>
 
     <!-- Bootstrap JS -->

@@ -5,6 +5,7 @@ use App\Models\clients\ProductsViewed;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\clients\Products;
+use App\Models\admin\comments;
 use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
@@ -91,8 +92,7 @@ class ProductController extends Controller
         $danhMucNsx = $this->products->getDetailDM_Nsx($id);
         return view('clients.products.index', compact('title', 'productList','productDetail','danhMucNsx'));
     }
-    public function show2(Request $request, $id, $id2)
-    {
+    public function show2(Request $request, $id, $id2){
         $filters = [];
         $keyword = null;
         $title = 'SẢN PHẨM';
@@ -121,6 +121,7 @@ class ProductController extends Controller
         ->where('chitietdanhmucsp.slug',$id2)
         ->get()->first();
         // dd($productDetail);
+        
         return view('clients.products.index', compact('title', 'productList','productDetail', 'keyword','danhMucNsx'));
     }
     public function show3(Request $request, $id, $id2,$id3)
@@ -166,7 +167,7 @@ class ProductController extends Controller
             return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         $commentSP = DB::table('binhluansp')
-        ->select('taikhoan.ho_ten as ho_ten_KH', 'taikhoan.maCV', 'taikhoan.provider', 'taikhoan.anh', 'binhluansp.*')
+        ->select('taikhoan.ho_ten as ho_ten_KH', 'taikhoan.maCV as maCVMain', 'taikhoan.provider as providerGG', 'taikhoan.anh', 'binhluansp.*','taikhoan.loai_tai_khoan')
         ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
         ->where('binhluansp.maSP', $productDetail->maSP)
         ->where('binhluansp.trang_thai', 1)
@@ -174,7 +175,26 @@ class ProductController extends Controller
         ->get();
 
         // dd($commentSP);
-
+        // Lấy phản hồi cho từng bình luận
+        foreach ($commentSP as $comment) {
+            $comment->replies = DB::table('binhluansp')
+                ->select('taikhoan.ho_ten as ho_ten_KH', 'binhluansp.*','taikhoan.anh as anhReply','taikhoan.anh','taikhoan.loai_tai_khoan','taikhoan.provider as providerReply','taikhoan.maCV as maCVReply')
+                ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
+                ->where('binhluansp.parent_id', $comment->id)
+                ->orderBy('binhluansp.created_at', 'ASC')
+                ->get();
+                // Lấy phản hồi cho từng bình luận con
+            foreach ($comment->replies as $reply) {
+                $reply->replies2 = DB::table('binhluansp')
+                    ->select('taikhoan.ho_ten as ho_ten_KH', 'binhluansp.*', 'taikhoan.anh as anhReply2', 'taikhoan.loai_tai_khoan', 'taikhoan.provider as providerReply2', 'taikhoan.maCV as maCVReply2')
+                    ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
+                    ->where('binhluansp.parent_id', $reply->id)
+                    ->orderBy('binhluansp.created_at', 'ASC')
+                    ->get();
+                    // dd($reply->replies2);
+    }
+        }
+        // dd($commentSP);
         $title=$productDetail->ten_san_pham;
         return view('clients.products.detail_product', compact('title','productDetail','commentSP'));
     }

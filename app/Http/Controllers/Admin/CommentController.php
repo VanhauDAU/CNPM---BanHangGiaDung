@@ -24,11 +24,19 @@ class CommentController extends Controller
             ], [
                 'noi_dung.required' => 'Bạn chưa nhập bình luận',
             ]);
+            $checkAdmin = 0;
+            $msg = 'Bình luận chờ phê duyệt!';
+            if(Auth::user()->loai_tai_khoan == 1){
+                $checkAdmin = 1;
+                $msg = 'Bình luận hoàn tất!';
+            }
             Comments::create([
                 'user_id' => Auth::id(),
                 'maSP' => $id,
                 'noi_dung' => $request->noi_dung,
+                'parent_id' => $request->input('parent_id', null),
                 'provider' => null,
+                'trang_thai'=>$checkAdmin,
             ]);
         } else {
             $request->validate([
@@ -53,10 +61,12 @@ class CommentController extends Controller
                 'email_KHVL' => $request->email,
                 'gioi_tinh_KHVL' => $request->gioi_tinh,
                 'noi_dung' => $request->noi_dung,
+                'parent_id' => $request->input('parent_id', null),
                 'provider' => 'vanglai',
             ]);
+            $msg = 'Bình luận đã được gửi, chờ phê duyệt!';
         }
-        return redirect()->back()->with('success','Bình luận của bạn đã được gửi, chờ phê duyệt!');
+        return redirect()->back()->with('success',$msg);
     }
     public function index() {
         $title = 'QUẢN LÝ BÌNH LUẬN';
@@ -147,6 +157,29 @@ class CommentController extends Controller
 
         return redirect()->route('admin.manage_cmt')->with('msg', $msg);
     }
+    public function reply(Request $request)
+    {
+        // dd($request->all());
+        // Validate dữ liệu
+        $request->validate([
+            'noi_dung' => 'required|max:255',
+            'parent_id' => 'required|exists:binhluansp,id' // Đảm bảo parent_id tồn tại trong bảng comments
+        ], [
+            'noi_dung.required' => 'Vui lòng nhập nội dung trả lời.',
+            'parent_id.exists' => 'Bình luận gốc không tồn tại.'
+        ]);
 
+        // Lưu bình luận trả lời
+        $reply = comments::create([
+            'user_id' => Auth::id(),
+            'maSP' => null,
+            'noi_dung' => $request->noi_dung,
+            'trang_thai' =>2,
+            'maSP' =>$request->maSP,
+            'parent_id' => $request->parent_id,
+        ]);
+        toastr()->success('Thành công','Đã đăng bình luận');
+        return redirect()->back();
+    }
 
 }

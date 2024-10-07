@@ -94,9 +94,10 @@ function getChuyenMucCountByNSXAndDanhMuc($maNSX, $idDanhMuc)
 }
 function CountCmt($id) {
     $countBinhluansp = DB::table('binhluansp')
-        ->where('trang_thai', 1)
+        ->where('trang_thai', '!=',0)
         ->where('maSP', $id) 
         ->count();
+        // dd($countBinhluansp);
     return $countBinhluansp;
 }
 function get5Product($idCm,$maSP){

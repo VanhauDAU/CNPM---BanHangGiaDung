@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Clients\ContactController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Clients\ShoppingCartController;
+use App\Http\Controllers\clients\CheckoutController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
@@ -124,6 +125,7 @@ Route::prefix('/')->name('home.')->group(function(){
     });
     Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('/chi-tiet-san-pham/{id}/comment', [CommentController::class, 'store'])->name('chi_tiet_sp.comment');
+    Route::post('/comments/reply', [CommentController::class, 'reply'])->name('comment.reply');
     Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
     Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
     Route::get('bai-viet',[PostController::class,'post'])->name('bai-viet');
@@ -139,10 +141,13 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::post('doi-mat-khau', [UserControllerClients::class,'password_update']);
 
     });
+
     Route::post('/add-to-cart/{id}', [ShoppingCartController::class, 'addToCart'])->name('cart.add');
     Route::get('/gio-hang', [ShoppingCartController::class, 'viewCart'])->name('cart.view');
     Route::post('/gio-hang/update/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/gio-hang/remove/{id}', [ShoppingCartController::class, 'removeFromCart'])->name('cart.remove');
+
+    Route::post('/thanh-toan', [CheckoutController::class, 'xylythanhtoan'])->name('thanhtoan.xuly');
 
     Route::get('nhan-hang/{id}', [BrandController::class, 'getBrand'])->name('getBrand');
     

@@ -7,8 +7,8 @@
 <div class="wrapper wrapper-content">
     <div class="container-fluid"> <!-- Changed to container-fluid -->
         <div class="text-center mb-4 fw-bold d-flex justify-content-center align-items-center">
-            <img src="{{asset('assets/general/img/logoDAU.png')}}" alt="" class="img-fluid me-2" style="width: 50px; height: 45px;">
-            <h1 id="title-top" class="ms-3">{{$title}}</h1>
+            <img src="{{asset('assets/general/img/logoDAU.png')}}" alt="" class="img-fluid me-2" style="width: 40px; height: 35px;">
+            <h1 id="title-top" class="ms-3" style="font-size: 22px">{{$title}}</h1>
         </div>
         @if(session('msg'))
             <div class="alert alert-success">
@@ -56,7 +56,7 @@
                                 {!! \Illuminate\Support\Str::limit($item->noi_dung,20) !!}
                         </td>
                         <td>
-                            @if($item->trang_thai == 1)
+                            @if($item->trang_thai == 1 || $item->trang_thai == 2)
                                 <span class="bg-success p-2 rounded text-white">Đã Duyệt</span>
                             @else
                                 <span class="bg-danger p-2 rounded text-white">Chưa Duyệt</span>
