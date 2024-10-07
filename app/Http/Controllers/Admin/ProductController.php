@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     //
     private $products;
-    const _PER_PAGE = 4;
+    const _PER_PAGE = 5;
     public function __construct(){
         $this->products = new products();
     }

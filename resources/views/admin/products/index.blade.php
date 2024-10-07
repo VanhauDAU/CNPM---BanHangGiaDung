@@ -7,9 +7,9 @@
 @section('content-admin')
 <div class="wrapper wrapper-content">
     <div class="container">
-        <div class="text-center mb-4 fw-bold d-flex justify-content-center align-items-center">
-            <img src="{{asset('assets/general/img/logoDAU.png')}}" alt="" class="img-fluid" style="width: 50px; height: 45px;">
-            <h1 id="title-top" class="ms-3">{{$title}}</h1>
+        <div class="text-center mb-1 fw-bold d-flex justify-content-center align-items-center">
+            <img src="{{asset('assets/general/img/logoDAU.png')}}" alt="" class="img-fluid" style="width: 40px; height: 45px;">
+            <h1 id="title-top" class="ms-3" style="font-size: 22px">{{$title}}</h1>
         </div>
         {{-- @if(session('msg'))
             <div class="alert alert-success">

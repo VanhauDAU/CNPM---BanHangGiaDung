@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Clients;
-
+use App\Models\clients\ProductsViewed;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\clients\Products;
@@ -178,5 +178,6 @@ class ProductController extends Controller
         $title=$productDetail->ten_san_pham;
         return view('clients.products.detail_product', compact('title','productDetail','commentSP'));
     }
+    
 
 }

@@ -128,13 +128,17 @@
                     @endif
                 </div>
             </div>
+            {{-- DANH SÁCH CHUYÊN MỤC (PHÂN BỐ CỤC RA) --}}
+
+            
             
             {{-- DANH SÁCH SẢN PHẨM CỦA DANH MỤC ĐÓ (GIỚI HẠN 5 DANH MỤC ĐẦU) --}}
             @if(!empty(get5DanhMuc()))
                 @foreach(get5DanhMuc() as $itemDm)
                     <div class="row bg-white p-3 my-3 rounded slider-container">
-                        <div class="row d-flex">
-                            <h5 class="fw-bold">Sản phẩm {{$itemDm->ten_danh_muc}}  <i class="fa-brands fa-firefox-browser" style="color: red"></i></h5>
+                        <div class="row d-flex justify-content-between my-2">
+                            <h5 class="fw-bold col-4">Sản phẩm {{$itemDm->ten_danh_muc}}  <i class="fa-brands fa-firefox-browser" style="color: red"></i></h5>
+                            <a href="{{route('home.products.sanpham_id',$itemDm->slug)}}" class="btn col-2 text-white" style="background-color: orange;margin-right: -25px">Xem tất cả sản phẩm</a>
                         </div>
                         @if(!empty(getProductDm($itemDm->id_danh_muc)))
                             <div class="product-list-danhmuc d-flex slider" data-current-slide="0">

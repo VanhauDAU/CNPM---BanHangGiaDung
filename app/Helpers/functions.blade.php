@@ -125,11 +125,10 @@ function getAllChuyenMucNSX($slug){
 // Lấy ra danh mục (5 danh mục random)
 function get5DanhMuc(){
     return DB::table('danhmucsanpham')
-        ->select('danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc') 
+        ->select('danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc','danhmucsanpham.slug') 
         ->join('sanpham', 'sanpham.id_danh_muc', '=', 'danhmucsanpham.id_danh_muc')
-        ->groupBy('danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc')
+        ->groupBy('danhmucsanpham.id_danh_muc', 'danhmucsanpham.ten_danh_muc','danhmucsanpham.slug')
         ->inRandomOrder()
-        ->take(5)
         ->get();
 }
 
@@ -140,6 +139,5 @@ function getProductDm($id){
     ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX')
     ->where('id_danh_muc' ,$id)
     ->inRandomOrder()
-    ->take(10)
     ->get();
 }
