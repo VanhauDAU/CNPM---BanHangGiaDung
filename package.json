@@ -13,6 +13,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^43.1.1"
+        "@ckeditor/ckeditor5-build-classic": "^43.1.1",
+        "wowjs": "^1.1.3"
     }
 }

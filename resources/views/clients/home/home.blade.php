@@ -62,11 +62,12 @@
             <div class="row mt-3">
                 <div class="col-lg-12" id="featured-products">
                     <!-- Featured Products -->
-                    <h5 class="mb-4 running-text text-center text-uppercase">
+                    <h5 class="mb-4 running-text text-center text-uppercase wow animate__animated animate__fadeInDown" data-wow-delay="0.5s" data-wow-duration="1.5s" data-wow-iteration="1">
                         <span class="icon-effect"><i class="fas fa-star"></i></span>
                         Sản Phẩm Nổi Bật
                         <span class="icon-effect"><i class="fas fa-star"></i></span>
                     </h5>
+                    
                     <div class="row list-product-hot my-4 justify-content-center p-3" style="background: #F29F05;border-radius: 20px">
                         @if(!empty(sanphamnoibat()))
                             @foreach (sanphamnoibat() as $product)
@@ -115,7 +116,9 @@
             </div>
             {{-- DANH MỤC HOT --}}
             <div class="row py-4 text-center bg-white mb-4 rounded" >
-                <h3 class="py-3 text-danhmuchot">DANH MỤC HOT TẠI SHOP </h3>
+                <h3 class="py-3 text-danhmuchot wow animate__animated animate__fadeInLeft ">
+                    DANH MỤC HOT TẠI SHOP
+                </h3>                
                 <div class="row ListDanhMucHot py-3 pt-3 text-center">
                     @if(!empty(getAllDanhMucSp1()))
                         @foreach(getAllDanhMucSp1() as $item)
@@ -134,7 +137,7 @@
                 @foreach(get5DanhMuc() as $itemDm)
                     <div class="row bg-white p-3 my-3 rounded slider-container">
                         <div class="row d-flex justify-content-between my-2">
-                            <h5 class="fw-bold col-4">Sản phẩm {{$itemDm->ten_danh_muc}}  <i class="fa-brands fa-firefox-browser" style="color: red"></i></h5>
+                            <h5 class="fw-bold col-4 wow animate__animated animate__jackInTheBox">Sản phẩm {{$itemDm->ten_danh_muc}}  <i class="fa-brands fa-firefox-browser" style="color: red"></i></h5>
                             <a href="{{route('home.products.sanpham_id',$itemDm->slug)}}" class="btn col-2 text-white" style="background-color: orange;margin-right: -25px">Xem tất cả sản phẩm</a>
                         </div>
                         @if(!empty(getProductDm($itemDm->id_danh_muc)))
@@ -171,8 +174,6 @@
                     </div>
                 @endforeach
             @endif
-
-            
             {{-- DANH SÁCH NHÃN HÀNG --}}
             <div class="listBrand">
                 <div class="row d-flex justify-content-between align-items-center">

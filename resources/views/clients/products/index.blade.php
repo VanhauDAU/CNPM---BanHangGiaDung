@@ -144,7 +144,7 @@
                                     @else
                                         <form action="{{ route('home.cart.add', $product->maSP) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn btn-warning btn-xemchitiet">Liên hệ</button>
+                                            <button type="submit" class="btn btn-warning btn-xemchitiet-lienhe">Liên hệ</button>
                                         </form>
                                     @endif
                                 </div>

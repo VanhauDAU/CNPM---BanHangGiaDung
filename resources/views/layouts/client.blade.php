@@ -38,10 +38,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- sweetAlert2 --}}
     <!-- Animate.css -->
-    <script src="
-    https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/clients/css/custom_css.css')}}">
+     <!-- Thêm Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    
+    <!-- Thêm WOW.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
     <!-- Custom CSS -->
     <style>
         *{
@@ -150,10 +154,7 @@
         .swing {
             animation: swing 1s infinite; /* Thay đổi thời gian nếu cần */
         }
-         /* đăng ký */
-        
-
-        </style>
+    </style>
     @yield('stylesheet')
 </head>
 
@@ -436,6 +437,7 @@
                     });
             }
         });
+        new WOW().init();
     </script>
 </body>
 

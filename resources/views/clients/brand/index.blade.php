@@ -29,7 +29,7 @@
                 <div class="row mx-2 mt-2 fs-4 fw-bold d-flex">
                     <h4>{{$brand->ten_NSX}} <span style="font-size: 13px">({{CountSanPhamNSX($brand->maNSX)}} sản phẩm)</span></h4>
                 </div>
-                <div class="row list-chuyenmuc-nsx mx-2 d-flex gap-3 pt-2" style="overflow: scroll; height: 280px; overflow-x: hidden;">
+                <div class="row list-chuyenmuc-nsx mx-2 d-flex gap-3 pt-2" style="overflow: scroll;overflow-x: hidden;">
                     @if(!empty($danhmucbrand))
                         @foreach($danhmucbrand as $item1)
                             <div class="col-2 text-center">
@@ -44,7 +44,21 @@
                     @endif
 
                 </div>
-                
+                <div class="container py-5">
+                    <div class="text-center">
+                      <img src="{{asset('storage/brands/img/'.$brand->logo)}}" class="wow animate__animated animate__fadeInDown" alt="Samsung Logo" width="200" />
+                    </div>
+                    <h2 class="wow animate__animated animate__zoomIn text-center fw-bold mt-4">
+                      Giới Thiệu {{$brand->ten_NSX}}
+                    </h2>
+                    <p class="wow animate__animated animate__fadeInLeft fs-5 mt-3 text-center">
+                        {{$brand->gioi_thieu}}
+                    </p>
+                    <div class="text-center mt-4">
+                      <a href="#" class="btn btn-primary btn-lg wow animate__animated animate__bounceIn" data-wow-delay="0.3s">Tìm Hiểu Thêm</a>
+                    </div>
+                  </div>
+                  
             </div>
             
         </div>
