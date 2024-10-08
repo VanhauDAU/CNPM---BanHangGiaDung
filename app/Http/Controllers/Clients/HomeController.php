@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\clients\Products;
 use App\Models\admin\Post as adminPost;
+use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     //
@@ -36,14 +37,25 @@ class HomeController extends Controller
         ->select('nhasanxuat.*') 
         ->distinct()
         ->get();
-
+        $user = Auth::user();
+        // Truyền sản phẩm đã xem sang view
+        if(Auth::check()){
+            $viewedProducts = DB::table('sanphamdaxem')
+            ->where('user_id', $user->id)
+            ->pluck('product_id') 
+            ->toArray();
+            $viewedProductDetails = Products::whereIn('maSP', $viewedProducts)->get();
+        }else{
+            $viewedProducts = session()->get('viewed_products', []);
+            $viewedProductDetails = Products::whereIn('maSP', $viewedProducts)->get();
+        }
         // dd($brand);
         if(!empty($request->keyword)){
             $keyword = $request->keyword;
             $products->where('ten_san_pham', 'like', '%' . $keyword . '%');
-            return view('clients.products.index', compact('title', 'productList','danhMucNsx','allProduct','brand'));
+            return view('clients.products.index', compact('title', 'productList','danhMucNsx','allProduct','brand','viewedProductDetails'));
         }
-        return view('clients.home.home', compact('title', 'productList','sortType','posts','allProduct','brand'));
+        return view('clients.home.home', compact('title', 'productList','sortType','posts','allProduct','brand','viewedProductDetails'));
     }
     public function products(){
         $this->data['title'] = 'SẢN PHẨM';

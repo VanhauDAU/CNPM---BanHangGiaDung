@@ -5,8 +5,10 @@ use App\Models\clients\ProductsViewed;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\clients\Products;
+use Illuminate\Support\Facades\Auth;
 use App\Models\admin\comments;
 use Illuminate\Support\Facades\DB;
+
 class ProductController extends Controller
 {
     //
@@ -174,8 +176,36 @@ class ProductController extends Controller
         ->orderBy('binhluansp.created_at', 'DESC')
         ->get();
 
-        // dd($commentSP);
-        // Lấy phản hồi cho từng bình luận
+        $productSeen = DB::table('sanpham')
+        ->where('slug',$id)
+        ->get();
+
+        if(Auth::check()){
+            $user = auth()->user();
+            $productSeen = Products::where('slug', $id)->firstOrFail();
+            // dd($user);
+            $alreadyViewed = DB::table('sanphamdaxem')
+            ->where('user_id', $user->id)
+            ->where('product_id', $productSeen->maSP)
+            ->first();
+
+            if (!$alreadyViewed) {
+                DB::table('sanphamdaxem')->insert([
+                    'user_id' => $user->id,
+                    'product_id'=>$productSeen->maSP,
+                    'created_at'=>now(),
+                    'updated_at'=>now(),
+                ]);
+            }
+        }else{
+            $productSeen = Products::where('slug', $id)->firstOrFail();
+            $viewedProducts = session()->get('viewed_products',[]);
+            if (!in_array($productSeen->maSP, $viewedProducts)) {
+                session()->push('viewed_products', $productSeen->maSP);
+                session()->save();
+            }
+        }
+        // dd($viewedProductDetails);
         foreach ($commentSP as $comment) {
             $comment->replies = DB::table('binhluansp')
                 ->select('taikhoan.ho_ten as ho_ten_KH', 'binhluansp.*','taikhoan.anh as anhReply','taikhoan.anh','taikhoan.loai_tai_khoan','taikhoan.provider as providerReply','taikhoan.maCV as maCVReply')
@@ -183,7 +213,6 @@ class ProductController extends Controller
                 ->where('binhluansp.parent_id', $comment->id)
                 ->orderBy('binhluansp.created_at', 'ASC')
                 ->get();
-                // Lấy phản hồi cho từng bình luận con
             foreach ($comment->replies as $reply) {
                 $reply->replies2 = DB::table('binhluansp')
                     ->select('taikhoan.ho_ten as ho_ten_KH', 'binhluansp.*', 'taikhoan.anh as anhReply2', 'taikhoan.loai_tai_khoan', 'taikhoan.provider as providerReply2', 'taikhoan.maCV as maCVReply2')
@@ -192,9 +221,9 @@ class ProductController extends Controller
                     ->orderBy('binhluansp.created_at', 'ASC')
                     ->get();
                     // dd($reply->replies2);
-    }
+            }
         }
-        // dd($commentSP);
+        // dd($viewedProductDetails);
         $title=$productDetail->ten_san_pham;
         return view('clients.products.detail_product', compact('title','productDetail','commentSP'));
     }

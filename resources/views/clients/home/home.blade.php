@@ -58,6 +58,25 @@
                 </div>
                 {{-- SẢN PHẨM NỔI BẬT --}}
             </section>
+            {{-- SẢN PHẨM ĐÃ XEM --}}
+            @if(!empty($viewedProductDetails) && count($viewedProductDetails) >0 )
+                <div class="row my-3">
+                    <h3 class="text-center py-2 running-text wow animate__animated animate__jello">SẢN PHẨM ĐÃ XEM</h3>
+                    <div class="listProductViewed rounded p-3" style="background-color:white">
+                        @foreach($viewedProductDetails as $itemProductViewed)
+                            <a href="{{route('home.chi_tiet_sp',$itemProductViewed->slug)}}">
+                                <div class="itemProductViewed text-center border rounded p-1" >
+                                    <img src="{{ asset('storage/products/img/'.$itemProductViewed->anh) }}" alt="{{ $itemProductViewed->ten_san_pham }}" class="img-fluid mb-2" style="max-height: 200px; object-fit: cover;"/>
+                                    <h5 class="product-name">{{ $itemProductViewed->ten_san_pham }}</h5>
+                                    <p class="original-price" style="text-decoration: line-through;">{{ number_format($itemProductViewed->don_gia_goc, 0, ',', '.') }} VNĐ</p>
+                                    <p class="current-price" style="color: red; font-weight: bold;">{{ number_format($itemProductViewed->don_gia, 0, ',', '.') }} VNĐ</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             {{-- SẢN PHẨM NỔI BẬT --}}
             <div class="row mt-3">
                 <div class="col-lg-12" id="featured-products">
