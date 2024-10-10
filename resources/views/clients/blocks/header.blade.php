@@ -88,8 +88,11 @@
                   <div class="dropdown ms-1 text-center">
                     <a href="#" class="btn user-dropdown-btn" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             @if(!empty(Auth::user()))
+                            {{-- {{dd(Auth::user())}} --}}
                                 @if(Auth::user()->provider =="google")
                                     <img src="{{Auth::user()->anh}}" alt="" style="width: 30px; height:30px; border-radius:50%">
+                                @elseif(Auth::user()->anh == null)
+                                    <img src="https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" alt="" style="width: 30px; height:30px; border-radius:50%">
                                 @else
                                     <img src="{{asset('storage/users/img/'.Auth::user()->anh)}}" alt="" style="width: 30px; height:30px; border-radius:50%">
                                 @endif

@@ -1,15 +1,29 @@
 <!-- Danh mục sản phẩm -->
-<div class="col-lg-3 categories mt-1">
-    <h4 class="mb-4">
+<div class="col-lg-3 categories">
+    <h5 class="text-center text-warning">
+        @if(isset($weather) && !isset($weather['error']))
+            <div class="weather-info">
+                <p style="font-size: 15px">
+                    Nhiệt độ: <strong>{{ $weather['main']['temp'] }}°C</strong>,
+                    Độ ẩm: <strong>{{ $weather['main']['humidity'] }}%</strong>
+                </p>
+            </div>
+        @else
+            <p>Chúc bạn ngày {{now()->day}}/{{now()->month}} vui vẻ</p>
+        @endif
+    </h5>
+    
+    <h4 class="mb-2">
+        
         <i class="fas fa-bars"></i> Danh Mục Sản Phẩm
     </h4>
     <ul class="list-group">
-        <li class="list-group-item">
+        {{-- <li class="list-group-item">
             <a href="{{ route('home.products.index') }}" class="category-link d-flex">
                 <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>
                     Tất cả danh mục ({{CountDanhMuc()}}) 
             </a>
-        </li>
+        </li> --}}
         @if(!empty(getAllDanhMucSp()))
             @foreach(getAllDanhMucSp() as $item)
             <li class="list-group-item">

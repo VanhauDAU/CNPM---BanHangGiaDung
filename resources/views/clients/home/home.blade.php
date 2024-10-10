@@ -14,6 +14,7 @@
             <section class="category-section py-1">
                 <div class="container">
                     <div class="row">
+                        
                         @include('clients.blocks.categories')
                         <!-- Hình ảnh sản phẩm -->
                         <div class="col-lg-9 p-3 rounded" style="background:#DEEFE7;">

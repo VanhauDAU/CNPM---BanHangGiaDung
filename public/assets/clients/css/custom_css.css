@@ -105,7 +105,8 @@ header .navbar form .txtQuery{
 }
 
 .image-container:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
+    z-index: 10;
 }
 
 .image-overlay {
@@ -208,7 +209,7 @@ header .navbar form .txtQuery{
     display: none;
     position: absolute;
     left: 100%;
-    top: -130px;
+    top: -86px;
     width: 950px;
     height: 420px;
     background-color: white;
