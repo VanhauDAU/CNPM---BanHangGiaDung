@@ -101,6 +101,7 @@
     <footer>
         {{-- <p class="text-center">CopyRight &copy; {{date('Y')}} by Văn Hậu</p> --}}
     </footer>
+    @yield('js')
 </body>
 
 </html>

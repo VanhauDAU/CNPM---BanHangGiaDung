@@ -46,7 +46,7 @@
                                                         <h4 class="price-sale-product">{{number_format($item->don_gia)}}đ</h4>
                                                     </div>
                                                 </div>
-                                                <div class="branch-onproduct">
+                                                <div class="branch-onproduct" style="border-top-left-radius: 10px; background-color:#F29F05">
                                                     {{$item->ten_NSX}}
                                                 </div>
                                             </a>
@@ -67,7 +67,7 @@
                         @foreach($viewedProductDetails as $itemProductViewed)
                             <a href="{{route('home.chi_tiet_sp',$itemProductViewed->slug)}}">
                                 <div class="itemProductViewed text-center border rounded p-1" >
-                                    <img src="{{ asset('storage/products/img/'.$itemProductViewed->anh) }}" alt="{{ $itemProductViewed->ten_san_pham }}" class="img-fluid mb-2" style="max-height: 200px; object-fit: cover;"/>
+                                    <img src="{{ asset('storage/products/img/'.$itemProductViewed->anh) }}" alt="{{ $itemProductViewed->ten_san_pham }}" class="img-fluid mb-2" style="max-height: 140px; object-fit: cover;"/>
                                     <h5 class="product-name">{{ $itemProductViewed->ten_san_pham }}</h5>
                                     <p class="original-price" style="text-decoration: line-through;">{{ number_format($itemProductViewed->don_gia_goc, 0, ',', '.') }} VNĐ</p>
                                     <p class="current-price" style="color: red; font-weight: bold;">{{ number_format($itemProductViewed->don_gia, 0, ',', '.') }} VNĐ</p>
@@ -171,6 +171,7 @@
                                             <h6 class="title-product-danhmuc" style="font-size: 13px">
                                                 {{ \Illuminate\Support\Str::limit($itemProductDM->ten_san_pham, 45) }}
                                             </h6>
+                                            
                                             <h6 class="brand-products-danhmuc" style="color:green">{{$itemProductDM->ten_NSX}}</h6>
                                             <div class="row price-product-danhmuc">
                                                 <h6 style="color:red; font-size: 14px; font-weight: 700; margin: 0;display:flex; justify-content: space-between; min-height: 18px">

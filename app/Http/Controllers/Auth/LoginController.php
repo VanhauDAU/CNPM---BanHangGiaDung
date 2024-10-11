@@ -12,7 +12,8 @@ use App\Models\User;
 use App\Models\clients\Products;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-class LoginController extends Controller
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+class LoginController extends Controller 
 {
     /*
     |--------------------------------------------------------------------------
@@ -79,6 +80,11 @@ class LoginController extends Controller
             if ($user->loai_tai_khoan != 0) {
                 Auth::logout();
                 return $this->sendFailedLoginResponse($request);
+            }
+            // Kiểm tra xem email đã được xác thực chưa
+            if ($user->email_verified_at == null) {
+                // Auth::logout();
+                return redirect()->route('verification.notice')->with('warning', 'Bạn cần xác thực email.');
             }
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());

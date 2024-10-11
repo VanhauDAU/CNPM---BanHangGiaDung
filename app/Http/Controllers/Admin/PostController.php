@@ -5,8 +5,11 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+
 class PostController extends Controller
 {
     //
@@ -19,12 +22,17 @@ class PostController extends Controller
     public function index(Request $request){
         $title = 'DANH SÁCH BÀI VIẾT';
         $post = new Post();
-        $PostList = $post->withTrashed()->orderBy('deleted_at','ASC')->get();
+        $PostList = $post->withTrashed()->select('baiviet.*','taikhoan.ho_ten')->join('taikhoan','taikhoan.id','=','baiviet.user_id')->orderBy('created_at','DESC')->get();
         return view('admin.posts.index', compact('title', 'PostList'));
     }
     public function add(){
+        if(Gate::allows('posts.add')){
+            return 'Có quyền thêm bài viết';
+        }
+        if(Gate::denies('posts.add')){
+            return 'Bạn không có quyền truy cập';
+        }
         return view('admin.posts.add');
-
     }
     public function postAdd(Request $request){
         $request->validate([
@@ -57,9 +65,27 @@ class PostController extends Controller
         // dd($post);
         return redirect()->route('admin.manage_post')->with('msg', 'Thêm mới bài viết thành công');
     }
-    public function edit($post = 0){
+    public function edit(Post $post) {
+        // dd($post);
+        // $user = User::find(4);
+    
+        // if(Gate::forUser($user)->allows('posts.edit', $post)) {
+        //     return 'Có quyền sửa bài viết';
+        // }
+    
+        // if(Gate::forUser($user)->denies('posts.edit', $post)) {
+        //     return 'Không có quyền sửa bài viết';
+        // }
+        // dd($postGet);
+        $this->authorize('posts.edit');
+        if(Gate::allows('posts.edit', $post)){
+            return 'Có quyền sửa bài viết ' . $post->id;
+        }
+        if(Gate::denies('posts.edit', $post)){
+            return 'Bạn không có quyền sửa bài viết ' . $post->id;
+        }
         if(!empty($post)){
-            $postDetail = $this->post->getDetail($post);
+            $postDetail = $this->post->getDetail($post->id_bai_viet);
             if(!empty($postDetail[0])){
                 $postDetail = $postDetail[0];
             }else{

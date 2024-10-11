@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -57,6 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function chucvu()
     {
-        return $this->belongsTo(Chucvu::class, 'maCV', 'maCV'); // 'maCV' trong bảng taikhoan và 'maCV' trong bảng chucvu
+        return $this->belongsTo(Chucvu::class, 'maCV', 'maCV');
     }
 }

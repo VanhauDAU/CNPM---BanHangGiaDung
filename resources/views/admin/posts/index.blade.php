@@ -18,7 +18,9 @@
         <form action="{{route('posts.delete-any')}}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa')">
             @csrf
         <div class="d-flex mb-2">
+            @can('posts.add')
             <a href="{{ route('getadd_post') }}" class="btn btn-primary">Thêm bài viết</a>
+            @endcan
             <button type="submit" class="btn btn-danger">Xóa (0)</button>
         </div>
 
@@ -59,7 +61,7 @@
                     <th><a href="">Ảnh</a></th>
                     <th><a href="">Tiêu đề</a></th>
                     <th><a href="">Ngày đăng</a></th>
-                    <th><a href="">Ngày cập nhật</a></th>
+                    <th><a href="">Người đăng</a></th>
                     <th width="15%"><a href="">Trạng thái</a></th>
                     <th ><a href="">Hành động</a></th>
                 </tr>
@@ -81,10 +83,11 @@
                             {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}
                         </td>
                         <td>
-                            @if(empty($item->updated_at))
+                            {{-- {{dd($item)}} --}}
+                            @if(empty($item->user_id))
                                 <i class="fa-solid fa-xmark"></i>
                             @else
-                                {{ \Carbon\Carbon::parse($item->updated_at)->format('d/m/Y')}}
+                                {{$item->ho_ten}}
                             @endif
                         </td>
                         <td>
@@ -109,7 +112,7 @@
                                 <a href="{{ route('posts.restore', $item) }}" class="btn btn-primary btn-sm">Khôi phục</a>
                                 <a href="{{ route('posts.force-delete', $item) }}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa vĩnh viễn?')">Xóa vĩnh viễn</a>
                             @else
-                                <a href="{{ route('getedit_post', ['id'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm col-8">Sửa</a>
+                                <a href="{{ route('getedit_post', ['post'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm col-8">Sửa</a>
                             @endif
                             
                             {{-- <form action="{{route('getdelete_post',['id'=>$item->id_bai_viet]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">

@@ -9,7 +9,7 @@
               <a href="{{route('home.index')}}" id="playSoundLink">
                   <div class="logo d-flex">
                         <img class="bee" src="{{asset('assets/general/img/bee.gif')}}" alt="">
-                        <audio id="sound" src="{{asset('storage/audio/wellcome.mp3')}}"></audio>
+                        {{-- <audio id="sound" src="{{asset('storage/audio/wellcome.mp3')}}"></audio> --}}
                       <img src="{{asset('assets/general/img/logoShop.png')}}" alt="Logo" class="img-fluid me-4">
                   </div>
               </a>

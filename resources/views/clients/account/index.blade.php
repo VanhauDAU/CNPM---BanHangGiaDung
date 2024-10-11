@@ -13,7 +13,6 @@
             <div class="col-md-9 mx-auto">
                 <div class="col-md-7 user-details mt-5" style="margin: 0 auto;">
                     <h5 class="mb-4 text-uppercase font-weight-bold running-text text-center">Thông tin tài khoản</h5>
-
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <strong>Họ tên:</strong> <span>{{ Auth::user()->ho_ten }}</span>
@@ -22,7 +21,20 @@
                             <strong>Điện thoại:</strong> <span>{{ Auth::user()->so_dien_thoai }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <strong>Email:</strong> <span>{{ Auth::user()->email }}</span>
+                            <strong>Email:</strong> <span>{{ Auth::user()->email }} 
+                                {{-- {{dd(Auth::user()->email_verified_at)}} --}}
+                                @if(Auth::user()->email_verified_at == null)
+                                    <i class="fa-solid fa-x"></i>
+                                    <form action="{{ route('verification.resend') }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-link p-0">Xác thực ngay</button>
+                                    </form>
+                                    
+                                @else
+                                    <span style="color: green"><i class="fa-solid fa-check"></i> Đã xác thực </span>
+                                @endif
+                            </span>
+                            
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <strong>Ngày sinh:</strong> 

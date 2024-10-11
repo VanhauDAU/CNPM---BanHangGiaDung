@@ -83,9 +83,9 @@ Route::prefix('admin')->group(function () {
         });
         Route::prefix('quan-ly-bai-viet')->group(function () {
             Route::get('', [PostControllerAdmin::class, 'index'])->name('admin.manage_post');
-            Route::get('add', [PostControllerAdmin::class, 'add'])->name('getadd_post');
+            Route::get('add', [PostControllerAdmin::class, 'add'])->middleware('can:posts.add')->name('getadd_post');
             Route::post('add', [PostControllerAdmin::class, 'postAdd']);
-            Route::get('edit/{id}', [PostControllerAdmin::class, 'edit'])->name('getedit_post');
+            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->can('posts.edit','post')->name('getedit_post');
             Route::post('edit/{id}', [PostControllerAdmin::class, 'postEdit']);
 
             Route::post('delete-any', [PostControllerAdmin::class, 'handelDeleteAny'])->name('posts.delete-any');
@@ -175,19 +175,21 @@ Route::get('test-otp', function(){
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-// Route::get('/email/verify',function(){ 
-//     return view('auth.verify');
-// })->middleware('auth')->name('verification.notice');
-// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//     $request->fulfill();
-//     return redirect('/home');
-// })->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify',function(){
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/')->with('success','Đã xác thực email thành công!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
-// Route::post('/email/verification-notification', function (Request $request) {
-//     $request->user()->sendEmailVerificationNotification();
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
  
-//     return back()->with('message', 'Verification link sent!');
-// })->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+    return back()->with('success','Đã gửi lại email xác thực!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+
+
 Route::get('auth/google', function () {
     return Socialite::driver('google')->redirect();
 });

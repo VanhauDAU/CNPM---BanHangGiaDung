@@ -35,7 +35,7 @@
                             <div class="col-2 text-center">
                                 <a href="{{ route('home.products.sanpham_id_id_id', [$item1->slugDm, $item1->slug,$item1->slugNSX]) }}">
                                     <div class="rounded p-2 item-danhmuc-nsx" style="background-color: white; cursor: pointer; max-height: 120px;">
-                                        <img src="{{ asset('storage/products/img/' . $item1->anh_cm) }}" alt="" style="width: 60px; min-height: 60px">
+                                        <img src="{{ asset('storage/products/img/' . $item1->anh_cm) }}" alt="" style="width: 75px; min-height: 60px">
                                         <h6>{{ $item1->ten_chuyen_muc }}</h6>
                                     </div>
                                 </a>

@@ -29,7 +29,7 @@ class Groups extends Model
     }
     public function getAllDanhMucSp(){
         $groups = DB::table($this->table2)
-        ->orderBy('id_danh_muc','ASC')
+        ->orderBy('created_at','ASC')
         ->limit(10)
         ->get();
         return $groups;

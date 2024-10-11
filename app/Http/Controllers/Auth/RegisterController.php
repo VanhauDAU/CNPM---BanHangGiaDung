@@ -99,6 +99,6 @@ class RegisterController extends Controller
         }
         return $request->wantsJson()
                     ? new JsonResponse([], 201)
-                    : redirect($this->redirectPath())->with('msg','Đăng ký tài khoản thành công!');
+                    : redirect($this->redirectPath())->with('msg','Đăng ký tài khoản thành công, vui lòng xác thực email!');
     }
 }
