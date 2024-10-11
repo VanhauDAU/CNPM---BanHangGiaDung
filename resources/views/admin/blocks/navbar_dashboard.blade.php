@@ -91,5 +91,19 @@
                 <i class="fas fa-receipt"></i> QL Hóa Đơn
             </a>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" href="#" id="accountDropdown" data-bs-toggle="collapse" data-bs-target="#staffSubMenu" aria-expanded="false">
+                <i class="fas fa-users"></i> Nhóm Ng.Dùng
+                <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
+            </a>
+            <ul class="collapse" id="staffSubMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('staff.index')}}">Xem - Sửa - Xóa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('getadd_user')}}">Thêm</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </nav>

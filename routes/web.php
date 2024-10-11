@@ -59,6 +59,23 @@ Route::prefix('admin')->group(function () {
             Route::post('edit/{id}', [UserController::class, 'post_edit_user'])->name('admin.edit_user');
             Route::delete('delete/{id}', [UserController::class, 'get_delete_user'])->name('getdelete_user');
         });
+        Route::prefix('quan-ly-chuc-vu')->name('staff.')->group(function () {
+            Route::get('', [StaffController::class, 'index'])->name('index');
+
+            Route::get('add', [StaffController::class, 'add'])->name('add');
+
+            Route::post('add', [StaffController::class, 'postAdd']);
+
+            Route::get('edit/{staff}', [StaffController::class, 'edit'])->name('edit');
+
+            Route::post('edit/{staff}', [StaffController::class, 'postEdit']);
+
+            Route::delete('delete/{staff}', [StaffController::class, 'delete'])->name('delete');
+
+            Route::get('phan-quyen/{staff}', [StaffController::class, 'phanQuyen'])->name('phanQuyen');
+
+            Route::post('phan-quyen/{staff}', [StaffController::class, 'postPhanQuyen']);
+        });
         Route::prefix('quan-ly-san-pham')->group(function () {
             Route::get('', [ProductController::class, 'manage_product'])->name('admin.manage_product');
             Route::get('info_detail/{id}', [ProductController::class, 'get_info_detail'])->name('product.info');

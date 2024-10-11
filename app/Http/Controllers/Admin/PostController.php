@@ -20,18 +20,27 @@ class PostController extends Controller
         $this->post = $post;
     }
     public function index(Request $request){
+        $this->authorize('viewAny', Post::class);
         $title = 'DANH SÁCH BÀI VIẾT';
         $post = new Post();
+        // $user = Auth::user();
         $PostList = $post->withTrashed()->select('baiviet.*','taikhoan.ho_ten')->join('taikhoan','taikhoan.id','=','baiviet.user_id')->orderBy('created_at','DESC')->get();
+        // if($user->can('viewAny',Post::class)){
+        //     return view('admin.posts.index', compact('title', 'PostList'));
+        // }
+        // if($user->cant('viewAny',Post::class)){
+        //     abort(403);
+        // }
         return view('admin.posts.index', compact('title', 'PostList'));
     }
     public function add(){
-        if(Gate::allows('posts.add')){
-            return 'Có quyền thêm bài viết';
-        }
-        if(Gate::denies('posts.add')){
-            return 'Bạn không có quyền truy cập';
-        }
+        $this->authorize('viewAny', Post::class);
+        // if(Gate::allows('posts.add')){
+        //     return 'Có quyền thêm bài viết';
+        // }
+        // if(Gate::denies('posts.add')){
+        //     return 'Bạn không có quyền truy cập';
+        // }
         return view('admin.posts.add');
     }
     public function postAdd(Request $request){
@@ -66,24 +75,13 @@ class PostController extends Controller
         return redirect()->route('admin.manage_post')->with('msg', 'Thêm mới bài viết thành công');
     }
     public function edit(Post $post) {
-        // dd($post);
-        // $user = User::find(4);
-    
-        // if(Gate::forUser($user)->allows('posts.edit', $post)) {
-        //     return 'Có quyền sửa bài viết';
-        // }
-    
-        // if(Gate::forUser($user)->denies('posts.edit', $post)) {
-        //     return 'Không có quyền sửa bài viết';
-        // }
-        // dd($postGet);
         $this->authorize('posts.edit');
-        if(Gate::allows('posts.edit', $post)){
-            return 'Có quyền sửa bài viết ' . $post->id;
-        }
-        if(Gate::denies('posts.edit', $post)){
-            return 'Bạn không có quyền sửa bài viết ' . $post->id;
-        }
+        // if(Gate::allows('posts.edit', $post)){
+        //     return 'Có quyền sửa bài viết ' . $post->id;
+        // }
+        // if(Gate::denies('posts.edit', $post)){
+        //     return 'Bạn không có quyền sửa bài viết ' . $post->id;
+        // }
         if(!empty($post)){
             $postDetail = $this->post->getDetail($post->id_bai_viet);
             if(!empty($postDetail[0])){
@@ -143,7 +141,7 @@ class PostController extends Controller
         ];
         // dd($dataUpdate);
         $this->post->updatePost($dataUpdate, $id);
-        return redirect()->route('getedit_post',['id'=>$id])->with('msg','Cập nhật bài viết thành công!');
+        return redirect()->route('getedit_post',['post'=>$id])->with('msg','Cập nhật bài viết thành công!');
     }
     public function delete($id = 0){
         // $status = Post::where('id_bai_viet',$id)->delete();

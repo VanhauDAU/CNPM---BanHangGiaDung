@@ -18,9 +18,9 @@
         <form action="{{route('posts.delete-any')}}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa')">
             @csrf
         <div class="d-flex mb-2">
-            @can('posts.add')
+            {{-- @can('posts.add') --}}
             <a href="{{ route('getadd_post') }}" class="btn btn-primary">Thêm bài viết</a>
-            @endcan
+            {{-- @endcan --}}
             <button type="submit" class="btn btn-danger">Xóa (0)</button>
         </div>
 

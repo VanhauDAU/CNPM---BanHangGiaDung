@@ -60,4 +60,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Chucvu::class, 'maCV', 'maCV');
     }
+    public function isSuperAdmin(){
+        if($this->maCV == 1){
+            return true;
+        }
+        return false;
+    }
 }
