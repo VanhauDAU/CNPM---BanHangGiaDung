@@ -114,7 +114,7 @@
         <input type="hidden" name="hinh_anh_cu" id="hinh_anh_cu" value="{{ old('hinh_anh', $userDetail->anh)}}">
         <div class="text-center">
             <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Cập Nhật</button>
-            <a href="{{route('admin.manage_user')}}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
+            <a href="{{route('admin.users.index')}}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
         </div>
     </form>
 </div>

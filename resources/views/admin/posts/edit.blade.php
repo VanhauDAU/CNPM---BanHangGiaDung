@@ -8,7 +8,7 @@
 <div class="container mt-5">
     <div class="row justify-content-between mb-3" style="margin-top: -30px">
         <div class="col-auto">
-            <a href="{{ route('admin.manage_post') }}" class="btn btn-primary">Quay Lại</a>
+            <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">Quay Lại</a>
         </div>
     </div>
     

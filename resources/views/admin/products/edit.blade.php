@@ -8,7 +8,7 @@
 <div class="container mt-5">
     <div class="row justify-content-between mb-3" style="margin-top: -30px">
         <div class="col-auto">
-            <a href="{{ route('admin.manage_product') }}" class="btn btn-primary">Quay Lại</a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
             <h4>{{$title}} CÓ MÃ SP [{{$productDetail->maSP}}]</h4>

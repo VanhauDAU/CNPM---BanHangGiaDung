@@ -17,7 +17,7 @@
         @endif --}}
 
         <div class="d-flex justify-content-between mb-2">
-            <a href="{{ route('staff.add') }}" class="btn btn-primary">Thêm Nhóm</a>
+            <a href="{{ route('admin.staffs.add') }}" class="btn btn-primary">Thêm Nhóm</a>
         </div>
         <table class="table table-bordered table-striped">
             <thead>
@@ -36,10 +36,10 @@
                         <td>{{$key + 1}}</td>
                         <td  class="text-start">{{$item->ten_chuc_vu}}</td>
                         <td  class="text-start">{{!empty($item->postBy->ho_ten) ?$item->postBy->ho_ten : false}}</td>
-                        <td><a href="{{route('staff.phanQuyen',$item->maCV)}}" class="btn btn-primary">Phân Quyền</a></td>
+                        <td><a href="{{route('admin.staffs.phanQuyen',$item->maCV)}}" class="btn btn-primary">Phân Quyền</a></td>
                         <td>
-                            <a href="{{ route('staff.edit', ['staff'=>$item->maCV]) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{route('staff.delete',['staff'=>$item->maCV]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
+                            <a href="{{ route('admin.staffs.edit', ['staff'=>$item->maCV]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{{route('admin.staffs.delete',['staff'=>$item->maCV]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger btn-sm delete-user" data-form="delete-form-{{$key}}">Xóa</button>

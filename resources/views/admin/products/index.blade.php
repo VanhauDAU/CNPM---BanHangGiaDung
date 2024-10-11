@@ -18,7 +18,7 @@
         @endif --}}
 
         <div class="d-flex justify-content-between mb-2">
-            <a href="{{ route('getadd_product') }}" class="btn btn-primary">Thêm sản phẩm</a>
+            <a href="{{ route('admin.products.addProduct') }}" class="btn btn-primary">Thêm sản phẩm</a>
         </div>
 
         <form action="" method="get" class="mb-3 border-top pt-3">
@@ -111,9 +111,9 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('product.info', ['id'=>$item->maSP]) }}" class="btn btn-primary btn-sm">Xem</a>
-                            <a href="{{ route('postedit_product', $item->maSP) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{ route('getdelete_product', $item->maSP) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
+                            <a href="{{ route('admin.products.detailProduct', ['id'=>$item->maSP]) }}" class="btn btn-primary btn-sm">Xem</a>
+                            <a href="{{ route('admin.products.edit', $item->maSP) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{{ route('admin.products.delete', $item->maSP) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm delete-product" data-form="delete-form-{{$key}}">Xóa</button>

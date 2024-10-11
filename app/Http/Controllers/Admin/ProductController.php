@@ -15,26 +15,26 @@ class ProductController extends Controller
         $this->products = new products();
     }
     public $data=[];
-    public function index(){
-        return view('admin.dashboard.index');
-    }
+    // public function index(){
+    //     return view('admin.dashboard.index');
+    // }
 
     //======================QUẢN LÝ SẢN PHẨM=======================
-    public function get_info_detail($id = 0){
+    public function detailProduct($id = 0){
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);
             if(!empty($productDetail[0])){
                 $productDetail = $productDetail[0];
             }else{
-                return redirect()->route('admin.manage_product')->with('msg','Sản phẩm không tồn tại');
+                return redirect()->route('admin.products.index')->with('msg','Sản phẩm không tồn tại');
             }
         }else{
-            return redirect()->route('manage_product')->with('msg','Mã Sản phẩm không tồn tại');
+            return redirect()->route('admin.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         // dd($productDetail);
-        return view('admin.products.info_product', compact('productDetail'));
+        return view('admin.products.detailProduct', compact('productDetail'));
     }
-    public function manage_product(Request $request){
+    public function index(Request $request){
         $title = 'DANH SÁCH SẢN PHẨM';
         $products = new Products();
         $filters =[];
@@ -76,12 +76,12 @@ class ProductController extends Controller
         $ProductList = $products->getAllProducts($filters, $keyword,$sortArr, self::_PER_PAGE);
         return view('admin.products.index', compact('title', 'ProductList','sortType'));
     }
-    public function get_add_product(){
+    public function addProduct(){
         $this->data['title'] = 'THÊM SẢN PHẨM';
         $this->data['massage'] = 'Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
         return view('admin.products.add', $this->data);
     }
-    public function post_add_product(productRequest $request){
+    public function postAddProduct(productRequest $request){
         $fileName = null;
         if ($request->has('hinh_anh')) {
             $file = $request->hinh_anh;  
@@ -110,14 +110,14 @@ class ProductController extends Controller
         // dd($dataInsert);
         $this->products->addProduct($dataInsert);
         toastr()->success('Thành công','Thêm sản phẩm thành công');
-        return redirect()->route('admin.manage_product')->with('msg', 'Thêm mới sản phẩm thành công');
+        return redirect()->route('admin.products.index')->with('msg', 'Thêm mới sản phẩm thành công');
     }
-    public function get_add_NSX(){
+    public function addNsx(){
         $this->data['title'] = 'THÊM NHÀ SẢN XUẤT';
         $this->data['massage'] = 'Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
         return view('admin.products.add_nsx', $this->data);
     }
-    public function post_add_NSX(NSXRequest $request){
+    public function postAddNsx(NSXRequest $request){
         $fileName = null;
         if ($request->has('logo')) {
             $file = $request->logo;  
@@ -135,26 +135,26 @@ class ProductController extends Controller
             $request->slugNSX,
         ]; 
         $this->products->addNSX($dataInsert);
-        return redirect()->route('getadd_product')->with('msg', 'Thêm mới nhà sản xuất thành công');
+        return redirect()->route('admin.products.addProduct')->with('msg', 'Thêm mới nhà sản xuất thành công');
     }
-    public function get_add_DM(){
+    public function addDm(){
         $this->data['title'] ='THÊM MỚI DANH MỤC SẢN PHẨM';
         $this->data['massage'] ='Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
         return view('admin.products.add_danhmuc',$this->data);
         
     }
-    public function get_add_CM(){
+    public function addCm(){
         $this->data['title'] ='THÊM MỚI CHUYÊN MỤC SẢN PHẨM';
         $this->data['massage'] ='Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
         return view('admin.products.add_chuyenmuc',$this->data);
         
     }
-    public function get_add_CM_NSX(){
+    public function addCmNsx(){
         $this->data['title'] ='THÊM MỚI DANH MỤC SẢN PHẨM';
         $this->data['massage'] ='Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
         return view('admin.products.add_cm_nsx',$this->data);
     }
-    public function post_add_CM_NSX(Request $request){
+    public function postAddCmNsx(Request $request){
         request()->validate([
             'maNSX'=>'required',
             'id_chuyen_muc'=>'required',
@@ -177,9 +177,9 @@ class ProductController extends Controller
         ];
         $this->products->addCM_NSX($dataInsert);
         
-        return redirect()->route('getadd_cm_nsx')->with('success','Thêm chuyên mục cho NSX thành công');
+        return redirect()->route('admin.products.addCmNsx')->with('success','Thêm chuyên mục cho NSX thành công');
     }
-    public function post_add_DM(Request $request){
+    public function postAddDm(Request $request){
         request()->validate([
             'ten_danh_muc'=>'required|min:2|unique:danhmucsanpham,ten_danh_muc',
             'icon'=>'required',
@@ -197,9 +197,9 @@ class ProductController extends Controller
             $request->slug,
         ];
         $this->products->addDM($dataInsert);
-        return redirect()->route('getadd_dm')->with('msg','Thêm mới danh mục thành công');
+        return redirect()->route('admin.products.addDm')->with('msg','Thêm mới danh mục thành công');
     }
-    public function post_add_CM(Request $request){
+    public function postAddCm(Request $request){
         $fileName = null;
         if ($request->has('anh')) {
             $file = $request->anh;  
@@ -224,7 +224,7 @@ class ProductController extends Controller
             $fileName
         ];
         $this->products->addCM($dataInsert);
-        return redirect()->route('getadd_cm')->with('success','Thêm mới danh mục thành công');
+        return redirect()->route('admin.products.addCm')->with('success','Thêm mới danh mục thành công');
     }
     public function withValidator($validator){
         $validator->after(function ($validator) {
@@ -233,7 +233,7 @@ class ProductController extends Controller
             }
         });
     }
-    public function get_edit_product($id = 0){
+    public function edit($id = 0){
         $title = "CẬP NHẬT SẢN PHẨM";
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);
@@ -241,14 +241,14 @@ class ProductController extends Controller
             if(!empty($productDetail[0])){
                 $productDetail = $productDetail[0];
             }else{
-                return redirect()->route('admin.manage_product')->with('msg','Sản phẩm không tồn tại!');
+                return redirect()->route('admin.products.index')->with('msg','Sản phẩm không tồn tại!');
             }
         }else{
-            return redirect()->route('admin.manage_product')->with('msg','Mã Sản phẩm Không Tồn Tại');
+            return redirect()->route('admin.products.index')->with('msg','Mã Sản phẩm Không Tồn Tại');
         }
         return view('admin.products.edit', compact('title','productDetail'));
     }
-    public function post_edit_product(Request $request,$id = 0){
+    public function postEdit(Request $request,$id = 0){
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
@@ -298,9 +298,9 @@ class ProductController extends Controller
         ];
         // dd($dataUpdate);
         $this->products->updateProduct($dataUpdate, $id);
-        return redirect()->route('getedit_product',['id'=>$id])->with('msg','Cập nhật sản phẩm thành công!');
+        return redirect()->route('admin.products.edit',['id'=>$id])->with('msg','Cập nhật sản phẩm thành công!');
     }
-    public function get_delete_NSX($id) {
+    public function deleteNsx($id) {
         if (!empty($id)) {
             $nsxDetail = $this->products->getDetailNsx($id);
     
@@ -323,9 +323,9 @@ class ProductController extends Controller
             toastr()->warning('Cảnh báo', 'Liên kết không tồn tại');
         }
     
-        return redirect()->route('getadd_nsx');
+        return redirect()->route('admin.products.addNsx');
     }
-    public function get_delete_dm($id) {
+    public function deleteDm($id) {
         if (!empty($id)) {
             $dmDetail = $this->products->getDetailDm($id);
     
@@ -347,9 +347,9 @@ class ProductController extends Controller
             toastr()->warning('Cảnh báo', 'Liên kết không tồn tại');
         }
     
-        return redirect()->route('getadd_dm');
+        return redirect()->route('admin.products.addDm');
     }
-    public function get_delete_product($id){
+    public function delete($id){
         if(!empty($id)){
             $productDetail = $this->products->getDetail($id);
             // dd($userDetail[0]);
@@ -371,7 +371,7 @@ class ProductController extends Controller
         }else{
             toastr()->warning('Cảnh báo','Xóa sản phẩm thất bại');
         }
-        return redirect()->route('admin.manage_product')->with('msg',$msg);
+        return redirect()->route('admin.products.index')->with('msg',$msg);
     }
     public function getChuyenMuc($maNSX, $id_danh_muc)
     {

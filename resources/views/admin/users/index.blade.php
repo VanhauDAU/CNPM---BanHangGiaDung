@@ -15,10 +15,9 @@
                 {{ session('msg') }}
             </div>
         @endif --}}
-
         <div class="d-flex justify-content-between mb-2">
-            <a href="{{ route('getadd_user') }}" class="btn btn-primary">Thêm người dùng</a>
-            <a href="{{ route('getadd_user') }}" class="btn btn-warning">Thêm chức vụ</a>
+            <a href="{{ route('admin.users.add') }}" class="btn btn-primary">Thêm người dùng</a>
+            <a href="{{ route('admin.users.add') }}" class="btn btn-warning">Thêm chức vụ</a>
         </div>
 
         <form action="" method="get" class="mb-3 border-top pt-3">
@@ -70,11 +69,11 @@
                         <td>{{$key + 1}}</td>
                         <td>
                             @if($item->provider=="google" && $item->updated_at != null)
-                                <a href="{{ route('info', ['id'=>$item->username]) }}">
+                                <a href="{{ route('admin.users.detail', ['id'=>$item->username]) }}">
                                     <img src="{{$item->anh}}" alt="" style="width: 50px; height:50px; border-radius:50%" class="rounded-circle img-thumbnail border-animation1">
                                 </a>
                             @else
-                                <a href="{{ route('info', ['id'=>$item->username]) }}">
+                                <a href="{{ route('admin.users.detail', ['id'=>$item->username]) }}">
                                     @if(!empty($item->anh))
                                         <img src="{{asset('storage/users/img/'.$item->anh)}}" alt="" class="rounded-circle img-thumbnail border-animation1" style="width: 50px; height: 50px;">
                                     @else
@@ -117,9 +116,9 @@
                         </td>
                         <td>{{$item->email}}</td>
                         <td>
-                            <a href="{{ route('info', ['id'=>$item->username]) }}" class="btn btn-info btn-sm">Xem</a>
-                            <a href="{{ route('getedit_user', ['id'=>$item->username]) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{route('getdelete_user',['id'=>$item->username]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
+                            <a href="{{ route('admin.users.detail', ['id'=>$item->username]) }}" class="btn btn-info btn-sm">Xem</a>
+                            <a href="{{ route('admin.users.edit', ['id'=>$item->username]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{{route('admin.users.delete',['id'=>$item->username]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger btn-sm delete-user" data-form="delete-form-{{$key}}">Xóa</button>

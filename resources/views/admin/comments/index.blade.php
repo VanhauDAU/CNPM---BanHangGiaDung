@@ -71,8 +71,8 @@
                         </td>
                         <td>
                             {{-- <a href="route('info', ['id'=>$item->username])" class="btn btn-info btn-sm">Xem</a> --}}
-                            <a href="{{route('getedit_cmt', ['id'=>$item->id])}}" class="btn btn-warning btn-sm">Xem</a>
-                            <form action="{{ route('getdelete_cmt', $item->id) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
+                            <a href="{{route('admin.comments.edit', ['id'=>$item->id])}}" class="btn btn-warning btn-sm">Xem</a>
+                            <form action="{{ route('admin.comments.delete', $item->id) }}" method="POST" style="display:inline; "id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm delete-product" data-form="delete-form-{{$key}}">Xóa</button>

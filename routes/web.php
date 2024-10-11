@@ -48,18 +48,24 @@ Route::prefix('admin')->group(function () {
         toastr()->success('Thành công','Đăng xuất thành công');
         return redirect()->route('admin.login');
     })->name('admin.logout');
-    Route::middleware('auth.admin')->group(function () {
+    Route::middleware('auth.admin')->name('admin.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
-        Route::prefix('quan-ly-nguoi-dung')->group(function () {
-            Route::get('', [UserController::class, 'manage_user'])->name('admin.manage_user');
-            Route::get('info_detail/{id}', [UserController::class, 'get_info_detail'])->name('info');
-            Route::get('add', [UserController::class, 'get_add_user'])->name('getadd_user');
-            Route::post('add', [UserController::class, 'post_add_user'])->name('admin.add_user');
-            Route::get('edit/{id}', [UserController::class, 'get_edit_user'])->name('getedit_user');
-            Route::post('edit/{id}', [UserController::class, 'post_edit_user'])->name('admin.edit_user');
-            Route::delete('delete/{id}', [UserController::class, 'get_delete_user'])->name('getdelete_user');
+        Route::prefix('quan-ly-nguoi-dung')->name('users.')->middleware('can:users')->group(function () {
+            Route::get('', [UserController::class, 'index'])->name('index');
+
+            Route::get('info_detail/{id}', [UserController::class, 'detail'])->name('detail');
+
+            Route::get('add', [UserController::class, 'add'])->name('add');
+
+            Route::post('add', [UserController::class, 'postAdd']);
+
+            Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit');
+            
+            Route::post('edit/{id}', [UserController::class, 'postEdit']);
+
+            Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
         });
-        Route::prefix('quan-ly-chuc-vu')->name('staff.')->group(function () {
+        Route::prefix('quan-ly-chuc-vu')->name('staffs.')->middleware('can:staffs')->group(function () {
             Route::get('', [StaffController::class, 'index'])->name('index');
 
             Route::get('add', [StaffController::class, 'add'])->name('add');
@@ -76,49 +82,60 @@ Route::prefix('admin')->group(function () {
 
             Route::post('phan-quyen/{staff}', [StaffController::class, 'postPhanQuyen']);
         });
-        Route::prefix('quan-ly-san-pham')->group(function () {
-            Route::get('', [ProductController::class, 'manage_product'])->name('admin.manage_product');
-            Route::get('info_detail/{id}', [ProductController::class, 'get_info_detail'])->name('product.info');
+        Route::prefix('quan-ly-san-pham')->name('products.')->middleware('can:products')->group(function () {
+            Route::get('', [ProductController::class, 'index'])->name('index');
+            Route::get('info_detail/{id}', [ProductController::class, 'detailProduct'])->name('detailProduct');
             Route::prefix('add')->group(function(){
-                Route::get('', [ProductController::class, 'get_add_product'])->name('getadd_product');
-                Route::post('', [ProductController::class, 'post_add_product'])->name('admin.add_product');
-                Route::get('nha-san-xuat', [ProductController::class, 'get_add_NSX'])->name('getadd_nsx');
-                Route::post('nha-san-xuat', [ProductController::class, 'post_add_NSX'])->name('admin.add_nsx');
-                Route::delete('delete-nsx/{id}', [ProductController::class, 'get_delete_NSX'])->name('delete_nsx');
-                Route::get('danh-muc', [ProductController::class, 'get_add_DM'])->name('getadd_dm');
-                Route::post('danh-muc', [ProductController::class, 'post_add_DM'])->name('admin.add_dm');
-                Route::delete('delete-dm/{id}', [ProductController::class, 'get_delete_dm'])->name('delete_dm');
-                Route::get('chuyen-muc', [ProductController::class, 'get_add_CM'])->name('getadd_cm');
-                Route::post('chuyen-muc', [ProductController::class, 'post_add_CM'])->name('admin.add_cm');
-                Route::get('chuyen-muc-nsx', [ProductController::class, 'get_add_CM_NSX'])->name('getadd_cm_nsx');
-                Route::post('chuyen-muc-nsx', [ProductController::class, 'post_add_CM_NSX'])->name('admin.add_cm_nsx');
+                Route::get('', [ProductController::class, 'addProduct'])->name('addProduct');
+                Route::post('', [ProductController::class, 'postAddProduct']);
+
+                Route::get('nha-san-xuat', [ProductController::class, 'addNsx'])->name('addNsx');
+                Route::post('nha-san-xuat', [ProductController::class, 'postAddNSX']);
+                Route::delete('delete-nsx/{id}', [ProductController::class, 'deleteNsx'])->name('deleteNsx');
+
+                Route::get('danh-muc', [ProductController::class, 'addDm'])->name('addDm');
+                Route::post('danh-muc', [ProductController::class, 'postAddDm']);
+                Route::delete('delete-dm/{id}', [ProductController::class, 'deleteDm'])->name('deleteDm');
+
+                Route::get('chuyen-muc', [ProductController::class, 'addCm'])->name('addCm');
+                Route::post('chuyen-muc', [ProductController::class, 'postAddCm']);
+
+                Route::get('chuyen-muc-nsx', [ProductController::class, 'addCmNsx'])->name('addCmNsx');
+                Route::post('chuyen-muc-nsx', [ProductController::class, 'postAddCmNsx']);
 
             });
-            Route::get('edit/{id}', [ProductController::class, 'get_edit_product'])->name('getedit_product');
-            Route::post('edit/{id}', [ProductController::class, 'post_edit_product'])->name('postedit_product');
-            Route::delete('delete/{id}', [ProductController::class, 'get_delete_product'])->name('getdelete_product');
+            Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit');
+            Route::post('edit/{id}', [ProductController::class, 'postEdit']);
+            Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('delete');
         });
-        Route::prefix('quan-ly-bai-viet')->group(function () {
-            Route::get('', [PostControllerAdmin::class, 'index'])->name('admin.manage_post');
-            Route::get('add', [PostControllerAdmin::class, 'add'])->middleware('can:posts.add')->name('getadd_post');
+        Route::prefix('quan-ly-bai-viet')->name('posts.')->middleware('can:posts')->group(function () {
+            Route::get('', [PostControllerAdmin::class, 'index'])->name('index');
+
+            Route::get('add', [PostControllerAdmin::class, 'add'])->middleware('can:posts.add')->name('add');
+
             Route::post('add', [PostControllerAdmin::class, 'postAdd']);
-            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->can('posts.edit','post')->name('getedit_post');
+
+            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->can('posts.edit','post')->name('edit');
+            
             Route::post('edit/{id}', [PostControllerAdmin::class, 'postEdit']);
 
-            Route::post('delete-any', [PostControllerAdmin::class, 'handelDeleteAny'])->name('posts.delete-any');
+            Route::post('delete-any', [PostControllerAdmin::class, 'handelDeleteAny'])->name('deleteAny');
 
-            Route::get('restore/{id}',[PostControllerAdmin::class, 'restore'])->name('posts.restore');
+            Route::get('restore/{id}',[PostControllerAdmin::class, 'restore'])->name('restore');
 
-            Route::get('force-delete/{id}',[PostControllerAdmin::class, 'forceDelete'])->name('posts.force-delete');
+            Route::get('force-delete/{id}',[PostControllerAdmin::class, 'forceDelete'])->name('forceDelete');
 
         });
-        Route::prefix('quan-ly-binh-luan')->group(function () {
-            Route::get('', [CommentController::class, 'index'])->name('admin.manage_cmt');
-            Route::get('edit/{id}', [CommentController::class, 'edit'])->name('getedit_cmt');
-            Route::post('edit/{id}', [CommentController::class, 'cmtEdit'])->name('postedit_cmt');
-            Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('getdelete_cmt');
+        Route::prefix('quan-ly-binh-luan')->name('comments.')->middleware('can:comments')->group(function () {
+            Route::get('', [CommentController::class, 'index'])->name('index');
+
+            Route::get('edit/{id}', [CommentController::class, 'edit'])->name('edit');
+
+            Route::post('edit/{id}', [CommentController::class, 'postEdit']);
+
+            Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('delete');
         });
-        Route::prefix('quan-ly-hoa-don')->group(function () {
+        Route::prefix('quan-ly-hoa-don')->name('bills.')->middleware('can:bills')->group(function () {
             Route::get('', [OrderController::class, 'manage_order'])->name('admin.manage_order');
             Route::get('add', [OrderController::class, 'get_add_order'])->name('getadd_order');
             Route::post('add', [OrderController::class, 'post_add_order'])->name('admin.add_order');

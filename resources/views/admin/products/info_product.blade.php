@@ -7,8 +7,8 @@
 @section('content-admin')
 <div class="container mt-4">
     <div class="text-center mb-4">
-        <a href="{{ route('admin.manage_product') }}" class="btn btn-danger">Quay Lại</a>
-        <a href="{{ route('getedit_product', ['id' => $productDetail->maSP]) }}" class="btn btn-primary ">Chỉnh Sửa Thông Tin</a>
+        <a href="{{ route('admin.products.index') }}" class="btn btn-danger">Quay Lại</a>
+        <a href="{{ route('admin.products.edit', ['id' => $productDetail->maSP]) }}" class="btn btn-primary ">Chỉnh Sửa Thông Tin</a>
     </div>
     <div class="row">
         <div class="col-md-12 d-flex gap-5">

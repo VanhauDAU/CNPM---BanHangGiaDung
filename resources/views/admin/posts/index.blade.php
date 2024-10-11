@@ -15,11 +15,11 @@
                 {{ session('msg') }}
             </div>
         @endif
-        <form action="{{route('posts.delete-any')}}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa')">
+        <form action="{{route('admin.posts.deleteAny')}}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa')">
             @csrf
         <div class="d-flex mb-2">
             {{-- @can('posts.add') --}}
-            <a href="{{ route('getadd_post') }}" class="btn btn-primary">Thêm bài viết</a>
+            <a href="{{ route('admin.posts.add') }}" class="btn btn-primary">Thêm bài viết</a>
             {{-- @endcan --}}
             <button type="submit" class="btn btn-danger">Xóa (0)</button>
         </div>
@@ -109,10 +109,10 @@
                             {{-- <a href="{{ route('info', ['id'=>$item->username]) }}" class="btn btn-info btn-sm">Xem</a> --}}
                             
                             @if($item->trashed())
-                                <a href="{{ route('posts.restore', $item) }}" class="btn btn-primary btn-sm">Khôi phục</a>
-                                <a href="{{ route('posts.force-delete', $item) }}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa vĩnh viễn?')">Xóa vĩnh viễn</a>
+                                <a href="{{ route('admin.posts.restore', $item) }}" class="btn btn-primary btn-sm">Khôi phục</a>
+                                <a href="{{ route('admin.posts.forceDelete', $item) }}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa vĩnh viễn?')">Xóa vĩnh viễn</a>
                             @else
-                                <a href="{{ route('getedit_post', ['post'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm col-8">Sửa</a>
+                                <a href="{{ route('admin.posts.edit', ['post'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm col-8">Sửa</a>
                             @endif
                             
                             {{-- <form action="{{route('getdelete_post',['id'=>$item->id_bai_viet]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">

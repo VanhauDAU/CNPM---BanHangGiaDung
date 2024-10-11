@@ -8,7 +8,7 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4 fw-bold">Cập Nhật Trạng Thái Bình Luận</h1>
 
-    <form action="{{ route('postedit_cmt', $cmtDetail->id) }}" method="POST">
+    <form action="{{ route('admin.comments.edit', $cmtDetail->id) }}" method="POST">
         @csrf
         
         @if(session('msg'))
@@ -67,7 +67,7 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Cập Nhật</button>
-            <a href="{{ route('admin.manage_cmt') }}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
+            <a href="{{ route('admin.comments.index') }}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
         </div>
     </form>
 </div>

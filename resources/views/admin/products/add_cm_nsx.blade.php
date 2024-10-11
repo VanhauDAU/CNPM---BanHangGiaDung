@@ -8,14 +8,14 @@
 <div class="container mt-5">
     <div class="row justify-content-between mb-3" style="margin-top: -30px">
         <div class="col-auto">
-            <a href="{{ route('getadd_product') }}" class="btn btn-primary">Quay Lại</a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-primary">Quay Lại</a>
         </div>
         <div class="col-auto">
-            <a href="{{ route('getadd_product') }}" class="btn btn-secondary me-2">Thêm sản phẩm</a>
-            <a href="{{route('getadd_nsx')}}" class="btn btn-secondary me-2">Thêm Nhà Sản Xuất</a>
-            <a href="{{route('getadd_dm')}}" class="btn btn-secondary me-2">Thêm Danh Mục</a>
-            <a href="{{route('getadd_cm')}}" class="btn btn-secondary me-2">Thêm Chuyên Mục</a>
-            <a href="{{route('getadd_cm_nsx')}}" class="btn btn-danger me-2">Thêm CM cho NSX</a>
+            <a href="{{ route('admin.products.addProduct') }}" class="btn btn-secondary me-2">Thêm sản phẩm</a>
+            <a href="{{route('admin.products.addNsx')}}"  class="btn btn-secondary me-2">Thêm Nhà Sản Xuất</a>
+            <a href="{{route('admin.products.addDm')}}"  class="btn btn-secondary me-2">Thêm Danh Mục</a>
+            <a href="{{route('admin.products.addCm')}}"  class="btn btn-secondary me-2">Thêm Chuyên Mục</a>
+            <a href="{{route('admin.products.addCmNsx')}}"  class="btn btn-danger me-2">Thêm CM cho NSX</a>
         </div>
     </div>
     

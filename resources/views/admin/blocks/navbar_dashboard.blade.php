@@ -10,6 +10,8 @@
                 <i class="fas fa-th-large"></i> Trang Chủ
             </a>
         </li>
+        {{-- QL TÀI KHOẢN --}}
+        @can('users')
         <li class="nav-item dropdown">
             <a class="nav-link" href="#" id="accountDropdown" data-bs-toggle="collapse" data-bs-target="#accountSubMenu" aria-expanded="false">
                 <i class="fas fa-users"></i> QL Tài Khoản
@@ -17,13 +19,17 @@
             </a>
             <ul class="collapse" id="accountSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.manage_user')}}">Xem - Sửa - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.users.index')}}">Xem - Sửa - Xóa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_user')}}">Thêm</a>
+                    <a class="nav-link" href="{{route('admin.users.add')}}">Thêm</a>
                 </li>
             </ul>
         </li>
+        @endcan
+        
+        {{-- QL SẢN PHẨM --}}
+        @can('products')
         <li class="nav-item">
             <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#productSubMenu" aria-expanded="false">
                 <i class="fas fa-box"></i> QL Sản Phẩm
@@ -31,22 +37,25 @@
             </a>
             <ul class="collapse" id="productSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.manage_product')}}">Xem - Sửa - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.products.index')}}">Xem - Sửa - Xóa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_product')}}">Thêm Sản Phẩm</a>
+                    <a class="nav-link" href="{{route('admin.products.addProduct')}}">Thêm Sản Phẩm</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_nsx')}}">Thêm Nhà Sản Xuất</a>
+                    <a class="nav-link" href="{{route('admin.products.addNsx')}}">Thêm Nhà Sản Xuất</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_dm')}}">Thêm Danh Mục</a>
+                    <a class="nav-link" href="{{route('admin.products.addDm')}}">Thêm Danh Mục</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{--route('getadd_user')--}}">Thêm Chuyên Mục</a>
                 </li>
             </ul>
         </li>
+        @endcan
+        {{-- QL BÀI VIẾT --}}
+        @can('posts')
         <li class="nav-item">
             <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#postSubMenu" aria-expanded="false">
                 <i class="fas fa-box"></i> QL Bài Viết
@@ -54,13 +63,17 @@
             </a>
             <ul class="collapse" id="postSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.manage_post')}}">Xem - Sửa - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.posts.index')}}">Xem - Sửa - Xóa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_post')}}">Thêm Bài Viết</a>
+                    <a class="nav-link" href="{{route('admin.posts.add')}}">Thêm Bài Viết</a>
                 </li>
             </ul>
         </li>
+        @endcan
+        
+        {{-- QL BÌNH LUẬN --}}
+        @can('comments')
         <li class="nav-item">
             <a class="nav-link" href="#" id="commentDropdown" data-bs-toggle="collapse" data-bs-target="#commentSubMenu" aria-expanded="false">
                 <i class="fa-solid fa-message swing"></i> QL Bình Luận
@@ -68,10 +81,13 @@
             </a>
             <ul class="collapse" id="commentSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.manage_cmt')}}">Xem - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.comments.index')}}">Xem - Xóa</a>
                 </li>
             </ul>
         </li>
+        @endcan
+
+        {{-- QL Khuyến Mãi --}}
         <li class="nav-item">
             <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#promotionSubMenu" aria-expanded="false">
                 <i class="fas fa-tags"></i> QL Khuyến Mãi
@@ -79,18 +95,21 @@
             </a>
             <ul class="collapse" id="promotionSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.manage_post')}}">Xem - Sửa - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.posts.index')}}">Xem - Sửa - Xóa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_post')}}">Thêm Khuyến Mãi</a>
+                    <a class="nav-link" href="{{route('admin.posts.add')}}">Thêm Khuyến Mãi</a>
                 </li>
             </ul>
         </li>
+        {{-- QL HÓA ĐƠN --}}
         <li class="nav-item">
             <a class="nav-link" href="/admin/quan-ly-hoa-don">
                 <i class="fas fa-receipt"></i> QL Hóa Đơn
             </a>
         </li>
+        {{-- QL NHÓM NG DÙNG --}}
+        @can('staffs')
         <li class="nav-item dropdown">
             <a class="nav-link" href="#" id="accountDropdown" data-bs-toggle="collapse" data-bs-target="#staffSubMenu" aria-expanded="false">
                 <i class="fas fa-users"></i> Nhóm Ng.Dùng
@@ -98,12 +117,13 @@
             </a>
             <ul class="collapse" id="staffSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('staff.index')}}">Xem - Sửa - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.staffs.index')}}">Xem - Sửa - Xóa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('getadd_user')}}">Thêm</a>
+                    <a class="nav-link" href="{{route('admin.staffs.add')}}">Thêm</a>
                 </li>
             </ul>
         </li>
+        @endcan
     </ul>
 </nav>

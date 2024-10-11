@@ -53,12 +53,10 @@
     </style>
 </head>
 <body>
-
     <div class="access-denied-container">
         <h1>Bạn không có quyền truy cập</h1>
         <p>Xin lỗi, bạn không có quyền để truy cập trang này.</p>
         {{-- <a href="/">Trở về trang chủ</a> --}}
     </div>
-
 </body>
 </html>

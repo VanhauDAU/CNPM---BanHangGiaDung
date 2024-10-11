@@ -102,14 +102,14 @@ class CommentController extends Controller
             if(!empty($cmtDetail[0])){
                 $cmtDetail = $cmtDetail[0];
             }else{
-                return redirect()->route('admin.manage_user')->with('msg','Bình luận không tồn tại!');
+                return redirect()->route('admin.comments.index')->with('msg','Bình luận không tồn tại!');
             }
         }else{
-            return redirect()->route('admin.manage_user')->with('msg','Mã Bình luận Không Tồn Tại');
+            return redirect()->route('admin.comments.index')->with('msg','Mã Bình luận Không Tồn Tại');
         }
         return view('admin.comments.edit', compact('title','cmtDetail'));
     }
-    public function cmtEdit(Request $request, $id)
+    public function postEdit(Request $request, $id)
     {
         if (empty($id)) {
             return back()->with('msg', 'Liên kết không tồn tại');
@@ -128,7 +128,7 @@ class CommentController extends Controller
             toastr()->error('Thất bại', 'Cập nhật trạng thái không thành công!');
         }
 
-        return redirect()->route('getedit_cmt', ['id' => $id]);
+        return redirect()->route('admin.comments.edit', ['id' => $id]);
     }
 
     public function delete($id)
@@ -155,7 +155,7 @@ class CommentController extends Controller
             toastr()->warning('Cảnh báo', $msg);
         }
 
-        return redirect()->route('admin.manage_cmt')->with('msg', $msg);
+        return redirect()->route('admin.comments.index')->with('msg', $msg);
     }
     public function reply(Request $request)
     {

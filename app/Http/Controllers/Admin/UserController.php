@@ -17,12 +17,12 @@ class UserController extends Controller
         $this->users = new Users();
     }
     public $data=[];
-    public function index(){
-        return view('admin.dashboard.index');
-    }
+    // public function index(){
+    //     return view('admin.dashboard.index');
+    // }
     //======================QUẢN LÝ TÀI KHOẢN=======================
     
-    public function manage_user(Request $request){
+    public function index(Request $request){
 
         $title = 'DANH SÁCH NGƯỜI DÙNG';
         // $users = new Users();
@@ -58,12 +58,12 @@ class UserController extends Controller
         // dd($userList);
         return view('admin.users.index', compact('title', 'userList','sortType'));
     }
-    public function get_add_user(){
+    public function add(){
         $this->data['title'] = "THÊM NGƯỜI DÙNG";
         $this->data['massage'] = "Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!";
         return view('admin.users.add', $this->data);
     }
-    public function post_add_user(userRequest $request){
+    public function postAdd(userRequest $request){
         $fileName = null;
         if ($request->has('hinh_anh')) {
             $file = $request->hinh_anh;  
@@ -85,7 +85,7 @@ class UserController extends Controller
         ];  
         $this->users->addUser($dataInsert);
         toastr()->success('Thành công','Thêm người dùng thành công');
-        return redirect()->route('admin.manage_user')->with('msg', 'Thêm mới người dùng thành công');
+        return redirect()->route('admin.users.index')->with('msg', 'Thêm mới người dùng thành công');
     }
     public function withValidator($validator){
         $validator->after(function ($validator) {
@@ -94,20 +94,20 @@ class UserController extends Controller
             }
         });
     }
-    public function get_info_detail($id = 0){
+    public function detail($id = 0){
         if(!empty($id)){
             $userDetail = $this->users->getDetail($id);
             if(!empty($userDetail[0])){
                 $userDetail = $userDetail[0];
             }else{
-                return redirect()->route('admin.manage_user')->with('msg','Tài khoản không tồn tại');
+                return redirect()->route('admin.users.index')->with('msg','Tài khoản không tồn tại');
             }
         }else{
-            return redirect()->route('manage_user')->with('msg','Mã tài khoản không tồn tại');
+            return redirect()->route('admin.users.index')->with('msg','Mã tài khoản không tồn tại');
         }
-        return view('admin.users.info_user', compact('userDetail'));
+        return view('admin.users.detail', compact('userDetail'));
     }
-    public function get_edit_user($id = 0){
+    public function edit($id = 0){
         $title = "CẬP NHẬT NGƯỜI DÙNG";
         if(!empty($id)){
             $userDetail = $this->users->getDetail($id);
@@ -115,14 +115,14 @@ class UserController extends Controller
             if(!empty($userDetail[0])){
                 $userDetail = $userDetail[0];
             }else{
-                return redirect()->route('admin.manage_user')->with('msg','Tài khoản không tồn tại!');
+                return redirect()->route('admin.users.index')->with('msg','Tài khoản không tồn tại!');
             }
         }else{
-            return redirect()->route('admin.manage_user')->with('msg','Mã Tài Khoản Không Tồn Tại');
+            return redirect()->route('admin.users.index')->with('msg','Mã Tài Khoản Không Tồn Tại');
         }
         return view('admin.users.edit', compact('title','userDetail'));
     }
-    public function post_edit_user(Request $request,$id = 0){
+    public function postEdit(Request $request,$id = 0){
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
@@ -170,9 +170,9 @@ class UserController extends Controller
             
         ];
         $this->users->updateUser($dataUpdate, $id);
-        return redirect()->route('admin.edit_user',['id'=>$id])->with('msg','Cập nhật người dùng thành công!');
+        return redirect()->route('admin.users.edit',['id'=>$id])->with('msg','Cập nhật người dùng thành công!');
     }
-    public function get_delete_user($id){
+    public function delete($id){
         if(!empty($id)){
             $userDetail = $this->users->getDetail($id);
             // dd($userDetail[0]);
@@ -190,7 +190,7 @@ class UserController extends Controller
             $msg = 'Liên kết không tồn tại';
         }
         toastr()->warning('Thành công','Xóa tài khoản thành công');
-        return redirect()->route('admin.manage_user')->with('msg',$msg);
+        return redirect()->route('admin.users.index')->with('msg',$msg);
     }
     //======================KẾT THÚC QUẢN LÝ TÀI KHOẢN=======================
 }

@@ -6,7 +6,7 @@
 
 @section('content-admin')
 <div class="container d-flex mb-4 justify-content-center align-items-center">
-    <a href="{{route("staff.index")}}" class="btn btn-warning me-5">Quay Lại</a>
+    <a href="{{route("admin.staffs.index")}}" class="btn btn-warning me-5">Quay Lại</a>
     <h1 class="text-start m-0 fw-bold fs-4 p-0">Phân Quyền Nhóm: {{$staff->ten_chuc_vu}}</h1>
 </div>
 <form action="" method="POST">
@@ -57,14 +57,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    // Lắng nghe sự kiện change trên checkbox "Thêm", "Sửa", "Xóa" và "Phân Quyền"
     $('.role-checkbox').change(function() {
-        // Lấy tên module từ id
         let moduleName = $(this).attr('id').split('_')[1];
-        
-        // Nếu ô nào trong số "Thêm", "Sửa", "Xóa", hoặc "Phân Quyền" được đánh dấu
         if ($(this).is(':checked') && ['add', 'edit', 'delete', 'permission'].includes($(this).val())) {
-            // Đánh dấu ô "Xem" cho module tương ứng
             $('#role_' + moduleName + '_view').prop('checked', true);
         }
     });
