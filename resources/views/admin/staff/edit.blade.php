@@ -34,7 +34,7 @@
         
         <div class="text-center">
             <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Cập Nhật</button>
-            <a href="{{route('staff.index')}}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
+            <a href="{{route('admin.staffs.index')}}" class="btn btn-primary" style="margin-top:30px; background-color:orange; outline: none; border: none;">Quay Lại</a>
         </div>
     </form>
 </div>

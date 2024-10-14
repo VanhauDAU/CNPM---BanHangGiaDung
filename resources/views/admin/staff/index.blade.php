@@ -17,14 +17,16 @@
         @endif --}}
 
         <div class="d-flex justify-content-between mb-2">
-            <a href="{{ route('admin.staffs.add') }}" class="btn btn-primary">Thêm Nhóm</a>
+            {{-- @can('create',App\Models\Admin\Staffs::class) --}}
+                <a href="{{ route('admin.staffs.add') }}" class="btn btn-primary">Thêm Nhóm</a>
+            {{-- @endcan --}}
         </div>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th style="width:3%;"><a href="">STT</a></th>
                     <th><a href="">Tên</a></th>
-                    <th style="width: 10%"><a href="">Người Đăng</a></th>
+                    <th style="width: 10%"><a href="">Người Tạo</a></th>
                     <th style="width: 200px;"><a href="">Phân Quyền</a></th>
                     <th style="width: 200px;"><a href="">Hành động</a></th>
                 </tr>
@@ -38,12 +40,16 @@
                         <td  class="text-start">{{!empty($item->postBy->ho_ten) ?$item->postBy->ho_ten : false}}</td>
                         <td><a href="{{route('admin.staffs.phanQuyen',$item->maCV)}}" class="btn btn-primary">Phân Quyền</a></td>
                         <td>
-                            <a href="{{ route('admin.staffs.edit', ['staff'=>$item->maCV]) }}" class="btn btn-warning btn-sm">Sửa</a>
-                            <form action="{{route('admin.staffs.delete',['staff'=>$item->maCV]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
+                            @can('staffs.edit')
+                                <a href="{{ route('admin.staffs.edit', ['staff'=>$item->maCV]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            @endcan
+                            @can('staffs.delete')
+                                <form action="{{route('admin.staffs.delete',['staff'=>$item->maCV]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger btn-sm delete-user" data-form="delete-form-{{$key}}">Xóa</button>
                             </form>
+                            @endcan
                             
                         </td>
                     </tr>

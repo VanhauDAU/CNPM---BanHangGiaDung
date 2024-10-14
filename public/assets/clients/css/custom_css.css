@@ -14,7 +14,6 @@
     padding-top: 20px;
 }
 header .navbar{
-    
     background-color:#DA251C;
     border-bottom: 1px solid #ccc; 
     height: 60px;
@@ -49,7 +48,7 @@ header .navbar form .txtQuery{
     border: none;
     outline: none;
     background-color: none;
-    min-width: 470px;
+    min-width: 400px;
 }
 #btnFindSearch{
     position: absolute;
@@ -456,6 +455,12 @@ header .navbar form .txtQuery{
 }
 .header-style-1 {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.header-style-2{
+    display: none;
+}
+.header-style-3{
+    display: none;
 }
 .header-scrolled {
     background-color: rgba(255, 255, 255, 0.9);
@@ -1035,4 +1040,21 @@ header .navbar form .txtQuery{
 }
 .itemProductViewed:hover{
     translate: 0px -10px;
+}
+
+/* Danh mục sản phẩm */
+.btn-category-show{
+    position: relative;
+}
+.btn-category-show .list-group{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -60px;
+}
+.btn-category-show .list-group .list-group-item{
+    font-size: 14px;
+}
+.btn-category-show:hover .list-group{
+    display: block;
 }

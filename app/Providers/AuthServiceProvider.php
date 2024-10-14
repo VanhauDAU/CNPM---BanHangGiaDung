@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Admin\Post;
 use App\Policies\PostPolicy;
+use App\Policies\UserPolicy;
+use App\Policies\StaffPolicy;
 use App\Models\admin\modules;
 use App\Models\admin\Staffs;
 
@@ -20,8 +22,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Post::class => PostPolicy::class,
+        Staffs::class => StaffPolicy::class,
+        User::class => UserPolicy::class,
+        
     ];
 
     /**
@@ -53,9 +57,36 @@ class AuthServiceProvider extends ServiceProvider
                     }
                     return false;
                 });
+                Gate::define($module->name.'.add', function(User $user) use ($module){
+                    $roleJson = $user->chucvu->phan_quyen;
+                    if(!empty($roleJson)){
+                        $roleArr = json_decode($roleJson, true);
+                        $check = isRole($roleArr,$module->name,'add');
+                        return $check;
+                    }
+                    return false;
+                });
+                Gate::define($module->name.'.edit', function(User $user) use ($module){
+                    $roleJson = $user->chucvu->phan_quyen;
+                    if(!empty($roleJson)){
+                        $roleArr = json_decode($roleJson, true);
+                        $check = isRole($roleArr,$module->name,'edit');
+                        return $check;
+                    }
+                    return false;
+                });
+                Gate::define($module->name.'.delete', function(User $user) use ($module){
+                    $roleJson = $user->chucvu->phan_quyen;
+                    
+                    if(!empty($roleJson)){
+                        $roleArr = json_decode($roleJson, true);
+                        $check = isRole($roleArr,$module->name,'delete');
+                        // dd($module->name);
+                        return $check;
+                    }
+                    return false;
+                });
             }
         }
-        Gate::define('posts.add',[PostPolicy::class,'add']);
-        Gate::define('posts.edit',[PostPolicy::class,'edit']);
     }
 }

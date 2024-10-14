@@ -33,9 +33,11 @@ class StaffController extends Controller
         return redirect()->route('admin.staffs.index')->with('success','Thêm nhóm thành công');
     }
     public function edit(Staffs $staff){
-        return view('admin.staffs.edit',compact('staff'));
+        $this->authorize('update',$staff);
+        return view('admin.staff.edit',compact('staff'));
     }
     public function postEdit(Staffs $staff, Request $request){
+        $this->authorize('update',$staff);
         $request->validate([
             'ten_chuc_vu'=>'required|unique:chucvu,ten_chuc_vu'
         ],[
@@ -47,10 +49,11 @@ class StaffController extends Controller
         return back()->with('success','Cập nhật nhóm thành công');
     }
     public function delete(Staffs $staff){
+        $this->authorize('delete',$staff);
         $userCount = $staff->users->count();
         if($userCount == 0){
             Staffs::destroy($staff->maCV);
-            return redirect()->route('amdin.staffs.index')->with('success','Xóa nhóm thành công');
+            return redirect()->route('admin.staffs.index')->with('success','Xóa nhóm thành công');
         }
         return redirect()->route('admin.staffs.index')->with('warning','Trong nhóm vẫn còn '.$userCount.' người dùng');
     }

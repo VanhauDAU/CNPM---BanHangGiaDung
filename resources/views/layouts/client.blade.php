@@ -187,7 +187,9 @@
             <a href=""><i class="fa-brands fa-telegram" style="color:#3AAFE1;"></i></a>
         </div>
     </div>
-    
+    <button id="scroll-to-top" style="display: none; position: fixed; bottom: 20px; right: 70px; z-index: 1000; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        <i class="fa-solid fa-circle-up"></i>
+    </button>
     @yield('content-clients')
     <div class="header-top">
         <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang10/10-10/Banner-10-10-1236x60.png" alt="" width="100%">
@@ -419,9 +421,19 @@
         }
         setInterval(changeBackground, 6000);
         changeBackground();
+        // Nút cuộn lên
+        window.onscroll = function() {
+            const button = document.getElementById("scroll-to-top");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                button.style.display = "block";
+            } else {
+                button.style.display = "none";
+            }
+        };
+        document.getElementById("scroll-to-top").onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
 
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             @if (session('toast'))
                 var toastEl = document.getElementById('loginToast');
@@ -429,26 +441,10 @@
                 toast.show();
             @endif
         });
-         const sound = document.getElementById('sound');
-        const playSoundLink = document.getElementById('playSoundLink');
-        playSoundLink.addEventListener('click', (event) => {
-            event.preventDefault(); 
-            localStorage.setItem('playSound', 'true'); 
-            window.location.href = playSoundLink.href; 
-        });
-        window.addEventListener('load', () => {
-            if (localStorage.getItem('playSound') === 'true') {
-                sound.currentTime = 0; 
-                sound.play()
-                    .then(() => {
-                        localStorage.removeItem('playSound'); 
-                    })
-                    .catch(error => {
-                        console.error("Không thể phát âm thanh: ", error);
-                    });
-            }
-        });
-        new WOW().init();
+        new WOW().init()
+
+        // Xử lý ẩn hiện danh mục
+
     </script>
 </body>
 

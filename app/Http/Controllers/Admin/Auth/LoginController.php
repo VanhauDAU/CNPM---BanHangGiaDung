@@ -29,6 +29,6 @@ class LoginController extends Controller
             return back()->with('msg','Tài khoản hoặc mật khẩu không hợp lệ');
         }
       
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.index');
     }
 }

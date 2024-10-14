@@ -62,7 +62,7 @@
 
             <!-- Nút chỉnh sửa thông tin -->
             <div class="text-center mt-3">
-                <a href="{{ route('admin.users.edit', ['id' => $userDetail->username]) }}" class="btn btn-primary btn-sm">Chỉnh Sửa Thông Tin</a>
+                <a href="{{ route('admin.users.edit', ['user' => $userDetail->username]) }}" class="btn btn-primary btn-sm">Chỉnh Sửa Thông Tin</a>
                 <a href="{{ route('admin.users.index') }}" class="btn btn-danger btn-sm">Quay Lại</a>
             </div>
         </div>

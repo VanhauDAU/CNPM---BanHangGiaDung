@@ -18,10 +18,12 @@
         <form action="{{route('admin.posts.deleteAny')}}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa')">
             @csrf
         <div class="d-flex mb-2">
-            {{-- @can('posts.add') --}}
+            @can('create',App\Models\Admin\Post::class)
             <a href="{{ route('admin.posts.add') }}" class="btn btn-primary">Thêm bài viết</a>
-            {{-- @endcan --}}
-            <button type="submit" class="btn btn-danger">Xóa (0)</button>
+            @endcan
+            @can('posts.delete')
+                <button type="submit" class="btn btn-danger">Xóa (0)</button>
+            @endcan
         </div>
 
         {{-- <form action="" method="get" class="mb-3 border-top pt-3">
@@ -112,7 +114,9 @@
                                 <a href="{{ route('admin.posts.restore', $item) }}" class="btn btn-primary btn-sm">Khôi phục</a>
                                 <a href="{{ route('admin.posts.forceDelete', $item) }}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa vĩnh viễn?')">Xóa vĩnh viễn</a>
                             @else
-                                <a href="{{ route('admin.posts.edit', ['post'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm col-8">Sửa</a>
+                                @can('posts.edit')
+                                    <a href="{{ route('admin.posts.edit', ['post'=>$item->id_bai_viet]) }}" class="btn btn-warning btn-sm col-8">Sửa</a>
+                                @endcan
                             @endif
                             
                             {{-- <form action="{{route('getdelete_post',['id'=>$item->id_bai_viet]) }}" method="POST" style="display:inline;" id="delete-form-{{$key}}">

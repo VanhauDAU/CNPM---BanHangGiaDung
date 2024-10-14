@@ -5,6 +5,39 @@
 
 @section('content-clients')
 <div class="main-products">
+    <header class="header-style-3 py-3" id="header-style-3">
+        <nav class="navbar navbar-expand-lg shadow-sm fixed-top"   style="background-color: white; border-bottom: 1px solid #ccc;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+          <div class="container">
+            <div class="row_navbar w-100 d-flex justify-content-between align-items-center">
+                <div class="header-product-info">
+                    <div class="header-product-info-img d-flex">
+                        <img src="{{ asset('storage/products/img/' . $productDetail->anh) ?: 'https://via.placeholder.com/150' }}" id="product-image" class="img-fluid rounded me-2" alt="{{ $productDetail->ten_san_pham }}" style="object-fit: cover;border-radius: 15px; width:45px">
+                        <div class="header-product-info-name">
+                            <h6 style="font-weight:bold">{{$productDetail->ten_san_pham}} ({{$productDetail->maSP}})</h6>
+                            <h6 style="font-weight:bold; color: green">NSX:{{$productDetail->ten_NSX}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-product-buy-list d-flex align-items-center">
+                    <div class="hedaer-product-price">
+                        {{number_format($productDetail->don_gia)}}đ </br>
+                       <s>{{number_format($productDetail->don_gia_goc)}}đ</s> 
+                    </div>
+                    <div class="header-product-buy mx-2">
+                        <form action="" method="POST">
+                            <button type="submit" class="btn btn-danger " ><i class="fas fa-shopping-cart"></i>MUA NGAY</button>
+                        </form>
+                    </div>
+                    <div class="header-product-cart">
+                        <form action="{{route('home.cart.add', $productDetail->maSP)}}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-success"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </nav>
+    </header>
     <div class="container mt-2" style="padding: 50px 0px 0px;">
             {{-- đường dẫn --}}
             <div class="breadcrumb d-flex align-items-center">
@@ -90,7 +123,6 @@
                                     <h6>Trạng thái: <span style="margin-left: 15px"> {{$productDetail->so_luong_ton > 0 ? ' Còn hàng' : ' Tạm hết hàng'}}</span></h6>
                                 </div>
                                 @if($productDetail->so_luong_ton != 0)
-                                    <form action="{{ route('home.cart.add', $productDetail->maSP) }}" method="post">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-5">
@@ -100,7 +132,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 d-flex align-items-end " style="margin-left: -50px">
-                                                    <button type="submit" id="add-to-cart" class="btn btn-success " ><i class="fas fa-shopping-cart"></i> Thêm vào giỏ</button>
+                                                <button type="submit" id="add-to-cart" class="btn btn-success " ><i class="fas fa-shopping-cart"></i> Thêm vào giỏ</button>
                                             </div>
                                         </div>
                                     </form>
@@ -757,5 +789,24 @@
             y: e.clientY - rect.top,
         };
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        const header1 = document.getElementById('header-style-1');
+        const header2 = document.getElementById('header-style-2');
+        const header3 = document.getElementById('header-style-3');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 650) {
+                header1.style.display = 'none';
+                header2.style.display = 'none';
+                header3.style.display = 'block';
+                
+            } else {
+                // Nếu ở đầu trang, hiện header và ẩn footer
+                header1.style.display = 'block';
+                header2.style.display = 'none';
+                header3.style.display = 'none';
+            }
+        });
+    });
     </script>
 @endsection

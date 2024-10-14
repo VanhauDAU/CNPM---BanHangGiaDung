@@ -35,7 +35,7 @@
                                 </div>
                             @endforeach
                         @endif
-                        @if($module->name == 'Staffs')
+                        @if($module->name == 'staffs')
                         <div class="col-3">
                             <label for="role_{{$module->name}}_permission">
                                 <input type="checkbox" name="role[{{$module->name}}][]" id="role_{{$module->name}}_permission" value="permission" {{isRole($roleArr, $module->name,'permission') ? 'checked' : ''}} class="role-checkbox">

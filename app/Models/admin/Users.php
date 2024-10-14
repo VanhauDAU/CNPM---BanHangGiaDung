@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class Users extends Model   
 {
     use HasFactory;
@@ -14,10 +15,17 @@ class Users extends Model
     public function getAllUsers($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         // $users = DB::select('SELECT * FROM '.$this->table.' ORDER BY username DESC');
         // DB::enableQueryLog();
-
-        $users = DB::table($this->table)
-        ->select('taikhoan.*','chucvu.ten_chuc_vu')
-        ->join('chucvu','taikhoan.maCV','=','chucvu.maCV');
+        iF(Auth::user()->maCV == 1){
+            $users = DB::table($this->table)
+            ->select('taikhoan.*','chucvu.ten_chuc_vu')
+            ->join('chucvu','taikhoan.maCV','=','chucvu.maCV');
+        }else{
+            $users = DB::table($this->table)
+            ->select('taikhoan.*','chucvu.ten_chuc_vu')
+            ->join('chucvu','taikhoan.maCV','=','chucvu.maCV')
+            ->where('taikhoan.maCV','!=',1);
+        }
+       
         $orderBy = 'taikhoan.created_at';
         $orderType='desc';
         if(!empty($sortArr) & is_array($sortArr)){
@@ -59,7 +67,7 @@ class Users extends Model
         $timestamp = now();
         $data[] = $timestamp;
         $data[] = $timestamp; 
-        DB::insert('INSERT INTO taikhoan(username, password, ho_ten, ngay_sinh, so_dien_thoai, email, loai_tai_khoan, maCV,anh, created_at, updated_at) values (?,?,?,?,?,?,?,?,?,?,?)', 
+        DB::insert('INSERT INTO taikhoan(username, password, ho_ten, ngay_sinh, so_dien_thoai, email, loai_tai_khoan, maCV,anh,user_id, created_at, updated_at) values (?,?,?,?,?,?,?,?,?,?,?,?)', 
         $data);
     }
     

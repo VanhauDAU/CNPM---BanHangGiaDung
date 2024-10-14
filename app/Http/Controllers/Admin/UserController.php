@@ -5,8 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Users;
+use App\Models\User;
 use App\Http\Requests\admin\userRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     //
@@ -82,6 +84,7 @@ class UserController extends Controller
             $request->account_type,
             $request->chuc_vu,
             $fileName,
+            Auth::user()->id,
         ];  
         $this->users->addUser($dataInsert);
         toastr()->success('Thành công','Thêm người dùng thành công');
@@ -105,24 +108,20 @@ class UserController extends Controller
         }else{
             return redirect()->route('admin.users.index')->with('msg','Mã tài khoản không tồn tại');
         }
-        return view('admin.users.detail', compact('userDetail'));
+        return view('admin.users.info_user', compact('userDetail'));
     }
-    public function edit($id = 0){
+    public function edit(Users $user) {
         $title = "CẬP NHẬT NGƯỜI DÙNG";
-        if(!empty($id)){
-            $userDetail = $this->users->getDetail($id);
-            // dd($userDetail[0]);
-            if(!empty($userDetail[0])){
-                $userDetail = $userDetail[0];
-            }else{
-                return redirect()->route('admin.users.index')->with('msg','Tài khoản không tồn tại!');
-            }
-        }else{
-            return redirect()->route('admin.users.index')->with('msg','Mã Tài Khoản Không Tồn Tại');
+        if(!empty($user)){
+            $userDetail = $user;
+        } else {
+            return redirect()->route('admin.users.index')->with('success','Tài khoản không tồn tại!');
         }
-        return view('admin.users.edit', compact('title','userDetail'));
+        return view('admin.users.edit', compact('title', 'userDetail'));
     }
+    
     public function postEdit(Request $request,$id = 0){
+        $this->authorize('update', User::class);
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
@@ -175,7 +174,6 @@ class UserController extends Controller
     public function delete($id){
         if(!empty($id)){
             $userDetail = $this->users->getDetail($id);
-            // dd($userDetail[0]);
             if(!empty($userDetail[0])){
                 $deleteuser = $this->users->deleteUser($id);
                 if($deleteuser){

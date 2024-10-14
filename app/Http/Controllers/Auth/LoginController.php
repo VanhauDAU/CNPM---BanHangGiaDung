@@ -145,6 +145,7 @@ class LoginController extends Controller
             $user->email = $usergoogle->getEmail();
             $user->username = $usergoogle->getID();
             $user->anh = $usergoogle->getAvatar();
+            $user->email_verified_at = now();
             $user->provider_id = $providerID;
             $user->provider = 'google';
             $user->password = Hash::make(rand());

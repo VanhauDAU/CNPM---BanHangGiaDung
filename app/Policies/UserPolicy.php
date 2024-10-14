@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Admin\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class PostPolicy
+class UserPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -17,7 +16,7 @@ class PostPolicy
         $roleJson = $user->chucvu->phan_quyen;
         if(!empty($roleJson)){
             $roleArr = json_decode($roleJson, true);
-            $check = isRole($roleArr,'posts');
+            $check = isRole($roleArr,'users');
             return $check;
         }
         return false;
@@ -26,7 +25,7 @@ class PostPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Post $post)
+    public function view(User $user, User $model)
     {
         //
     }
@@ -40,7 +39,7 @@ class PostPolicy
         $roleJson = $user->chucvu->phan_quyen;
         if(!empty($roleJson)){
             $roleArr = json_decode($roleJson, true);
-            $check = isRole($roleArr,'posts','add');
+            $check = isRole($roleArr,'users','add');
             return $check;
         }
         return false;
@@ -49,25 +48,29 @@ class PostPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user,Post $post)
+    public function update(User $user)
     {
-        // Logic kiểm tra quyền update
-        return $user->id == $post->user_id;
+        //
+        $roleJson = $user->chucvu->phan_quyen;
+        if(!empty($roleJson)){
+            $roleArr = json_decode($roleJson, true);
+            $check = isRole($roleArr,'users','edit');
+            return $check;
+        }
+        return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, User $model)
     {
-        //
-        return $user->id == $post->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Post $post)
+    public function restore(User $user, User $model)
     {
         //
     }
@@ -75,13 +78,8 @@ class PostPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Post $post)
+    public function forceDelete(User $user, User $model)
     {
         //
-    }
-    public function before(user $user){
-        iF($user->isSuperAdmin()){
-            return true;
-        }
     }
 }

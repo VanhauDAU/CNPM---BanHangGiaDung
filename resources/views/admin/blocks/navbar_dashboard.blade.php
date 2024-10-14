@@ -65,9 +65,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.posts.index')}}">Xem - Sửa - Xóa</a>
                 </li>
+                @can('create',App\Models\Admin\Post::class)
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.posts.add')}}">Thêm Bài Viết</a>
                 </li>
+                @endcan
             </ul>
         </li>
         @endcan
@@ -88,7 +90,7 @@
         @endcan
 
         {{-- QL Khuyến Mãi --}}
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#promotionSubMenu" aria-expanded="false">
                 <i class="fas fa-tags"></i> QL Khuyến Mãi
                 <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
@@ -101,13 +103,13 @@
                     <a class="nav-link" href="{{route('admin.posts.add')}}">Thêm Khuyến Mãi</a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
         {{-- QL HÓA ĐƠN --}}
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="/admin/quan-ly-hoa-don">
                 <i class="fas fa-receipt"></i> QL Hóa Đơn
             </a>
-        </li>
+        </li> --}}
         {{-- QL NHÓM NG DÙNG --}}
         @can('staffs')
         <li class="nav-item dropdown">

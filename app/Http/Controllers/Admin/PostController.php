@@ -23,8 +23,14 @@ class PostController extends Controller
         $this->authorize('viewAny', Post::class);
         $title = 'DANH SÁCH BÀI VIẾT';
         $post = new Post();
+        $userId = Auth::user()->id;
         // $user = Auth::user();
-        $PostList = $post->withTrashed()->select('baiviet.*','taikhoan.ho_ten')->join('taikhoan','taikhoan.id','=','baiviet.user_id')->orderBy('created_at','DESC')->get();
+        $PostList = $post->withTrashed()
+        ->select('baiviet.*','taikhoan.ho_ten')
+        ->join('taikhoan','taikhoan.id','=','baiviet.user_id')
+        ->orderBy('created_at','DESC')
+        // ->where('baiviet.user_id',$userId)
+        ->get();
         // if($user->can('viewAny',Post::class)){
         //     return view('admin.posts.index', compact('title', 'PostList'));
         // }
@@ -75,13 +81,7 @@ class PostController extends Controller
         return redirect()->route('admin.posts.index')->with('msg', 'Thêm mới bài viết thành công');
     }
     public function edit(Post $post) {
-        $this->authorize('posts.edit');
-        // if(Gate::allows('posts.edit', $post)){
-        //     return 'Có quyền sửa bài viết ' . $post->id;
-        // }
-        // if(Gate::denies('posts.edit', $post)){
-        //     return 'Bạn không có quyền sửa bài viết ' . $post->id;
-        // }
+        $this->authorize('update',$post);
         if(!empty($post)){
             $postDetail = $this->post->getDetail($post->id_bai_viet);
             if(!empty($postDetail[0])){
@@ -95,6 +95,8 @@ class PostController extends Controller
         return view('admin.posts.edit',compact('postDetail'));
     }
     public function postEdit(Request $request,$id = 0){
+        $post = $this->post->find($id);
+        $this->authorize('update',$post);
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
@@ -143,13 +145,13 @@ class PostController extends Controller
         $this->post->updatePost($dataUpdate, $id);
         return redirect()->route('admin.posts.edit',['post'=>$id])->with('msg','Cập nhật bài viết thành công!');
     }
-    public function delete($id = 0){
-        // $status = Post::where('id_bai_viet',$id)->delete();
-        // dd($status);
-    }
-    public function handelDeleteAny(Request $request){
+    public function handelDeleteAny(Post $post, Request $request){
         $deleteArr = $request->delete;
         if(!empty($deleteArr)){
+            $posts = Post::whereIn('id_bai_viet', $deleteArr)->get();
+            foreach ($posts as $post) {
+                $this->authorize('delete', $post);
+            }
             $status = Post::destroy($deleteArr);
             if($status){
                 $msg ='Đã xóa '.count($deleteArr).' bài viết';
@@ -170,7 +172,10 @@ class PostController extends Controller
             return redirect()->route('admin.posts.index');
         }
     }
-    public function forceDelete($id){
+    public function forceDelete(Post $post,$id){
+        $post = $this->post->find($id);
+        $this->authorize('delete',$post);
+        dd($post);
         $Post = Post::onlyTrashed()->where('id_bai_viet',$id)->first();
         if(!empty($Post)){
             $Post->forceDelete();

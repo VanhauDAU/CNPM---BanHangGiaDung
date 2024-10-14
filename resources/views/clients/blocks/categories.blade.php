@@ -13,56 +13,58 @@
         @endif
     </h5>
     
-    <h4 class="mb-2">
-        
-        <i class="fas fa-bars"></i> Danh Mục Sản Phẩm
-    </h4>
-    <ul class="list-group">
-        <li class="list-group-item">
-            <a href="{{ route('home.products.index') }}" class="category-link d-flex">
-                <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>
-                    Tất cả danh mục ({{CountDanhMuc()}}) 
-            </a>
-        </li>
-        @if(!empty(getAllDanhMucSp()))
-            @foreach(getAllDanhMucSp() as $item)
+    <div class="category-container">
+        <ul class="list-group">
             <li class="list-group-item">
-                <a href="{{ route('home.products.sanpham_id', $item->slug) }}" class="category-link d-flex">
-                    @if($item->icon==null)
-                        <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>
-                    @else
-                        <img src="{{$item->icon}}" alt="" style="width: 22px; margin-right: 10px">
-                    @endif
-                    {{$item->ten_danh_muc}}
-                    <i class="fa-solid fa-angles-right icon-submenu"></i>
+                <a href="{{ route('home.products.index') }}" class="category-link d-flex">
+                    <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>
+                    Tất cả danh mục ({{CountDanhMuc()}}) 
                 </a>
-            
-                <ul class="sub-category">
-                    <div class="row col-sm-12">
-                            @php
-                        $itemCategories = !empty($item->id_danh_muc) ? getChuyenMuc1($item->id_danh_muc) : [];
-                        @endphp
-                        @if(!empty($itemCategories) && count($itemCategories) > 0)
-                            <div class="sub-category-container">
-                                @foreach($itemCategories as $category)
-                                    <li class="listChuyenMuc"><a href="{{ route('home.products.sanpham_id_id', [$item->slug, $category->slugCm]) }}">{{ $category->ten_chuyen_muc }} ({{getAllProductCM($category->id_chuyen_muc)}} sp)</a></li>
-                                @endforeach
-                            </div>
+            </li>
+            @if(!empty(getAllDanhMucSp()))
+                @foreach(getAllDanhMucSp() as $item)
+                <li class="list-group-item">
+                    <a href="{{ route('home.products.sanpham_id', $item->slug) }}" class="category-link d-flex">
+                        @if($item->icon == null)
+                            <h1 style="width: 22px; opacity:0; height:5px; margin-right: 10px">hi</h1>
                         @else
-                            <h4 class="running-text">Không có chuyên mục nào</h4>
+                            <img src="{{$item->icon}}" alt="" style="width: 22px; margin-right: 10px">
                         @endif
-                    </div>
-                </ul>                
-            </li>
-            
-            @endforeach
-            <li class="list-group-item text-center">
-                <a href="{{ route('home.products.sanpham_id', $item->id_danh_muc) }}" class="category-link text-danger text-center" >
-                    Xem tất cả danh mục
-                </a>
-            </li>
-        @endif
-    </ul>
+                        {{$item->ten_danh_muc}}
+                        <i class="fa-solid fa-angles-right icon-submenu"></i>
+                    </a>
+        
+                    <ul class="sub-category">
+                        <div class="row col-sm-12">
+                            @php
+                                $itemCategories = !empty($item->id_danh_muc) ? getChuyenMuc1($item->id_danh_muc) : [];
+                            @endphp
+                            @if(!empty($itemCategories) && count($itemCategories) > 0)
+                                <div class="sub-category-container">
+                                    @foreach($itemCategories as $category)
+                                        <li class="listChuyenMuc">
+                                            <a href="{{ route('home.products.sanpham_id_id', [$item->slug, $category->slugCm]) }}">
+                                                {{ $category->ten_chuyen_muc }} ({{ getAllProductCM($category->id_chuyen_muc) }} sp)
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </div>
+                            @else
+                                <h4 class="running-text">Không có chuyên mục nào</h4>
+                            @endif
+                        </div>
+                    </ul>
+                </li>
+                @endforeach
+                <li class="list-group-item text-center">
+                    <a href="{{ route('home.products.sanpham_id', $item->id_danh_muc) }}" class="category-link text-danger text-center">
+                        Xem tất cả danh mục
+                    </a>
+                </li>
+            @endif
+        </ul>
+        
+    </div>
     
 </div>
 

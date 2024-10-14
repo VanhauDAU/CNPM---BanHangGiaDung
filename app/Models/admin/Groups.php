@@ -30,7 +30,7 @@ class Groups extends Model
     public function getAllDanhMucSp(){
         $groups = DB::table($this->table2)
         ->orderBy('created_at','ASC')
-        ->limit(10)
+        ->limit(11)
         ->get();
         return $groups;
     }

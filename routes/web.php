@@ -30,6 +30,10 @@ use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
 use App\Http\Controllers\Clients\LoginController as UserLoginController;
 use App\Http\Controllers\Clients\UserController as UserControllerClients;
 use App\Http\Controllers\Clients\ProductController as ProductControllerUser;
+use App\Models\Admin\Post;
+use App\Models\User;
+use App\Models\Admin\Staffs;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,34 +53,34 @@ Route::prefix('admin')->group(function () {
         return redirect()->route('admin.login');
     })->name('admin.logout');
     Route::middleware('auth.admin')->name('admin.')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('index');
         Route::prefix('quan-ly-nguoi-dung')->name('users.')->middleware('can:users')->group(function () {
             Route::get('', [UserController::class, 'index'])->name('index');
 
-            Route::get('info_detail/{id}', [UserController::class, 'detail'])->name('detail');
+            Route::get('info_detail/{user}', [UserController::class, 'detail'])->name('detail');
 
-            Route::get('add', [UserController::class, 'add'])->name('add');
+            Route::get('add', [UserController::class, 'add'])->name('add')->can('create',User::class);
 
-            Route::post('add', [UserController::class, 'postAdd']);
+            Route::post('add', [UserController::class, 'postAdd'])->can('create',User::class);
 
-            Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit');
+            Route::get('edit/{user}', [UserController::class, 'edit'])->name('edit')->can('update', User::class);
             
-            Route::post('edit/{id}', [UserController::class, 'postEdit']);
+            Route::post('edit/{user}', [UserController::class, 'postEdit']);
 
-            Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
+            Route::delete('delete/{user}', [UserController::class, 'delete'])->name('delete');
         });
         Route::prefix('quan-ly-chuc-vu')->name('staffs.')->middleware('can:staffs')->group(function () {
             Route::get('', [StaffController::class, 'index'])->name('index');
 
-            Route::get('add', [StaffController::class, 'add'])->name('add');
+            Route::get('add', [StaffController::class, 'add'])->name('add')->can('staffs.add');
 
-            Route::post('add', [StaffController::class, 'postAdd']);
+            Route::post('add', [StaffController::class, 'postAdd'])->can('staffs.add');
 
-            Route::get('edit/{staff}', [StaffController::class, 'edit'])->name('edit');
+            Route::get('edit/{staff}', [StaffController::class, 'edit'])->name('edit')->can('staffs.edit');
 
             Route::post('edit/{staff}', [StaffController::class, 'postEdit']);
 
-            Route::delete('delete/{staff}', [StaffController::class, 'delete'])->name('delete');
+            Route::delete('delete/{staff}', [StaffController::class, 'delete'])->name('delete')->can('staffs.delete');
 
             Route::get('phan-quyen/{staff}', [StaffController::class, 'phanQuyen'])->name('phanQuyen');
 
@@ -111,13 +115,13 @@ Route::prefix('admin')->group(function () {
         Route::prefix('quan-ly-bai-viet')->name('posts.')->middleware('can:posts')->group(function () {
             Route::get('', [PostControllerAdmin::class, 'index'])->name('index');
 
-            Route::get('add', [PostControllerAdmin::class, 'add'])->middleware('can:posts.add')->name('add');
+            Route::get('add', [PostControllerAdmin::class, 'add'])->name('add')->can('create',Post::class);
 
-            Route::post('add', [PostControllerAdmin::class, 'postAdd']);
+            Route::post('add', [PostControllerAdmin::class, 'postAdd'])->can('create',Post::class);
 
-            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->can('posts.edit','post')->name('edit');
+            Route::get('edit/{post}', [PostControllerAdmin::class, 'edit'])->name('edit')->can('posts.edit');
             
-            Route::post('edit/{id}', [PostControllerAdmin::class, 'postEdit']);
+            Route::post('edit/{post}', [PostControllerAdmin::class, 'postEdit']);
 
             Route::post('delete-any', [PostControllerAdmin::class, 'handelDeleteAny'])->name('deleteAny');
 
