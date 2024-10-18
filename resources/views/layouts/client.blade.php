@@ -159,37 +159,43 @@
 </head>
 
 <body>
-  @include('clients.blocks.header')
-  <div class="floating-buttons">
-    <a href="tel:123456789" class="button phone-button" title="Gọi điện">
-        <i class="fas fa-phone-alt"></i>
-    </a>
-    <a href="{{route('home.bai-viet')}}" class="button messenger-button" title="Tin Tức">
-        <i class="fa-solid fa-newspaper"></i>
-    </a>
-    <a href="{{route('home.post_lien-he')}}" class="button messenger-button" title="Khuyến Mãi">
-        <i class="fa-solid fa-message"></i>
-    </a>
-</div>
-
-
+    @include('clients.blocks.header')
+    <div class="floating-buttons">
+        <a href="tel:123456789" class="button phone-button" title="Gọi điện">
+            <i class="fas fa-phone-alt"></i>
+        </a>
+        <a href="{{route('home.bai-viet')}}" class="button messenger-button" title="Tin Tức">
+            <i class="fa-solid fa-newspaper"></i>
+        </a>
+        <a href="{{route('home.post_lien-he')}}" class="button messenger-button" title="Khuyến Mãi">
+            <i class="fa-solid fa-message"></i>
+        </a>
+    </div>
+     
+    {{-- chatBox --}}
+    <div id="chatbox" class="chatbox">
+        <div class="icon_chatbot">
+            <img src="{{asset('assets/clients/images/icon_chatBot.png')}}" alt="" width="40px" class="chatbot-img">
+        </div>
+    </div>   
     <div class="social-info">
         <div class="social facebook">
-            <a href=""><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.facebook.com/van.hau.1410" target="_blank"><i class="fa-brands fa-facebook"></i></a>
         </div>
         <div class="social twitter">
-            <a href=""><i class="fa-brands fa-twitter" style="color: black"></i></a>
+            <a href="" target="_blank"><i class="fa-brands fa-twitter" style="color: black"></i></a>
         </div>
         <div class="social youtube">
-            <a href=""><i class="fa-brands fa-youtube" style="color: red"></i></a>
+            <a href="" target="_blank"><i class="fa-brands fa-youtube" style="color: red"></i></a>
         </div>
         <div class="social telegram">
-            <a href=""><i class="fa-brands fa-telegram" style="color:#3AAFE1;"></i></a>
+            <a href="" target="_blank"><i class="fa-brands fa-telegram" style="color:#3AAFE1;"></i></a>
         </div>
     </div>
     <button id="scroll-to-top" style="display: none; position: fixed; bottom: 20px; right: 70px; z-index: 1000; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
         <i class="fa-solid fa-circle-up"></i>
     </button>
+    
     @yield('content-clients')
     <div class="header-top">
         <img src="https://st.meta.vn/img/thumb.ashx/Data/2024/Thang10/10-10/Banner-10-10-1236x60.png" alt="" width="100%">

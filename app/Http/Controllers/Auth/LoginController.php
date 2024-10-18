@@ -71,7 +71,6 @@ class LoginController extends Controller
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
             return $this->sendLockoutResponse($request);
         }
 
@@ -89,12 +88,10 @@ class LoginController extends Controller
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
-
             return $this->sendLoginResponse($request);
         }
         $this->incrementLoginAttempts($request);
         return $this->sendFailedLoginResponse($request);
-      
     }
     protected function validateLogin(Request $request){
         // dd($request->all());

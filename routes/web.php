@@ -21,8 +21,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Clients\ContactController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Clients\ShoppingCartController;
-use App\Http\Controllers\clients\CheckoutController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\clients\PaymentController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
 //product user
@@ -179,13 +179,21 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::post('doi-mat-khau', [UserControllerClients::class,'password_update']);
 
     });
+    Route::prefix('gio-hang')->name('cart.')->group(function(){
+        Route::get('/', [ShoppingCartController::class, 'index'])->name('index');
+        Route::post('add/{id}', [ShoppingCartController::class, 'add'])->name('add');
+        Route::post('update', [ShoppingCartController::class, 'update'])->name('update');
+        Route::get('/remove/{rowId}', [ShoppingCartController::class, 'remove'])->name('remove');
+        Route::get('/destroy', [ShoppingCartController::class, 'destroy'])->name('destroy');
+    });
+    // Route::post('/pay-to-cart/{id}', [ShoppingCartController::class, 'payToCart'])->name('pay.add');
+    
 
-    Route::post('/add-to-cart/{id}', [ShoppingCartController::class, 'addToCart'])->name('cart.add');
-    Route::get('/gio-hang', [ShoppingCartController::class, 'viewCart'])->name('cart.view');
-    Route::post('/gio-hang/update/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
-    Route::delete('/gio-hang/remove/{id}', [ShoppingCartController::class, 'removeFromCart'])->name('cart.remove');
-
-    Route::post('/thanh-toan', [CheckoutController::class, 'xylythanhtoan'])->name('thanhtoan.xuly');
+    Route::prefix('/thanh-toan')->name('pay.')->group(function(){
+        Route::get('', [PaymentController::class, 'index'])->name('index');
+        Route::post('', [PaymentController::class, 'postPayment']);
+        // Route::post('', [PaymentController::class, 'postPayment']);
+    });
 
     Route::get('nhan-hang/{id}', [BrandController::class, 'getBrand'])->name('getBrand');
     

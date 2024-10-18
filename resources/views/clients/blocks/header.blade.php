@@ -7,7 +7,7 @@
           <div class="row_navbar w-100 d-flex justify-content-center align-items-center">
               <a href="{{route('home.index')}}" id="playSoundLink">
                   <div class="logo d-flex">
-                    <img class="bee" src="{{asset('assets/general/img/bee.gif')}}" alt="" style="left: -10px">
+                    <img class="bee" src="{{asset('assets/general/img/bee.gif')}}" alt="" style="left: -1px">
                         {{-- <audio id="sound" src="{{asset('storage/audio/wellcome.mp3')}}"></audio> --}}
                     <img src="{{asset('assets/general/img/logoShop.png')}}" alt="Logo" class="img-fluid me-4">
                   </div>
@@ -24,51 +24,111 @@
               <div class="navbar_general">
                   <!-- Cart Dropdown -->
                   <div class="dropdown text-center">
-                      <a href="{{Route('home.cart.view')}}" class="btn ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="" aria-expanded="false">
-                          <i class="fas fa-shopping-cart"></i> Giỏ Hàng @if(!empty(session('cart'))) 
-                            ({{count(session('cart'))}}) @endif
-                      </a>
-                      <div class="dropdown-menu p-4" aria-labelledby="cartDropdown" style="left: -100px; top: 36px;border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 500px;">
-                          <table class="table table-hover">
-                            @if(session('cart') && count(session('cart')) > 0)
-                              <thead>
-                                  <tr>
-                                      <th scope="col">Ảnh</th>
-                                      <th scope="col">Tên Sản Phẩm</th>
-                                      <th scope="col">Giá</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                @forEach(session('cart') as $id =>$item)
-                                <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark" >
-                                  <tr>
-                                      <td>
-                                          <img src="{{asset('storage/products/img/'. $item['anh'])}}" alt="{{$item['anh']}}" style="width: 50px; height: auto;" class="rounded me-3">
-                                      </td>
-                                      <td>{{ \Illuminate\Support\Str::limit( $item['ten_san_pham'], 30)}}</td>
-                                      <td>
-                                        {{number_format($item['don_gia'],0,',','.')}}đ
-                                    </td>
-                                  </tr>
-                                </a>
+                        <a href="{{Route('home.cart.index')}}" class="btn ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="" aria-expanded="false">
+                            <i class="fas fa-shopping-cart"></i> Giỏ Hàng ({{count(countCart())}})
+                        </a>
+                        @if(!empty(Auth::user()))
+                            <div class="dropdown-menu p-4" aria-labelledby="cartDropdown" style="left: -100px; top: 36px;border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 500px;">
+                                <table class="table table-hover">
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Ảnh</th>
+                                            <th scope="col">Tên Sản Phẩm</th>
+                                            <th scope="col">Giá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forEach(session('cart') as $id =>$item)
+                                        <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark" >
+                                        <tr>
+                                            <td>
+                                                <img src="{{--asset('storage/products/img/'. $item['anh'])}}" alt="{{$item['anh']--}}" style="width: 50px; height: auto;" class="rounded me-3">
+                                            </td>
+                                            <td>{{-- \Illuminate\Support\Str::limit( $item['ten_san_pham'], 30)--}}</td>
+                                            <td>
+                                                {{--number_format($item['don_gia'],0,',','.')--}}đ
+                                            </td>
+                                        </tr>
+                                        </a>
 
-                                  @endforeach
-                              </tbody>
-                            @else
-                              <h5>KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG</h5>
-                            @endif
-                          </table>
-                          <div class="row d-flex justify-content-between align-items-center mt-3">
-                            @if(session('cart') && count(session('cart')) > 0)
-                            <h5 class="col-8">Tổng tiền: <span id="total-price" style="color: #28a745;">
-                                {{ number_format(array_sum(array_map(function($item) { return $item['don_gia'] * $item['so_luong']; }, session('cart'))), 0, ',', '.') }} đ</span>
-                            </h5>
-                              <a class="btn btn-primary col-4" href="{{Route('home.cart.view')}}">Xem Giỏ Hàng</a>
-                            @else
-                                <a class="btn btn-primary col-12" href="{{Route('home.products.index')}}">Xem Thêm Sản Phẩm</a>
-                            @endif
-                          </div>
-                      </div>
+                                        @endforeach
+                                    </tbody>
+                                    @else
+                                    <h5>KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG</h5>
+                                    @endif
+                                </table>
+                                <div class="row mt-3">
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                    <h5 class="col-8">Tổng tiền: <span id="total-price" style="color: #28a745;">
+                                        {{-- number_format(array_sum(array_map(function($item) { return $item['don_gia'] * $item['so_luong']; }, session('cart'))), 0, ',', '.') --}} đ</span>
+                                    </h5>
+                                    @else
+
+                                    @endif
+                                    
+                                </div>
+                                <div class="payment d-flex align-items-center justify-content-between">
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                        <a class="btn btn-warning col-12" href="{{Route('home.cart.index')}}">Xem Giỏ Hàng</a>
+                                    @else
+                                        <a class="btn btn-primary col-12" href="{{Route('home.products.index')}}">Xem Thêm Sản Phẩm</a>
+                                    @endif
+                                </div>
+                                
+                            </div>
+                        @else
+                            <div class="dropdown-menu p-4" aria-labelledby="cartDropdown" style="left: -100px; top: 36px;border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); min-width: 500px;">
+                                <table class="table table-hover">
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Ảnh</th>
+                                            <th scope="col">Tên Sản Phẩm</th>
+                                            <th scope="col">Giá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forEach(session('cart') as $id =>$item)
+                                        <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark" >
+                                        <tr>
+                                            <td>
+                                                <img src="{{--asset('storage/products/img/'. $item['anh'])--}}" alt="{{--$item['ten_san_pham']--}}" style="width: 50px; height: auto;" class="rounded me-3">
+                                            </td>
+                                            <td>{{-- \Illuminate\Support\Str::limit( $item['ten_san_pham'], 30)--}}</td>
+                                            <td>
+                                                {{--number_format($item['don_gia'],0,',','.')--}}đ
+                                            </td>
+                                        </tr>
+                                        </a>
+
+                                        @endforeach
+                                    </tbody>
+                                    @else
+                                    <h5>KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG</h5>
+                                    @endif
+                                </table>
+                                <div class="row mt-3">
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                    <h5 class="col-8">Tổng tiền: <span id="total-price" style="color: #28a745;">
+                                        {{-- number_format(array_sum(array_map(function($item) { return $item['don_gia'] * $item['so_luong']; }, session('cart'))), 0, ',', '.') --}} đ</span>
+                                    </h5>
+                                    @else
+
+                                    @endif
+                                    
+                                </div>
+                                <div class="payment d-flex align-items-center justify-content-between">
+                                    @if(session('cart') && count(session('cart')) > 0)
+                                        <a class="btn btn-warning col-5" href="{{Route('home.cart.index')}}">Xem Giỏ Hàng</a>
+                                        <a class="btn btn-primary col-5" href="{{Route('home.pay.index')}}">Thanh Toán</a>
+                                    @else
+                                        <a class="btn btn-primary col-12" href="{{Route('home.products.index')}}">Xem Thêm Sản Phẩm</a>
+                                    @endif
+                                </div>
+                                
+                            </div>
+                        @endif
                   </div>
                   <a href="{{route('home.products.index')}}"  class="huongdan">
                       <div>
@@ -203,7 +263,7 @@
               <div class="navbar_general">
                   <!-- Cart Dropdown -->
                   <div class="dropdown text-center">
-                      <a href="{{Route('home.cart.view')}}" class="btn ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="" aria-expanded="false">
+                      <a href="{{Route('home.cart.index')}}" class="btn ms-3 rounded-pill dropdown-toggle" id="cartDropdown" data-bs-toggle="" aria-expanded="false">
                           <i class="fas fa-shopping-cart"></i> Giỏ Hàng @if(!empty(session('cart'))) 
                             ({{count(session('cart'))}}) @endif
                       </a>
@@ -222,11 +282,11 @@
                                 <a href="{{-- url('san-pham/1') --}}" class="d-flex align-items-center text-decoration-none text-dark" >
                                   <tr>
                                       <td>
-                                          <img src="{{asset('storage/products/img/'. $item['anh'])}}" alt="{{$item['anh']}}" style="width: 50px; height: auto;" class="rounded me-3">
+                                          <img src="{{--asset('storage/products/img/'. $item['anh'])--}}" alt="{{--$item['anh']--}}" style="width: 50px; height: auto;" class="rounded me-3">
                                       </td>
-                                      <td>{{ \Illuminate\Support\Str::limit( $item['ten_san_pham'], 30)}}</td>
+                                      <td>{{-- \Illuminate\Support\Str::limit( $item['ten_san_pham'], 30)--}}</td>
                                       <td>
-                                        {{number_format($item['don_gia'],0,',','.')}}đ
+                                        {{--number_format($item['don_gia'],0,',','.')--}}đ
                                     </td>
                                   </tr>
                                 </a>
@@ -240,9 +300,15 @@
                           <div class="row d-flex justify-content-between align-items-center mt-3">
                             @if(session('cart') && count(session('cart')) > 0)
                             <h5 class="col-8">Tổng tiền: <span id="total-price" style="color: #28a745;">
-                                {{ number_format(array_sum(array_map(function($item) { return $item['don_gia'] * $item['so_luong']; }, session('cart'))), 0, ',', '.') }} đ</span>
+                                {{-- number_format(array_sum(array_map(function($item) { return $item['don_gia'] * $item['so_luong']; }, session('cart'))), 0, ',', '.') --}} đ</span>
                             </h5>
-                              <a class="btn btn-primary col-4" href="{{Route('home.cart.view')}}">Xem Giỏ Hàng</a>
+                            @else
+                            @endif
+                          </div>
+                          <div class="payment d-flex align-items-center justify-content-between">
+                            @if(session('cart') && count(session('cart')) > 0)
+                                <a class="btn btn-warning col-5" href="{{Route('home.cart.index')}}">Xem Giỏ Hàng</a>
+                                <a class="btn btn-primary col-5" href="{{Route('home.pay.index')}}">Thanh Toán</a>
                             @else
                                 <a class="btn btn-primary col-12" href="{{Route('home.products.index')}}">Xem Thêm Sản Phẩm</a>
                             @endif

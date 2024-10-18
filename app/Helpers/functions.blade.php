@@ -152,3 +152,8 @@ function isRole($dataArr, $moduleName,$role ='view'){
     }
     return false;
 }
+
+// giỏ hàng
+function countCart(){
+    return Cart::content();
+}

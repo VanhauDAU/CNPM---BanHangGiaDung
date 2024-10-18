@@ -25,12 +25,11 @@
                     </div>
                     <div class="header-product-buy mx-2">
                         <form action="" method="POST">
-                            <button type="submit" class="btn btn-danger " ><i class="fas fa-shopping-cart"></i>MUA NGAY</button>
+                            <button  class="btn btn-danger"><i class="fas fa-shopping-cart"></i>MUA NGAY</button>
                         </form>
                     </div>
                     <div class="header-product-cart">
-                        <form action="{{route('home.cart.add', $productDetail->maSP)}}" method="post">
-                            @csrf
+                        
                             <button type="submit" class="btn btn-success"><i class="fas fa-shopping-cart"></i></button>
                     </div>
                 </div>
@@ -123,6 +122,7 @@
                                     <h6>Trạng thái: <span style="margin-left: 15px"> {{$productDetail->so_luong_ton > 0 ? ' Còn hàng' : ' Tạm hết hàng'}}</span></h6>
                                 </div>
                                 @if($productDetail->so_luong_ton != 0)
+                                <form action="{{route('home.cart.add', $productDetail->maSP)}}" method="post">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-5">
@@ -143,7 +143,6 @@
                                                     <i class="fa-solid fa-cart-shopping fs-3"></i>
                                                 </div>
                                                 <div class="col-md-11">
-
                                                     <h5 class="txt-shop m-0">
                                                         <span class="txt-buy-now" style="font-size: 15px; margin-top: -5px"><span style="font-size: 20px">Mua Ngay</span><br/>
                                                             (giao hàng tận nơi trên toàn quốc)

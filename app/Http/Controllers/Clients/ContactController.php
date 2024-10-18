@@ -41,6 +41,7 @@ class ContactController extends Controller
             $request->noi_dung,
         ]; 
         $this->contacts->addContact($dataInsert);
-        return redirect()->route('home.lien-he')->with('success', 'Đã gửi thông tin thành công');
+        // return redirect()->route('home.lien-he')->with('success', 'Đã gửi thông tin thành công');
+        return redirect()->back()->with('success', 'Đã gửi thông tin thành công');
     }
 }

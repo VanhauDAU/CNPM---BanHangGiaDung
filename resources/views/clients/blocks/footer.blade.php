@@ -34,14 +34,15 @@
             <div class="col-sm-6 col-md-3 mb-4">
                 <h5 class="footer-title text-danger">Dịch vụ khách hàng</h5>
                 <ul class="list-unstyled">
-                    <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Tài khoản của tôi</a></li>
-                    <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Lịch sử đơn hàng</a></li>
+                    @if(Auth::user())
+                        <li style="margin-bottom: 20px;"><a href="{{route('home.info-user')}}" class="text-light" style="text-decoration: none;">Tài khoản của tôi</a></li>
+                        <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Lịch sử đơn hàng</a></li>
+                    @endif
                     <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Câu hỏi thường gặp</a></li>
                     <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Khuyến mãi</a></li>
                     <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Trung tâm hỗ trợ</a></li>
                 </ul>
             </div>
-
             <!-- Corporation -->
             <div class="col-sm-6 col-md-3 mb-4">
                 <h5 class="footer-title text-danger">Công ty</h5>
@@ -58,25 +59,39 @@
             <!-- Contact Form -->
             <div class="col-sm-6 col-md-3 mb-4">
                 <h5 class="footer-title text-danger">Liên hệ với chúng tôi</h5>
-                <form action="your_form_processing_script.php" method="POST">
+                <form action="{{route('home.lien-he')}}" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <label for="name" class="text-light">Tên của bạn:</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <label for="ho_ten" class="text-light">Tên của bạn:</label>
+                        <input type="text" class="form-control" id="ho_ten" name="ho_ten" placeholder="Họ và tên..." value="{{old('ho_ten')}}">
+                        @error('ho_ten')
+                                    <span style="color:red;">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="email" class="text-light">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email...">
+                        @error('email')
+                            <span style="color:red;">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <label for="phone" class="text-light">Số điện thoại:</label>
-                        <input type="tel" class="form-control" id="phone" name="phone">
+                        <label for="so_dien_thoai" class="text-light">Số điện thoại:</label>
+                        <input type="tel" class="form-control" id="so_dien_thoai" name="so_dien_thoai" placeholder="Số điện thoại...">
+                        @error('so_dien_thoai')
+                            <span style="color:red;">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <label for="message" class="text-light">Tin nhắn:</label>
-                        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                        <label for="noi_dung" class="text-light">Tin nhắn:</label>
+                        <textarea class="form-control" id="noi_dung" name="noi_dung" rows="3" placeholder="Nội dung liên hệ..."></textarea>
+                        @error('noi_dung')
+                            <span style="color:red;">{{$message}}</span>
+                        @enderror
                     </div>
-                    <button type="submit" class="btn btn-danger">Gửi</button>
+                    <button type="submit" class="btn btn-danger mt-2 w-100">Gửi</button>
                 </form>
+                
             </div>
         </div>
 

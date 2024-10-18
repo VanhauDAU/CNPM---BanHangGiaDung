@@ -14,7 +14,7 @@
         @else
         <div class="container mt-1" style="padding: 56px 0px 0px;">  
     @endif
-        <div class="main-products">
+        <div class="main-products px-3">
         {{-- đường dẫn --}}
         @if(!empty($productDetail))
             <div class="breadcrumb d-flex align-items-center">
@@ -136,17 +136,26 @@
                                             <span style="font-size: 15px">100</span>
                                         </div>
                                     </div>
-                                    @if($product->so_luong_ton != 0)
-                                        <form action="{{ route('home.cart.add', $product->maSP) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary btn-xemchitiet">Thêm vào giỏ hàng</button>
-                                        </form>
-                                    @else
-                                        <form action="{{ route('home.cart.add', $product->maSP) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-warning btn-xemchitiet-lienhe">Liên hệ</button>
-                                        </form>
-                                    @endif
+                                    <div class="row">
+                                        @if($product->so_luong_ton != 0)
+                                            <form action="{{ route('home.cart.add', $product->maSP) }}" method="post" class="col-5">
+                                                @csrf
+                                                <input type="hidden" name="so_luong" value="1">
+                                                <button type="submit" class="btn btn-primary btn-xemchitiet"><i class="fa-solid fa-cart-plus"></i></button>
+                                            </form>
+                                            <form action="{{ route('home.cart.add', $product->maSP) }}" method="post" class="col-7">
+                                                @csrf
+                                                <input type="hidden" name="so_luong" value="1">
+                                                <input type="hidden" name="action" value="buy_now"> <!-- Thêm tham số này -->
+                                                <button type="submit" class="btn btn-warning btn-pay">Mua Ngay</button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('home.cart.add', $product->maSP) }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn btn-warning btn-xemchitiet-lienhe">Liên hệ</button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </div>
                             </a>
                         </div>

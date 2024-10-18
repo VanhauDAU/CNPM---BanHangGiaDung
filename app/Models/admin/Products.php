@@ -11,7 +11,14 @@ class products extends Model
     protected $table ='sanpham';
     protected $primaryKey = 'maSP';
     protected $tableDM ='danhmucsanpham';
-    
+    public function danhMuc()
+    {
+        return $this->belongsTo(Category::class, 'id_danh_muc');
+    }
+    public function nhaSanXuat()
+    {
+        return $this->belongsTo(Brands::class, 'maNSX');
+    }
     public function khuyenMais()
     {
         return $this->belongsToMany(Promotion::class, 'sanpham_khuyenmai', 'san_pham_id', 'khuyen_mai_id');

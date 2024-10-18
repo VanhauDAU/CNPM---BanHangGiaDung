@@ -30,6 +30,7 @@ class PostController extends Controller
             ->join('taikhoan','taikhoan.id','=','baiviet.user_id')
             ->where('baiviet.slug','=',$id)
             ->get();
+            // dd($Post);
             if(!empty($Post)){
                 $Post = $Post[0];
             }

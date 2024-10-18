@@ -197,6 +197,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         \Yoeunes\Toastr\ToastrServiceProvider::class,
         Ichtrojan\Otp\OtpServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
     ],
 
     /*
@@ -214,6 +215,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Sociallite'=>Laravel\Socialite\Facades\Socialite::class,
         'Otp'=>Ichtrojan\Otp\Otp::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
     ])->toArray(),
 
 ];
