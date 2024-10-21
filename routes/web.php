@@ -27,12 +27,15 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
 //product user
 use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
+use App\Http\Controllers\clients\FindOrderController;
 use App\Http\Controllers\Clients\LoginController as UserLoginController;
 use App\Http\Controllers\Clients\UserController as UserControllerClients;
 use App\Http\Controllers\Clients\ProductController as ProductControllerUser;
+use App\Http\Controllers\LocationController;
 use App\Models\Admin\Post;
 use App\Models\User;
 use App\Models\Admin\Staffs;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 /*
 |--------------------------------------------------------------------------
@@ -193,14 +196,23 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::get('', [PaymentController::class, 'index'])->name('index');
         Route::post('', [PaymentController::class, 'postPayment']);
         // Route::post('', [PaymentController::class, 'postPayment']);
+        Route::get('/vn_pay/payment_successful',[PaymentController::class, 'doneVNPay']);
+        Route::get('/cash/successful',[PaymentController::class, 'done'])->name('done');
+        
+
     });
 
     Route::get('nhan-hang/{id}', [BrandController::class, 'getBrand'])->name('getBrand');
+    Route::prefix('tra-cuu-don-hang')->name('findOrder.')->group(function(){
+        Route::get('',[FindOrderController::class,'index'])->name('index');
+    });
+    
     
 });
 Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class, 'getChuyenMuc'])->name('getChuyenMuc');
 Route::get('/getDanhMuc/{id}', [ProductController::class, 'getDanhMuc'])->name('getDanhMuc');
-
+Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts'])->name('getDistricts');
+Route::get('/wards/{district_id}', [LocationController::class, 'getWards'])->name('getWards');
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){
     Route::get('/', [PostController::class,'index'])->name('index');

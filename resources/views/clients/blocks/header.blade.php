@@ -168,10 +168,10 @@
                         @if(empty(Auth::user()))
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('login') }}">Đăng nhập</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('register') }}">Đăng ký</a></li>
-                            <li><a class="dropdown-item user-dropdown-item" href="{{ route('register') }}">Tra cứu đơn hàng</a></li>
+                            <li><a class="dropdown-item user-dropdown-item" href="{{ route('home.findOrder.index') }}">Tra cứu đơn hàng</a></li>
                             
                         @else
-                            <li><a class="dropdown-item user-dropdown-item" href="{{ route('register') }}">Tra cứu đơn hàng</a></li>
+                            <li><a class="dropdown-item user-dropdown-item" href="{{ route('home.findOrder.index') }}">Tra cứu đơn hàng</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{route('home.info-user')}}">Thông tin tài khoản</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a></li>

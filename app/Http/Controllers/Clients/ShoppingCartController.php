@@ -16,49 +16,70 @@ class ShoppingCartController extends Controller
         $title = 'GIỎ HÀNG';
         return view('clients.shoppingCart.index', compact('title'));
     }
-    public function add(Request $request,$id)
+    public function add(Request $request, $id)
     {
-        $title ='Giỏ Hàng';
+        $title = 'Giỏ Hàng';
         $product = products::with(['danhMuc', 'nhaSanXuat'])->find($id);
         // Cart::destroy();
-        if($product->so_luong_ton < $request->so_luong){
-            return redirect()->back()->with('warning','Số lượng tồn kho không đủ');
+        if ($product->so_luong_ton < $request->so_luong) {
+            return redirect()->back()->with('warning', 'Số lượng tồn kho không đủ');
         }
-        Cart::add([
-            'id' => $product->maSP,
-            'name' => $product->ten_san_pham, 
-            'qty' => $request->so_luong,
-            'price' => $product->don_gia,
-            'options' => [
-                'slug' => $product->slug,
-                'anh'=>$product->anh,
-                'ten_danh_muc'=> $product->danhMuc->ten_danh_muc,
-                'ten_NSX'=> $product->nhaSanXuat->ten_NSX,
-                'added_at' => now(),
-            ]
-        ]);
+        $cart = Cart::content();
+        $cartItem = $cart->where('id', $product->maSP)->first();
+        if ($cartItem) {
+            Cart::update($cartItem->rowId, $cartItem->qty + $request->so_luong);
+        } else {
+            Cart::add([
+                'id' => $product->maSP,
+                'name' => $product->ten_san_pham,
+                'qty' => $request->so_luong,
+                'price' => $product->don_gia,
+                'options' => [
+                    'slug' => $product->slug,
+                    'anh' => $product->anh,
+                    'ten_danh_muc' => $product->danhMuc->ten_danh_muc,
+                    'ten_NSX' => $product->nhaSanXuat->ten_NSX,
+                    'added_at' => now(),
+                ]
+            ]);
+        }
+
         if ($request->input('action') === 'buy_now') {
             return redirect()->route('home.cart.index');
         }
-        return redirect()->back()->with('success','Đã Thêm Sản Phẩm Vào Giỏ Hàng');
+        return redirect()->back()->with('success', 'Đã Thêm Sản Phẩm Vào Giỏ Hàng');
     }
-    public function remove($rowId){
+    public function remove($rowId)
+    {
         Cart::remove($rowId);
-        return redirect()->back()->with('success','Xóa sản phẩm thành công');
+        return redirect()->back()->with('success', 'Xóa sản phẩm thành công');
     }
-    public function destroy(){
+    public function destroy()
+    {
         Cart::destroy();
-        return redirect()->back()->with('success','Đã xóa toàn bộ giỏ hàng');
+        return redirect()->back()->with('success', 'Đã xóa toàn bộ giỏ hàng');
     }
-    public function update(Request $request){
-        // dd($request->all());
+    public function update(Request $request)
+    {
         $data = $request->get('qty');
-        foreach($data as $k => $v){
-            Cart::update($k, $v);
+
+        foreach ($data as $rowId => $qty) {
+            $cartItem = Cart::get($rowId);
+
+            if (!$cartItem) {
+                return redirect()->back()->with('error', 'Không tìm thấy mục giỏ hàng.');
+            }
+            $product = Products::find($cartItem->id);
+
+            if (!$product) {
+                return redirect()->back()->with('error', 'Không tìm thấy sản phẩm trong cơ sở dữ liệu.');
+            }
+            // dd($product->so_luong_ton);
+            if ($product->so_luong_ton < $qty) {
+                return redirect()->back()->with('warning', 'Số lượng tồn kho không đủ cho sản phẩm: ' . $product->ten_san_pham);
+            }
+            Cart::update($rowId, $qty);
         }
-        return redirect()->back()->with('success','Cập nhật giỏ hàng thành công!');
+        return redirect()->back()->with('success', 'Cập nhật giỏ hàng thành công!');
     }
-
-
-    
 }

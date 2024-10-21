@@ -23,15 +23,18 @@
                             <div class="product-item-pay d-flex justify-content-between mb-2 border-bottom pb-2">
                                 <div class="product-img-name d-flex me-1">
                                     <div class="product-img-pay">
-                                        <img class=" border rounded p-2 me-2" style="width: 100px" src="{{asset('storage/products/img/'.$item->options->anh)}}" alt="">
+                                        <img class="border rounded p-2 me-2" style="width: 100px" src="{{ asset('storage/products/img/'.$item->options->anh) }}" alt="">
                                     </div>
                                     <div class="product-name-pay">
-                                        <h5>{{$item->name}} (SL: {{$item->qty}})</h5>
-                                        <h6 style="font-size: 12px">Danh mục: {{$item->options->ten_danh_muc}} | NSX: {{$item->options->ten_NSX}}</h6>
+                                        <input type="hidden" name="name_product[]" value="{{ $item->name }}">
+                                        <input type="hidden" name="so_luong_product[]" value="{{ $item->qty }}">
+                                        <input type="hidden" value="{{ intval(str_replace('.', '',  $item->price)) }}" name="price_product[]">
+                                        <h5>{{ $item->name }} (SL: {{ $item->qty }})</h5>
+                                        <h6 style="font-size: 12px">Danh mục: {{ $item->options->ten_danh_muc }} | NSX: {{ $item->options->ten_NSX }}</h6>
                                     </div>
                                 </div>
                                 <div class="product-price">
-                                    <h5 style="color:red; font-weight: bold">{{number_format($item->price*$item->qty,0,',','.')}}đ</h5>
+                                    <h5 style="color:red; font-weight: bold">{{ number_format($item->price * $item->qty, 0, ',', '.') }}đ</h5>
                                 </div>
                             </div>
                         @endforeach
@@ -66,7 +69,7 @@
                                 @enderror
                                 <input type="text" class="form-control mb-2" placeholder="Số điện thoại (*)" pattern="[0-9]*"  title="Vui lòng nhập số" name="so_dien_thoai_VL" value="{{old('so_dien_thoai_VL')}}">
                                 
-                                <input type="text" class="form-control" placeholder="Email (Không bắt buộc)" name="email">
+                                <input type="text" class="form-control" placeholder="Email (*)" name="email_VL" value="{{ old('email_VL') }}">
                             </div>
                         </div>
                     @endif
@@ -76,20 +79,21 @@
                         <h6 class="fw-bold">Địa chỉ nhận hàng</h6>
                         <div class="row">
                             <div class="col-4">
-                                <label for="province_VL" class="fw-bold fst-italic">Tỉnh/Thành Phố</label>
-                                <select name="province_VL" id="province_VL"  class="form-control">
+                                <label for="province" class="fw-bold fst-italic">Tỉnh/Thành Phố</label>
+                                <select name="province" id="province"  class="form-control">
                                     <option value="">Chọn Tỉnh/Thành Phố</option>
-                                    <option value="qn">Quảng Nam</option>
+                                    @foreach($province as $prov)
+                                        <option value="{{ $prov->province_id }}">{{ $prov->name }}</option>
+                                    @endforeach
                                 </select>
                                 @error('province_VL')
                                     <small class="text-danger">{{$message}}</small>
                                 @enderror
                             </div>
                             <div class="col-4">
-                                <label for="district_VL" class="fw-bold fst-italic">Quận/Huyện</label>
-                                <select name="district_VL" id="district_VL"  class="form-control">
+                                <label for="district" class="fw-bold fst-italic">Quận/Huyện</label>
+                                <select name="district" id="district"  class="form-control">
                                     <option value="">Chọn Quận/Huyện</option>
-                                    <option value="qn">Quảng Nam</option>
                                 </select>
                                 @error('district_VL')
                                     <small class="text-danger">{{$message}}</small>
@@ -97,11 +101,10 @@
                             </div>
                             <div class="col-4">
                                 <label for="ward_VL" class="fw-bold fst-italic">Phường/Xã</label>
-                                <select name="ward_VL" id="ward_VL"  class="form-control">
+                                <select name="ward" id="ward"  class="form-control">
                                     <option value="">Chọn Phường/Xã</option>
-                                    <option value="qn">Quảng Nam</option>
                                 </select>
-                                @error('ward_VL')
+                                @error('ward')
                                     <small class="text-danger">{{$message}}</small>
                                 @enderror
                             </div>

@@ -12,7 +12,13 @@
                 <a href="#" style="color:blue">Giỏ hàng</a>
             </h6>
         </div>
-            <div class="d-grid" style="grid-template-columns: 1.4fr 0.6fr; gap:15px;">
+            <div class="d-grid"
+            @if(Cart::count()>0)
+                style="grid-template-columns: 1.4fr 0.6fr; gap:15px;"
+            @else
+                style="grid-template-columns: 1fr 0fr; gap:15px;"
+            @endif
+             >
                 <div class="col-left-product">
                     {{-- SẢN PHẨM TRONG ĐƠN --}}
                     <div class="bg-white product-list-pay p-3 mb-3" style="border-radius: 20px;">
@@ -67,49 +73,50 @@
                         @endif
                     </div>
                 </div>
-            
-                <div class="bg-white p-3" style="border-radius: 20px; position:sticky; top: 70px; height: 400px; box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;">
-                    {{-- THÔNG TIN ĐƠN HÀNG --}}
-                    <h6 class="fw-bold mb-3">Thông tin giỏ hàng</h6>
-                    <div class="total-price d-flex justify-content-between border-bottom">
-                        <h6>Tổng tiền</h6>
-                        <h6 style="font-size: 20px; font-weight: bold">
-                            <span id="total-price">
-                                @if(!Auth::check())
-                                {{ Cart::total()}}đ
-                                @else
-                                    0đ
-                                @endif
-                            </span>
-                        </h6>
-                    </div>
-            
-                    <div class="total-promotion mt-3 d-flex justify-content-between">
-                        <h6>Tổng khuyến mãi</h6>
-                        <h6 style="font-size: 17px">0đ</h6>
-                    </div>
-            
-                    <div class="shipping mt-3 d-flex justify-content-between border-bottom">
-                        <h6>Phí vận chuyển</h6>
-                        <input type="hidden" value="0" name="money_ship">
-                        <h6 style="font-size: 17px">Miễn phí</h6>
-                    </div>
-            
-                    <div class="shipping mt-3 d-flex justify-content-between border-bottom">
-                        <h6>Cần thanh toán</h6>
-                        <input type="hidden" value="42.140.000đ" name="total-pay">
-                        <h6 style="font-size: 20px; color:red; font-weight: bold;">{{Cart::total()}}đ</h6>
-                    </div>
-                        <a href="{{route('home.pay.index')}}" class="btn btn-warning mt-3 w-100">Xác Nhận Đơn Hàng</a>
-                    <div class="dieukhoan mt-3 text-center">
-                        <h6 style="font-size: 13px">Bằng việc tiến hành đặt mua hàng, bạn đồng ý với <a href="" style="color:green">Điều khoản dịch vụ</a> và <a href="" style="color:green">Chính sách xử lý dữ liệu cá nhân</a> của Gia Dụng Văn Hậu.</h6>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12 text-center">
-                            <a href="{{ route('home.products.index') }}" class="btn btn-danger btn-sm">Tiếp Tục Mua Sắm</a>
+                @if(Cart::count() > 0)
+                    <div class="bg-white p-3" style="border-radius: 20px; position:sticky; top: 70px; height: 400px; box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;">
+                        {{-- THÔNG TIN ĐƠN HÀNG --}}
+                        <h6 class="fw-bold mb-3">Thông tin giỏ hàng</h6>
+                        <div class="total-price d-flex justify-content-between border-bottom">
+                            <h6>Tổng tiền</h6>
+                            <h6 style="font-size: 20px; font-weight: bold">
+                                <span id="total-price">
+                                    @if(!Auth::check())
+                                    {{ Cart::total()}}đ
+                                    @else
+                                        0đ
+                                    @endif
+                                </span>
+                            </h6>
+                        </div>
+                
+                        <div class="total-promotion mt-3 d-flex justify-content-between">
+                            <h6>Tổng khuyến mãi</h6>
+                            <h6 style="font-size: 17px">0đ</h6>
+                        </div>
+                
+                        <div class="shipping mt-3 d-flex justify-content-between border-bottom">
+                            <h6>Phí vận chuyển</h6>
+                            <input type="hidden" value="0" name="money_ship">
+                            <h6 style="font-size: 17px">Miễn phí</h6>
+                        </div>
+                
+                        <div class="shipping mt-3 d-flex justify-content-between border-bottom">
+                            <h6>Cần thanh toán</h6>
+                            <input type="hidden" value="42.140.000đ" name="total-pay">
+                            <h6 style="font-size: 20px; color:red; font-weight: bold;">{{Cart::total()}}đ</h6>
+                        </div>
+                            <a href="{{route('home.pay.index')}}" class="btn btn-warning mt-3 w-100">Xác Nhận Đơn Hàng</a>
+                        <div class="dieukhoan mt-3 text-center">
+                            <h6 style="font-size: 13px">Bằng việc tiến hành đặt mua hàng, bạn đồng ý với <a href="" style="color:green">Điều khoản dịch vụ</a> và <a href="" style="color:green">Chính sách xử lý dữ liệu cá nhân</a> của Gia Dụng Văn Hậu.</h6>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12 text-center">
+                                <a href="{{ route('home.products.index') }}" class="btn btn-danger btn-sm">Tiếp Tục Mua Sắm</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
     </div>
 </div>

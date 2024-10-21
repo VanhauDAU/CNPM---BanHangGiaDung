@@ -383,6 +383,56 @@
                     replyFormContainer.style.display = replyFormContainer.style.display === 'none' ? 'block' : 'none';
                 });
             });
+            $(document).ready(function() {
+            $('#province').on('change', function() {
+                var provinceID = $(this).val();
+                if (provinceID) {
+                    // Show loading message
+                    $('#district').empty().append('<option>Loading...</option>');
+                    $.ajax({
+                        url: '/districts/' + provinceID,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#district').empty().append('<option value="">Chọn Huyện</option>');
+                            $.each(data, function(key, value) {
+                                $('#district').append('<option value="' + value.district_id + '">' + value.name + '</option>');
+                            });
+                        },
+                        error: function() {
+                            $('#district').empty().append('<option>Không thể tải dữ liệu</option>');
+                        }
+                    });
+                } else {
+                    $('#district').empty();
+                    $('#ward').empty();
+                }
+            });
+
+            $('#district').on('change', function() {
+                var districtID = $(this).val();
+                if (districtID) {
+                    // Show loading message
+                    $('#ward').empty().append('<option>Loading...</option>');
+                    $.ajax({
+                        url: '/wards/' + districtID,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#ward').empty().append('<option value="">Chọn Xã</option>');
+                            $.each(data, function(key, value) {
+                                $('#ward').append('<option value="' + value.wards_id + '">' + value.name + '</option>');
+                            });
+                        },
+                        error: function() {
+                            $('#ward').empty().append('<option>Không thể tải dữ liệu</option>');
+                        }
+                    });
+                } else {
+                    $('#ward').empty();
+                }
+            });
+        });
     </script>
 
     <!-- Bootstrap JS -->

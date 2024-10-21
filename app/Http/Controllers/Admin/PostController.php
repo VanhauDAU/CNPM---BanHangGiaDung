@@ -77,7 +77,6 @@ class PostController extends Controller
         $post->user_id = Auth::user()->id;
         $post->slug = $request->slug;
         $post->save();
-        // dd($post);
         return redirect()->route('admin.posts.index')->with('msg', 'Thêm mới bài viết thành công');
     }
     public function edit(Post $post) {
