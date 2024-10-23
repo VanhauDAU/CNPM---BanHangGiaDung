@@ -2,9 +2,11 @@
 
 namespace App\Models\admin;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\clients\ProductImages;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class products extends Model
 {
     use HasFactory;
@@ -55,6 +57,17 @@ class products extends Model
         }
         return $products;
     }
+    public function deleteProductImages($productId) {
+        $images = ProductImages::where('product_id', $productId)->get();
+        
+        foreach ($images as $image) {
+            if (file_exists(public_path($image->anh))) {
+                unlink(public_path($image->anh));
+            }
+            $image->delete();
+        }
+    }
+    
     public function getDetail($id){
         return DB::select('SELECT *,'.$this->table.'.updated_at FROM '.$this->table.' 
         INNER JOIN danhmucsanpham ON danhmucsanpham.id_danh_muc = '.$this->table.'.id_danh_muc 
@@ -70,14 +83,7 @@ class products extends Model
         return DB::select('SELECT * FROM danhmucsanpham
         WHERE id_danh_muc = ?',[$id]);
     }
-    public function addProduct($data){
-        // $data['password'] = Hash::make($data['password']);
-        $timestamp = now();
-        $data[] = $timestamp;
-        // dd($data); 
-        DB::insert('INSERT INTO sanpham(maNSX, id_danh_muc,id_chuyen_muc, ten_san_pham, don_gia_goc,don_gia, trong_luong, mo_ta, so_luong_nhap,so_luong_ton,anh,sp_noi_bat,xuat_xu,slug, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
-        $data);
-    }
+    
     public function addNSX($data){
         $timestamp = now();
         $data[] = $timestamp;

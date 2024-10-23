@@ -96,11 +96,13 @@
                         </div>
                         <div class="mb-3">
                             <label for="hinh_anh" class="form-label">Hình ảnh sản phẩm:</label>
-                            <input type="file" name="hinh_anh" id="hinh_anh" class="form-control" accept="image/*" value="{{ old('hinh_anh') }}">
+                            <input type="file" name="hinh_anh[]" id="hinh_anh" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
                             @error('hinh_anh')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div id="imagePreview" class="d-flex gap-2 my-2"></div>
+                        
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -181,6 +183,7 @@
 @endsection
 @section('js')
 <script>
+    
     // Lấy các input theo ID
     const numberInput = document.getElementById('so_luong_nhap');
     const textInput = document.getElementById('so_luong_ton');

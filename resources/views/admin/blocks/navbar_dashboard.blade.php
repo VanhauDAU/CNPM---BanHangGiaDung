@@ -1,4 +1,4 @@
-<nav class="sidebar p-3" id="sidebar" style="min-width:240px">
+<nav class="sidebar p-3" id="sidebar" style="min-width:240px; background:#D2E8E3; border-right: 1px solid #ccc;box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;">
     <div class="text-center mb-4">
         <a target="_blank" href="{{route('home.index')}}"><img src="{{asset('assets/general/img/logoShop_bl.png')}}" alt="Logo" class="img-fluid rounded-circle" width="80"></a>
         <h4 style="font-size: 15px;margin-top:15px;font-weight:600; text-transform:uppercase">Chào, {{Auth::user()->ho_ten}}</h4>

@@ -312,7 +312,28 @@
             }
         }
 
-        
+        function previewImages(event) {
+        const imagePreviewContainer = document.getElementById('imagePreview');
+        imagePreviewContainer.innerHTML = ''; // Xóa nội dung cũ
+
+        const files = event.target.files; // Lấy danh sách file
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result; // Đặt đường dẫn hình ảnh
+                img.classList.add('rounded', 'border'); // Thêm lớp CSS nếu cần
+                img.style.width = '100px'; // Đặt kích thước hình ảnh
+                img.style.height = 'auto'; // Giữ tỉ lệ hình ảnh
+                imagePreviewContainer.appendChild(img); // Thêm hình ảnh vào container
+            }
+
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    }
         
     </script>
     

@@ -85,14 +85,15 @@
 
                         <div class="mb-3">
                             <label for="hinh_anh" class="form-label">Hình ảnh sản phẩm:</label>
-                            <input type="file" name="hinh_anh" id="hinh_anh" class="form-control" accept="image/*" value="{{old('hinh_anh')}}">
+                            <input type="file" name="hinh_anh[]" id="hinh_anh" class="form-control" accept="image/*" multiple onchange="previewImages(event)" value="{{old('hinh_anh')}}">
                             @error('hinh_anh')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <img src="{{asset('storage/products/img/'.$productDetail->anh)}}" alt="" style="width: 200px">
+                            <div id="imagePreview" class="d-flex gap-2 my-2"></div>
                         </div>
+                        
                     </div>
 
                     <div class="col-md-6">

@@ -9,6 +9,9 @@ class Products extends Model
 {
     use HasFactory;
     protected $table = 'sanpham';
+    public function Images(){
+        return $this->hasMany(ProductImages::class, 'product_id', 'maSP');
+    }
     public function getAllProductsMAIN(){
         return DB::table($this->table)->select('sanpham.*','nhasanxuat.ten_NSX')
         ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX') ->inRandomOrder()->get();

@@ -246,6 +246,15 @@
                 nextArrow: '<button type="button" class="slick-next">Next</button>',
             });
         });
+        $('.product-image-list').slick({
+            dots: true,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 1,
+            adaptiveHeight: true,
+            prevArrow: '<button class="slick-prev-imgDetailProduct custom-prev bg-success"><i class="fa fa-arrow-left" style="color: black;"></i></button>',
+            nextArrow: '<button class="slick-next-imgDetailProduct custom-next bg-success"><i class="fa fa-arrow-right" style="color: black;"></i></button>'
+        });
         $('.ListDanhMucHot').slick({
             centerMode: true,
             centerPadding: '10px',

@@ -168,6 +168,8 @@ class ProductController extends Controller
         }else{
             return redirect()->route('home.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
+        $products = Products::where('slug',$id)-> first();
+        $images = $products->Images;
         $commentSP = DB::table('binhluansp')
         ->select('taikhoan.ho_ten as ho_ten_KH', 'taikhoan.maCV as maCVMain', 'taikhoan.provider as providerGG', 'taikhoan.anh', 'binhluansp.*','taikhoan.loai_tai_khoan')
         ->leftJoin('taikhoan', 'taikhoan.id', '=', 'binhluansp.user_id')
@@ -225,7 +227,7 @@ class ProductController extends Controller
         }
         // dd($viewedProductDetails);
         $title=$productDetail->ten_san_pham;
-        return view('clients.products.detail_product', compact('title','productDetail','commentSP'));
+        return view('clients.products.detail_product', compact('title','productDetail','commentSP','images'));
     }
     
 

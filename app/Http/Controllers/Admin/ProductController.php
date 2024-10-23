@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Products;
+use App\Models\clients\ProductImages;
 use App\Http\Requests\Admin\productRequest;
 use App\Http\Requests\admin\NSXRequest;
 class ProductController extends Controller
@@ -32,7 +33,7 @@ class ProductController extends Controller
             return redirect()->route('admin.products.index')->with('msg','Mã Sản phẩm không tồn tại');
         }
         // dd($productDetail);
-        return view('admin.products.detailProduct', compact('productDetail'));
+        return view('admin.products.info_product', compact('productDetail'));
     }
     public function index(Request $request){
         $title = 'DANH SÁCH SẢN PHẨM';
@@ -81,37 +82,49 @@ class ProductController extends Controller
         $this->data['massage'] = 'Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
         return view('admin.products.add', $this->data);
     }
-    public function postAddProduct(productRequest $request){
-        $fileName = null;
+    public function postAddProduct(productRequest $request) {
+        $imageNames = [];
+    
         if ($request->has('hinh_anh')) {
-            $file = $request->hinh_anh;  
-            $ext = $file->getClientOriginalExtension();  
-            $fileName = time().'-'.$ext;
-            $file->move(public_path('storage/products/img'), $fileName);
-            // $anh = 'storage/products/img'.$file;
+            $files = $request->file('hinh_anh'); // Lấy mảng file hình ảnh
+    
+            foreach ($files as $file) {
+                $ext = $file->getClientOriginalExtension();  
+                $fileName = time() . '-' . uniqid() . '.' . $ext;
+                $file->move(public_path('storage/products/img'), $fileName);
+                $imageNames[] = $fileName; // Lưu đường dẫn hình ảnh
+            }
         }
-        $dataInsert=[
-            $request->maNSX,
-            $request->id_danh_muc,
-            $request->id_chuyen_muc,
-            $request->ten_san_pham,
-            $request->don_gia_goc,
-            $request->don_gia,
-            $request->trong_luong,
-            $request->mo_ta,
-            $request->so_luong_nhap,
-            $request->so_luong_ton,
-            $fileName,
-            $request->sp_noi_bat,
-            $request->xuat_xu,
-            $request->slug,
-
-        ];  
-        // dd($dataInsert);
-        $this->products->addProduct($dataInsert);
-        toastr()->success('Thành công','Thêm sản phẩm thành công');
+        $product = new Products();
+        $product->maNSX = $request->maNSX;
+        $product->id_danh_muc = $request->id_danh_muc;
+        $product->id_chuyen_muc = $request->id_chuyen_muc;
+        $product->ten_san_pham = $request->ten_san_pham;
+        $product->don_gia_goc = $request->don_gia_goc;
+        $product->don_gia = $request->don_gia;
+        $product->trong_luong = $request->trong_luong;
+        $product->mo_ta = $request->mo_ta;
+        $product->so_luong_nhap = $request->so_luong_nhap;
+        $product->so_luong_ton = $request->so_luong_ton;
+        $product->anh = isset($fileName) ? $fileName : null; // Lưu tên file hình ảnh đầu tiên nếu có
+        $product->sp_noi_bat = $request->sp_noi_bat;
+        $product->xuat_xu = $request->xuat_xu;
+        $product->slug = $request->slug;
+        
+        $product->save();
+        if (!empty($imageNames)) {
+            foreach ($imageNames as $imagePath) {
+                $productImage = new ProductImages();
+                $productImage->product_id = $product->maSP;
+                $productImage->anh = $imagePath; // Gán đường dẫn hình ảnh
+                $productImage->save();
+            }
+        }
+    
+        toastr()->success('Thành công', 'Thêm sản phẩm thành công');
         return redirect()->route('admin.products.index')->with('msg', 'Thêm mới sản phẩm thành công');
     }
+    
     public function addNsx(){
         $this->data['title'] = 'THÊM NHÀ SẢN XUẤT';
         $this->data['massage'] = 'Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!';
@@ -236,11 +249,8 @@ class ProductController extends Controller
     public function edit($id = 0){
         $title = "CẬP NHẬT SẢN PHẨM";
         if(!empty($id)){
-            $productDetail = $this->products->getDetail($id);
-            // dd($userDetail[0]);
-            if(!empty($productDetail[0])){
-                $productDetail = $productDetail[0];
-            }else{
+            $productDetail = Products::find($id);
+            if(empty($productDetail)){
                 return redirect()->route('admin.products.index')->with('msg','Sản phẩm không tồn tại!');
             }
         }else{
@@ -252,23 +262,40 @@ class ProductController extends Controller
         if(empty($id)){
             return back()->with('msg','Liên kết không tồn tại');
         }
-        $productDetail = $this->products->getDetail($id);
-        $fileName = null;
+        $productDetail = Products::find($id);
+        $imageNames = [];
         if ($request->has('hinh_anh')) {
-            $file = $request->hinh_anh;  
-            $ext = $file->getClientOriginalExtension();  
-            $fileName = time() . '-' . $ext;
-            $file->move(public_path('storage/products/img'), $fileName);
-            if ($productDetail && !empty($productDetail->anh)) {
-                $oldImagePath = public_path('storage/products/img/' . $productDetail['anh']);
+            $files = $request->file('hinh_anh'); 
+            foreach ($files as $file) {
+                $ext = $file->getClientOriginalExtension();  
+                $fileName = time() . '-' . uniqid() . '.' . $ext;
+                $file->move(public_path('storage/products/img'), $fileName);
+                $imageNames[] = $fileName;
+            }
+            $oldImages = ProductImages::where('product_id', $id)->get();
+            foreach ($oldImages as $oldImage) {
+                $oldImagePath = public_path('storage/products/img/' . $oldImage->anh);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+                $oldImage->delete(); // Xóa bản ghi trong cơ sở dữ liệu
+            }
+            foreach ($imageNames as $imageName) {
+                $productImage = new ProductImages();
+                $productImage->product_id = $id;
+                $productImage->anh = $imageName;
+                $productImage->save();
+            }
+            if (!empty($productDetail->anh)) {
+                $oldImagePath = public_path('storage/products/img/' . $productDetail->anh);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
             }
+            $productDetail->anh = !empty($imageNames) ? $imageNames[0] : $productDetail->anh;
         } else {
-            $fileName = $request->hinh_anh_cu;
+            $productDetail->anh = $request->hinh_anh_cu;
         }
-        
         $request->validate([
             'maNSX' => 'required',
             'id_danh_muc' => 'required',
@@ -349,29 +376,31 @@ class ProductController extends Controller
     
         return redirect()->route('admin.products.addDm');
     }
-    public function delete($id){
-        if(!empty($id)){
+    public function delete($id) {
+        if (!empty($id)) {
             $productDetail = $this->products->getDetail($id);
-            // dd($userDetail[0]);
-            if(!empty($productDetail[0])){
-                $deleteproduct = $this->products->deleteUser($id);
-                if($deleteproduct){
+            if (!empty($productDetail[0])) {
+                $this->products->deleteProductImages($id);
+                $deleteProduct = $this->products->deleteUser($id);
+                
+                if ($deleteProduct) {
                     $msg = 'Xóa sản phẩm thành công';
-                }else{
+                } else {
                     $msg = 'Bạn không thể xóa sản phẩm lúc này, vui lòng thử lại sau!';
                 }
-            }else{
-                $msg ='Sản phẩm không tồn tại!';
+            } else {
+                $msg = 'Sản phẩm không tồn tại!';
             }
-        }else{
+        } else {
             $msg = 'Liên kết không tồn tại';
         }
-        if($msg ='Xóa sản phẩm thành công'){
-            toastr()->success('Thành công','Xóa sản phẩm thành công');
-        }else{
-            toastr()->warning('Cảnh báo','Xóa sản phẩm thất bại');
+        if ($msg == 'Xóa sản phẩm thành công') {
+            toastr()->success('Thành công', 'Xóa sản phẩm thành công');
+        } else {
+            toastr()->warning('Cảnh báo', $msg);
         }
-        return redirect()->route('admin.products.index')->with('msg',$msg);
+    
+        return redirect()->route('admin.products.index')->with('msg', $msg);
     }
     public function getChuyenMuc($maNSX, $id_danh_muc)
     {
