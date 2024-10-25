@@ -17,29 +17,53 @@
             <div class="d-grid" style="grid-template-columns: 1.4fr 0.6fr; gap:15px">
                 <div class="col-left-product">
                     {{-- SẢN PHẨM TRONG ĐƠN --}}
+                    @if(!Auth::check())
+                        <div class="bg-white product-list-pay p-3 mb-3" style="border-radius: 20px;">
+                            <h6 class="fw-bold">Sản phẩm trong đơn ({{count(Cart::content())}})</h6>
+                            @foreach(Cart::content() as $item)
+                                <div class="product-item-pay d-flex justify-content-between mb-2 border-bottom pb-2">
+                                    <div class="product-img-name d-flex me-1">
+                                        <div class="product-img-pay">
+                                            <img class="border rounded p-2 me-2" style="width: 100px" src="{{ asset('storage/products/img/'.$item->options->anh) }}" alt="">
+                                        </div>
+                                        <div class="product-name-pay">
+                                            <input type="hidden" name="name_product[]" value="{{ $item->name }}">
+                                            <input type="hidden" name="so_luong_product[]" value="{{ $item->qty }}">
+                                            <input type="hidden" value="{{ intval(str_replace('.', '',  $item->price)) }}" name="price_product[]">
+                                            <h5>{{ $item->name }} (SL: {{ $item->qty }})</h5>
+                                            <h6 style="font-size: 12px">Danh mục: {{ $item->options->ten_danh_muc }} | NSX: {{ $item->options->ten_NSX }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h5 style="color:red; font-weight: bold">{{ number_format($item->price * $item->qty, 0, ',', '.') }}đ</h5>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
                     <div class="bg-white product-list-pay p-3 mb-3" style="border-radius: 20px;">
-                        <h6 class="fw-bold">Sản phẩm trong đơn ({{count(Cart::content())}})</h6>
-                        @foreach(Cart::content() as $item)
+                        <h6 class="fw-bold">Sản phẩm trong đơn ({{count($cart)}})</h6>
+                        @foreach($products as $item)
                             <div class="product-item-pay d-flex justify-content-between mb-2 border-bottom pb-2">
                                 <div class="product-img-name d-flex me-1">
                                     <div class="product-img-pay">
-                                        <img class="border rounded p-2 me-2" style="width: 100px" src="{{ asset('storage/products/img/'.$item->options->anh) }}" alt="">
+                                        <img class="border rounded p-2 me-2" style="width: 100px" src="{{ asset('storage/products/img/'.$item->products->anh) }}" alt="">
                                     </div>
                                     <div class="product-name-pay">
-                                        <input type="hidden" name="name_product[]" value="{{ $item->name }}">
+                                        <input type="hidden" name="name_product[]" value="{{ $item->products->ten_san_pham }}">
                                         <input type="hidden" name="so_luong_product[]" value="{{ $item->qty }}">
-                                        <input type="hidden" value="{{ intval(str_replace('.', '',  $item->price)) }}" name="price_product[]">
-                                        <h5>{{ $item->name }} (SL: {{ $item->qty }})</h5>
-                                        <h6 style="font-size: 12px">Danh mục: {{ $item->options->ten_danh_muc }} | NSX: {{ $item->options->ten_NSX }}</h6>
+                                        <input type="hidden" value="{{ intval(str_replace('.', '',  $item->don_gia)) }}" name="price_product[]">
+                                        <h5>{{ $item->products->ten_san_pham }} (SL: {{ $item->qty }})</h5>
+                                        <h6 style="font-size: 12px">Danh mục: {{ $item->products->danhMuc->ten_danh_muc }} | NSX: {{ $item->products->nhaSanXuat->ten_NSX }}</h6>
                                     </div>
                                 </div>
                                 <div class="product-price">
-                                    <h5 style="color:red; font-weight: bold">{{ number_format($item->price * $item->qty, 0, ',', '.') }}đ</h5>
+                                    <h5 style="color:red; font-weight: bold">{{ number_format($item->price, 0, ',', '.') }}đ</h5>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                    
+                    @endif
                     @if(Auth::check())
                         {{-- Đã đăng nhập, lấy tên, sđt người đang đăng nhập --}}
                         <div class="bg-white p-3 mb-3" style="border-radius: 20px;">
@@ -156,31 +180,59 @@
                 </div>
                 <div class="bg-white p-3" style="border-radius: 20px;position:sticky; top: 70px; height: 400px;box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;">
                     {{-- THÔNG TIN ĐƠN HÀNG --}}
-                    <h6 class="fw-bold" style="margin-bottom: 10px">Thông tin đơn hàng</h6>
-                    <div class="total-price d-flex justify-content-between border-bottom">
-                        <h6>Tổng tiền</h6>
-                        <h6 style="font-size: 20px; font-weight: bold">{{Cart::total()}}đ</h6>
-                    </div>
+                    @if(Auth::check())
+                        <h6 class="fw-bold" style="margin-bottom: 10px">Thông tin đơn hàng</h6>
+                        <div class="total-price d-flex justify-content-between border-bottom">
+                            <h6>Tổng tiền</h6>
+                            <h6 style="font-size: 20px; font-weight: bold">{{number_format($totalPrice,0,',','.')}}đ</h6>
+                        </div>
 
-                    {{-- Tổng khuyến mãi --}}
-                    <div class="total-promotion mt-3 d-flex justify-content-between">
-                        <h6>Tổng khuyến mãi</h6>
-                        <h6 style="font-size: 17px">0đ</h6>
-                    </div>
+                        {{-- Tổng khuyến mãi --}}
+                        <div class="total-promotion mt-3 d-flex justify-content-between">
+                            <h6>Tổng khuyến mãi</h6>
+                            <h6 style="font-size: 17px">0đ</h6>
+                        </div>
 
-                    {{-- Phí vẫn chuyển --}}
-                    <div class="shipping mt-3 d-flex justify-content-between border-bottom">
-                        <h6>Phí vận chuyển</h6>
-                        <h6 style="font-size: 17px">Miễn phí</h6>
-                    </div>
+                        {{-- Phí vẫn chuyển --}}
+                        <div class="shipping mt-3 d-flex justify-content-between border-bottom">
+                            <h6>Phí vận chuyển</h6>
+                            <h6 style="font-size: 17px">Miễn phí</h6>
+                        </div>
 
-                    {{-- Cần thanh toán --}}
-                    <div class="shipping mt-3 d-flex justify-content-between border-bottom">
-                        <h6>Cần thanh toán</h6>
-                        <input type="hidden" value="{{intval(str_replace('.', '',  Cart::total())) }}" name="total_pay">
-                        <h6 style="font-size: 20px;color:red; font-weight: bold;">{{ Cart::total() }}đ</h6>
+                        {{-- Cần thanh toán --}}
+                        <div class="shipping mt-3 d-flex justify-content-between border-bottom">
+                            <h6>Cần thanh toán</h6>
+                            <input type="hidden" value="{{intval(str_replace('.', '',  $totalPrice)) }}" name="total_pay">
+                            <h6 style="font-size: 20px;color:red; font-weight: bold;">{{number_format($totalPrice,0,',','.')}}đ</h6>
 
-                    </div>
+                        </div>
+                    @else
+                        <h6 class="fw-bold" style="margin-bottom: 10px">Thông tin đơn hàng</h6>
+                        <div class="total-price d-flex justify-content-between border-bottom">
+                            <h6>Tổng tiền</h6>
+                            <h6 style="font-size: 20px; font-weight: bold">{{Cart::total()}}đ</h6>
+                        </div>
+
+                        {{-- Tổng khuyến mãi --}}
+                        <div class="total-promotion mt-3 d-flex justify-content-between">
+                            <h6>Tổng khuyến mãi</h6>
+                            <h6 style="font-size: 17px">0đ</h6>
+                        </div>
+
+                        {{-- Phí vẫn chuyển --}}
+                        <div class="shipping mt-3 d-flex justify-content-between border-bottom">
+                            <h6>Phí vận chuyển</h6>
+                            <h6 style="font-size: 17px">Miễn phí</h6>
+                        </div>
+
+                        {{-- Cần thanh toán --}}
+                        <div class="shipping mt-3 d-flex justify-content-between border-bottom">
+                            <h6>Cần thanh toán</h6>
+                            <input type="hidden" value="{{intval(str_replace('.', '',  Cart::total())) }}" name="total_pay">
+                            <h6 style="font-size: 20px;color:red; font-weight: bold;">{{ Cart::total() }}đ</h6>
+
+                        </div>
+                    @endif
                     {{-- BTN Đặt Hàng --}}
                     <button type="submit" class="btn btn-danger mt-3 w-100">ĐẶT HÀNG</button>
                     <div class="dieukhoan mt-3">

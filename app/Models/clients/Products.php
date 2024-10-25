@@ -2,9 +2,12 @@
 
 namespace App\Models\clients;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\admin\Brands;
+use App\Models\admin\Category;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Products extends Model
 {
     use HasFactory;
@@ -12,11 +15,16 @@ class Products extends Model
     public function Images(){
         return $this->hasMany(ProductImages::class, 'product_id', 'maSP');
     }
+    public function danhMuc(){
+        return $this->beLongsTo(Category::class,'id_danh_muc');
+    }
+    public function nhaSanXuat(){
+        return $this->beLongsTo(Brands::class,'maNSX');
+    }
     public function getAllProductsMAIN(){
         return DB::table($this->table)->select('sanpham.*','nhasanxuat.ten_NSX')
         ->join('nhasanxuat','nhasanxuat.maNSX','=','sanpham.maNSX') ->inRandomOrder()->get();
     }
-    
     public function getAllProducts($filters = [],$keyword = null,$sortArr=null, $perPage = null){
         $products = DB::table($this->table)
         ->select('sanpham.*','nhasanxuat.*','danhmucsanpham.*','chitietdanhmucsp.*','sanpham.slug')

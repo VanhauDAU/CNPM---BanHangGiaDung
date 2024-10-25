@@ -156,6 +156,7 @@
         }
     </style>
     @yield('stylesheet')
+    @yield('stylesheetAccount')
 </head>
 
 <body>
@@ -167,7 +168,7 @@
         <a href="{{route('home.bai-viet')}}" class="button messenger-button" title="Tin Tức">
             <i class="fa-solid fa-newspaper"></i>
         </a>
-        <a href="{{route('home.post_lien-he')}}" class="button messenger-button" title="Khuyến Mãi">
+        <a href="{{route('home.lien-he')}}" class="button messenger-button" title="Khuyến Mãi">
             <i class="fa-solid fa-message"></i>
         </a>
     </div>

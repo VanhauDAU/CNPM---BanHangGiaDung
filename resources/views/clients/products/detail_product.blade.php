@@ -151,6 +151,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 d-flex align-items-end " style="margin-left: -50px">
+                                                <input type="hidden" name="price" value="{{$productDetail->don_gia}}">
                                                 <button type="submit" id="add-to-cart" class="btn btn-success " ><i class="fas fa-shopping-cart"></i> Thêm vào giỏ</button>
                                             </div>
                                         </div>
@@ -180,9 +181,11 @@
                                             </div>
                                             <div class="col-md-11">
                                                 <h5 class="txt-shop m-0">
-                                                    <span class="txt-buy-now" style="font-size: 15px; margin-top: -5px"><span style="font-size: 20px">Liên Hệ</span><br/>
-                                                        (giao hàng tận nơi trên toàn quốc)
-                                                    </span>
+                                                    <a href="{{route('home.lien-he')}}">
+                                                        <span class="txt-buy-now" style="font-size: 15px; margin-top: -5px; color:white"><span style="font-size: 20px">Liên Hệ</span><br/>
+                                                            (giao hàng tận nơi trên toàn quốc)
+                                                        </span>
+                                                    </a>
                                                 </h5>
                                             </div>
                                         </button>

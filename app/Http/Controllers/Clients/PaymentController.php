@@ -22,7 +22,11 @@ class PaymentController extends Controller
         $province = DB::table('province')->get();
         $district = DB::table('district')->get();
         $ward = DB::table('wards')->get();
-        return view('clients.Payment.index', compact('title','province','district','ward'));
+        $products = ShoppingCart::where('user_id', Auth::id())->with('products')->get();
+        $totalPrice = $products->sum(function($item) {
+            return $item->price * $item->qty;
+        });
+        return view('clients.Payment.index', compact('title','province','district','ward','products','totalPrice'));
     }
     public function postPayment(Request $request){
         if(!Auth::check()){
@@ -48,7 +52,7 @@ class PaymentController extends Controller
                 'payment_method.required' => 'Vui lòng chọn phương thức thanh toán.',
             ]);   
             $order = new Payment();
-            $order->username = "KHVL";
+            $order->user_id = "KHVL";
             $order->ho_ten = $request->ho_ten_VL;
             $order->email = $request->email_VL;
             $order->tong_tien = $request->total_pay;

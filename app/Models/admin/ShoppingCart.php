@@ -4,6 +4,8 @@ namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\admin\Brands;
+use App\Models\clients\Products;
 
 class ShoppingCart extends Model
 {
@@ -13,6 +15,11 @@ class ShoppingCart extends Model
     protected $fillable = [
         'user_id',
         'maSP',
-        'so_luong',
+        'qty',
+        'price',
     ];
+
+    public function products(){
+        return $this->belongsTo(Products::class, 'maSP', 'maSP');
+    }   
 }

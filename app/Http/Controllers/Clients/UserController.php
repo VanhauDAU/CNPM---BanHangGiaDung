@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Clients;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\admin\Orders;
+use Illuminate\Http\Request;
+use App\Models\clients\Products;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     //
@@ -80,5 +83,16 @@ class UserController extends Controller
         $user->save();
         toastr()->success('Thành công','Cập nhật thông tin thành công!');
         return redirect()->route('home.info-user');
+    }
+
+    public function myOrder(Request $request){
+        $title = 'ĐƠN HÀNG CỦA TÔI';
+        $trang_thai = $request->query('trang_thai');
+        $Orders = Orders::when($trang_thai !== null, function ($query) use ($trang_thai) {
+            return $query->where('trang_thai', $trang_thai);
+        })
+        ->where('user_id', Auth::id())
+        ->get();
+        return view('clients.account.myOrder', compact('Orders', 'trang_thai'));
     }
 }

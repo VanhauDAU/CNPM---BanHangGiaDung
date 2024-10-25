@@ -13,7 +13,7 @@
             </h6>
         </div>
             <div class="d-grid"
-            @if(Cart::count()>0)
+            @if(Cart::count()>0 || count($products) > 0)
                 style="grid-template-columns: 1.4fr 0.6fr; gap:15px;"
             @else
                 style="grid-template-columns: 1fr 0fr; gap:15px;"
@@ -23,19 +23,19 @@
                     {{-- SẢN PHẨM TRONG ĐƠN --}}
                     <div class="bg-white product-list-pay p-3 mb-3" style="border-radius: 20px;">
                         @if(!Auth::check())
-                        <form action="{{route('home.cart.update')}}" method="POST">
-                            @csrf
-                            <div class="product-cart d-flex justify-content-between">
-                                <h6 class="fw-bold">Sản phẩm trong giỏ hàng ({{count(Cart::content())}})</h6>
-                                @if(Cart::count() > 0)
-                                    <div class="btn_update_delete">
-                                        <input type="submit" value="Cập Nhật Giỏ Hàng" class="btn btn-primary btn-sm" name="btn_update" id="">
-                                        <a href="{{route('home.cart.destroy')}}" onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')" class="btn btn-danger btn-sm">Xóa tất cả</a>
-                                    </div>
-                                @else
-                                <a href="{{ route('home.products.index') }}" class="btn btn-primary btn-sm">Tiếp Tục Mua Sắm</a>
-                                @endif
-                            </div>
+                            <form action="{{route('home.cart.update')}}" method="POST">
+                                @csrf
+                                <div class="product-cart d-flex justify-content-between">
+                                    <h6 class="fw-bold">Sản phẩm trong giỏ hàng ({{count(Cart::content())}})</h6>
+                                    @if(Cart::count() > 0)
+                                        <div class="btn_update_delete">
+                                            <input type="submit" value="Cập Nhật Giỏ Hàng" class="btn btn-primary btn-sm" name="btn_update" id="">
+                                            <a href="{{route('home.cart.destroy')}}" onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')" class="btn btn-danger btn-sm">Xóa tất cả</a>
+                                        </div>
+                                    @else
+                                    <a href="{{ route('home.products.index') }}" class="btn btn-primary btn-sm">Tiếp Tục Mua Sắm</a>
+                                    @endif
+                                </div>
                                 <div class="product-item-pay d-flex flex-column">
                                     @php
                                         $num = 0
@@ -69,11 +69,52 @@
                                 </div>
                             </form>
                         @else
-                         <h6 class="fw-bold">Sản phẩm trong giỏ hàng (0)</h6>
+                            <form action="{{route('home.cart.update')}}" method="POST">
+                                @csrf
+                                <div class="product-cart d-flex justify-content-between">
+                                    <h6 class="fw-bold">Sản phẩm trong giỏ hàng ({{count($products)}})</h6>
+                                    @if(count($products) > 0)
+                                        <div class="btn_update_delete">
+                                            <input type="submit" value="Cập Nhật Giỏ Hàng" class="btn btn-primary btn-sm" name="btn_update" id="">
+                                            <a href="{{route('home.cart.destroy')}}" onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')" class="btn btn-danger btn-sm">Xóa tất cả</a>
+                                        </div>
+                                    @else
+                                        <a href="{{ route('home.products.index') }}" class="btn btn-primary btn-sm">Tiếp Tục Mua Sắm</a>
+                                    @endif
+                                </div>
+                                <div class="product-item-pay d-flex flex-column">
+                                    @php
+                                        $num = 0
+                                    @endphp
+                                    @foreach($products as $item)
+                                        @php
+                                            $num++;
+                                        @endphp
+                                        <div class="product-item-pay d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                                            <div class="product-img-name d-flex">
+                                                <div class="product-img-pay me-2">
+                                                    <span class="me-2">{{$num}}</span>
+                                                    <a href="{{ route('home.chi_tiet_sp',$item->products->slug) }}">
+                                                        <img src="{{asset('storage/products/img/'.$item->products->anh)}}" alt="{{ $item->products->ten_san_pham }}" style="width: 120px; height: auto;" class="border rounded p-2" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                                    </a>
+                                                </div>
+                                                <div class="product-name-pay">
+                                                    <h5 style="font-size: 17px; font-weight: bold;"><a href="{{ route('home.chi_tiet_sp',$item->products->slug) }}">{{ $item->products->ten_san_pham }}</a></h5>
+                                                    <input type="number" name="qty[{{$item->id}}]" value="{{ $item->qty }}" min="1" max="100" class="d-inline" style="border-radius: 5px; border: 1px solid #ccc">
+                                                </div>
+                                            </div>
+                                            <div class="product-price d-flex flex-column align-items-end">
+                                                <h5 style="color:red; font-weight: bold">{{ number_format($item->price*$item->qty, 0, ',', '.')  }} đ <span style="color:black"></span></h5>
+                                                <a href="{{route('home.cart.remove',$item->id)}}" class="btn btn-danger btn-sm mt-1">Xóa</a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </form>
                         @endif
                     </div>
                 </div>
-                @if(Cart::count() > 0)
+                @if(Cart::count() > 0 || count($products) > 0)
                     <div class="bg-white p-3" style="border-radius: 20px; position:sticky; top: 70px; height: 400px; box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;">
                         {{-- THÔNG TIN ĐƠN HÀNG --}}
                         <h6 class="fw-bold mb-3">Thông tin giỏ hàng</h6>
@@ -82,9 +123,9 @@
                             <h6 style="font-size: 20px; font-weight: bold">
                                 <span id="total-price">
                                     @if(!Auth::check())
-                                    {{ Cart::total()}}đ
+                                        {{Cart::total()}}đ
                                     @else
-                                        0đ
+                                        {{number_format($totalPrice, 0, ',', '.')}}đ
                                     @endif
                                 </span>
                             </h6>
@@ -104,7 +145,13 @@
                         <div class="shipping mt-3 d-flex justify-content-between border-bottom">
                             <h6>Cần thanh toán</h6>
                             <input type="hidden" value="42.140.000đ" name="total-pay">
-                            <h6 style="font-size: 20px; color:red; font-weight: bold;">{{Cart::total()}}đ</h6>
+                            <h6 style="font-size: 20px; color:red; font-weight: bold;">
+                                @if(!Auth::check())
+                                    {{Cart::total()}}đ
+                                @else
+                                    {{number_format($totalPrice, 0, ',', '.')}}đ
+                                @endif
+                            </h6>
                         </div>
                             <a href="{{route('home.pay.index')}}" class="btn btn-warning mt-3 w-100">Xác Nhận Đơn Hàng</a>
                         <div class="dieukhoan mt-3 text-center">

@@ -13,4 +13,7 @@ class Orders extends Model
         $orders = DB::select('SELECT * FROM donhang');
         return $orders;
     }
+    public function OrderDetail(){
+        return $this->hasMany(OrderDetail::class, 'id_don_hang', 'id');
+    }
 }

@@ -157,3 +157,4 @@ function isRole($dataArr, $moduleName,$role ='view'){
 function countCart(){
     return Cart::content();
 }
+

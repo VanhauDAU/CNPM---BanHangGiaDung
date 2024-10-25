@@ -61,7 +61,7 @@
                             @endif
                         </li>
                     </ul>
-                    <a href="{{route('home.info-user.edit')}}" type="submit" class="btn btn-primary col-12 mt-3" style="display: block;">Cập nhật thông tin</a>
+                    <a href="{{route('home.account.info-user.edit')}}" type="submit" class="btn btn-primary col-12 mt-3" style="display: block;background-color:#DA251C; border-color:#DA251C;">Cập nhật thông tin</a>
                 </div>
             </div>
             
@@ -71,69 +71,10 @@
 </div>
 @endsection
 
-@section('stylesheet')
-    <style>
-        .user-info img {
-        border: 3px solid #ddd;
-        padding: 5px;
+@section('stylesheetAccount')
+<style>
+    .main-posts{
+        background-color: #F3F4F6;
     }
-
-    .user-details h5 {
-        margin-bottom: 20px;
-    }
-
-    .list-group-item {
-        padding: 15px 20px;
-    }
-    .user-details h5 {
-        color: #333; 
-        border-bottom: 2px solid #007bff;
-        padding-bottom: 10px; 
-    }
-
-    .list-group-item {
-        border: 1px solid #ddd; 
-        border-radius: 5px; 
-        margin-bottom: 10px;
-        transition: background-color 0.3s; 
-    }
-
-    .btn-link {
-        color: #007bff; 
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-    }
-
-    .btn-link i {
-        margin-right: 5px;
-        color: transparent;
-    }
-    .btn-link:hover i {
-        color: #007bff;
-    }
-
-    .btn-link:hover {
-        text-decoration: none; 
-        color: #0056b3;
-        transition: color 0.3s;
-    }
-
-    .list-group-item {
-        border: 1px solid #ddd; 
-        border-radius: 5px; 
-        margin-bottom: 10px;
-        transition: background-color 0.3s; 
-        position: relative; /* Để thêm hiệu ứng */
-    }
-
-    .list-group-item:hover {
-        /* background-color: #f1f1f1; */
-        opacity: 0.7;
-    }
-
-    .list-group-item:hover .btn-link {
-        color: #0056b3; /* Đổi màu thẻ liên kết khi hover vào item */
-    }
-    </style>
+</style>
 @endsection

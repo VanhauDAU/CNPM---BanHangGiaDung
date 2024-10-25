@@ -14,34 +14,52 @@ class ShoppingCartController extends Controller
     public function index()
     {
         $title = 'GIỎ HÀNG';
-        return view('clients.shoppingCart.index', compact('title'));
+        $products = ShoppingCart::where('user_id', Auth::id())->with('products')->get();
+        $totalPrice = $products->sum(function($item) {
+            return $item->price * $item->qty;
+        });
+        return view('clients.shoppingCart.index', compact('title', 'products','totalPrice'));
     }
-    public function add(Request $request, $id)
-    {
+    public function add(Request $request, $id){
         $title = 'Giỏ Hàng';
         $product = products::with(['danhMuc', 'nhaSanXuat'])->find($id);
-        // Cart::destroy();
         if ($product->so_luong_ton < $request->so_luong) {
             return redirect()->back()->with('warning', 'Số lượng tồn kho không đủ');
         }
-        $cart = Cart::content();
-        $cartItem = $cart->where('id', $product->maSP)->first();
-        if ($cartItem) {
-            Cart::update($cartItem->rowId, $cartItem->qty + $request->so_luong);
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $cartItem = ShoppingCart::where('user_id', $userId)->where('maSP', $product->maSP)->first();
+            if ($cartItem) {
+                $cartItem->qty += $request->so_luong;
+                $cartItem->save();
+            } else {
+                ShoppingCart::create([
+                    'user_id' => $userId,
+                    'maSP' => $product->maSP,
+                    'qty' => $request->so_luong,
+                    'price' => $product->don_gia,
+                ]);
+            }
         } else {
-            Cart::add([
-                'id' => $product->maSP,
-                'name' => $product->ten_san_pham,
-                'qty' => $request->so_luong,
-                'price' => $product->don_gia,
-                'options' => [
-                    'slug' => $product->slug,
-                    'anh' => $product->anh,
-                    'ten_danh_muc' => $product->danhMuc->ten_danh_muc,
-                    'ten_NSX' => $product->nhaSanXuat->ten_NSX,
-                    'added_at' => now(),
-                ]
-            ]);
+            $cart = Cart::content();
+            $cartItem = $cart->where('id', $product->maSP)->first();
+            if ($cartItem) {
+                Cart::update($cartItem->rowId, $cartItem->qty + $request->so_luong);
+            } else {
+                Cart::add([
+                    'id' => $product->maSP,
+                    'name' => $product->ten_san_pham,
+                    'qty' => $request->so_luong,
+                    'price' => $product->don_gia,
+                    'options' => [
+                        'slug' => $product->slug,
+                        'anh' => $product->anh,
+                        'ten_danh_muc' => $product->danhMuc->ten_danh_muc,
+                        'ten_NSX' => $product->nhaSanXuat->ten_NSX,
+                        'added_at' => now(),
+                    ]
+                ]);
+            }
         }
 
         if ($request->input('action') === 'buy_now') {

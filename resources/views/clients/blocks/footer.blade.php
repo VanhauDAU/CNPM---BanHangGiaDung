@@ -35,7 +35,7 @@
                 <h5 class="footer-title text-danger">Dịch vụ khách hàng</h5>
                 <ul class="list-unstyled">
                     @if(Auth::user())
-                        <li style="margin-bottom: 20px;"><a href="{{route('home.info-user')}}" class="text-light" style="text-decoration: none;">Tài khoản của tôi</a></li>
+                        <li style="margin-bottom: 20px;"><a href="{{route('home.account.info-user')}}" class="text-light" style="text-decoration: none;">Tài khoản của tôi</a></li>
                         <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Lịch sử đơn hàng</a></li>
                     @endif
                     <li style="margin-bottom: 20px;"><a href="#" class="text-light" style="text-decoration: none;">Câu hỏi thường gặp</a></li>

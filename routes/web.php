@@ -177,19 +177,21 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::get('chi-tiet-san-pham/{id}', [ProductControllerUser::class, 'detail_product'])->name('chi_tiet_sp');
     Route::post('/chi-tiet-san-pham/{id}/comment', [CommentController::class, 'store'])->name('chi_tiet_sp.comment');
     Route::post('/comments/reply', [CommentController::class, 'reply'])->name('comment.reply');
-    Route::post('lien-he', [ContactController::class, 'post_add_contact'])->name('lien-he');
-    Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('post_lien-he');
+    Route::post('lien-he', [ContactController::class, 'post_add_contact']);
+    Route::get('lien-he', [ContactController::class, 'get_add_contact'])->name('lien-he');
     Route::get('bai-viet',[PostController::class,'post'])->name('bai-viet');
     Route::get('bai-viet/{id}',[PostController::class,'get_detail_post'])->name('get_bai_viet');
-    Route::prefix('tai-khoan')->group(function(){
+    Route::prefix('tai-khoan')->name('account.')->group(function(){
         Route::get('',[UserControllerClients::class,'get_info_user'])->name('info-user');
         Route::get('/edit', [UserControllerClients::class,'edit'])->name('info-user.edit');
-        Route::post('/edit', [UserControllerClients::class,'update'])->name('info-user.update');
+        Route::post('/edit', [UserControllerClients::class,'update']);
 
         Route::get('dia-chi',[UserControllerClients::class,'get_info_address'])->name('info-user-address');
 
         Route::get('doi-mat-khau', [UserControllerClients::class,'password_edit'])->name('password-user.edit');
         Route::post('doi-mat-khau', [UserControllerClients::class,'password_update']);
+
+        Route::get('don-hang-cua-toi',[UserControllerClients::class,'myOrder'])->name('myOrder');
 
     });
     Route::prefix('gio-hang')->name('cart.')->group(function(){

@@ -30,18 +30,18 @@
             margin: 0;
             color: #333;
         }
-        .order-details {
+        .order-details, .product-details {
             margin: 20px 0;
         }
-        .order-details table {
+        .order-details table, .product-details table {
             width: 100%;
             border-collapse: collapse;
         }
-        .order-details th, .order-details td {
+        .order-details th, .order-details td, .product-details th, .product-details td {
             padding: 10px;
             border: 1px solid #ddd;
         }
-        .order-details th {
+        .order-details th, .product-details th {
             background-color: #f4f4f4;
         }
         .footer {
@@ -90,6 +90,48 @@
                 <tr>
                     <th>Thời Gian Mua Hàng</th>
                     <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y H:i') }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="product-details">
+            <h2>Chi tiết sản phẩm</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Giá</th>
+                        <th>Tổng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($order->products as $product)
+                    <tr>
+                        <td>{{$product->name}}</td>
+                        <td>{{$product->pivot->quantity}}</td>
+                        <td>{{ number_format($product->pivot->price, 0, ',', '.') }} VND</td>
+                        <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 0, ',', '.') }} VND</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="order-summary">
+            <h2>Tổng kết đơn hàng</h2>
+            <table>
+                <tr>
+                    <th>Tổng tiền sản phẩm</th>
+                    <td>{{ number_format($order->total, 0, ',', '.') }} VND</td>
+                </tr>
+                <tr>
+                    <th>Phí vận chuyển</th>
+                    <td>{{ number_format($order->shipping_fee, 0, ',', '.') }} VND</td>
+                </tr>
+                <tr>
+                    <th>Tổng cộng</th>
+                    <td>{{ number_format($order->total + $order->shipping_fee, 0, ',', '.') }} VND</td>
                 </tr>
             </table>
         </div>
