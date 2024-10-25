@@ -334,7 +334,7 @@
             reader.readAsDataURL(file); // Đọc file dưới dạng URL
         }
     }
-        
+    
     </script>
     
 @yield('js')

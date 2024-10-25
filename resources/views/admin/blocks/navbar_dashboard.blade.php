@@ -90,20 +90,22 @@
         @endcan
 
         {{-- QL Khuyến Mãi --}}
-        {{-- <li class="nav-item">
+        @can('promotions')
+        <li class="nav-item">
             <a class="nav-link" href="#" id="productDropdown" data-bs-toggle="collapse" data-bs-target="#promotionSubMenu" aria-expanded="false">
                 <i class="fas fa-tags"></i> QL Khuyến Mãi
                 <i class="fas fa-chevron-down float-end" style="margin-top: 3px"></i>
             </a>
             <ul class="collapse" id="promotionSubMenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.posts.index')}}">Xem - Sửa - Xóa</a>
+                    <a class="nav-link" href="{{route('admin.promotions.index')}}">Xem - Sửa - Xóa</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.posts.add')}}">Thêm Khuyến Mãi</a>
+                    <a class="nav-link" href="{{route('admin.promotions.add')}}">Thêm Khuyến Mãi</a>
                 </li>
             </ul>
-        </li> --}}
+        </li>
+        @endcan
         {{-- QL HÓA ĐƠN --}}
         {{-- <li class="nav-item">
             <a class="nav-link" href="/admin/quan-ly-hoa-don">

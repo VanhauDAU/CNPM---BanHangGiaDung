@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Auth\LoginController as LoginController1;
 //product user
 use App\Http\Controllers\Admin\PostController as PostControllerAdmin;
+use App\Http\Controllers\admin\PromotionController;
 use App\Http\Controllers\clients\FindOrderController;
 use App\Http\Controllers\Clients\LoginController as UserLoginController;
 use App\Http\Controllers\Clients\UserController as UserControllerClients;
@@ -149,6 +150,15 @@ Route::prefix('admin')->group(function () {
             Route::get('edit/{id}', [OrderController::class, 'get_edit_order'])->name('getedit_order');
             Route::post('edit/{id}', [OrderController::class, 'post_edit_order'])->name('admin.edit_order');
             Route::delete('delete/{id}', [OrderController::class, 'get_delete_order'])->name('getdelete_order');
+        });
+        Route::prefix('quan-ly-khuyen-mai')->middleware('can:promotions')->name('promotions.')->group(function(){
+            Route::get('',[PromotionController::class,'index'])->name('index');
+            Route::get('add',[PromotionController::class,'add'])->name('add');
+            Route::post('add',[PromotionController::class,'postAdd']);
+            Route::get('edit/{id}',[PromotionController::class,'edit'])->name('edit');
+            Route::post('edit/{id}',[PromotionController::class,'postEdit']);
+            Route::delete('delete/{id}',[PromotionController::class,'delete'])->name('delete');
+            
         });
         Route::prefix('info')->group(function () {
             Route::get('', [DashboardController::class, 'get_info_detail'])->name('admin.info');
