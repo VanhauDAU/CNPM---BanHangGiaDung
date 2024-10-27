@@ -54,7 +54,7 @@ class OrderShipped extends Mailable
     }
     public function build()
     {
-        return $this->markdown('emails.orders.shipped') // Sử dụng markdown để hiển thị view
-                    ->with(['order' => $this->order]); // Truyền biến order đến view
+        return $this->markdown('emails.orders.shipped')
+                    ->with(['order' => $this->order]);
     }
 }

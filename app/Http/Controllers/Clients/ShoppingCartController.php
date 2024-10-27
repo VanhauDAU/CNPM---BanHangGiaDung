@@ -69,34 +69,57 @@ class ShoppingCartController extends Controller
     }
     public function remove($rowId)
     {
-        Cart::remove($rowId);
+        if(Auth::check()){
+            ShoppingCart::where('id',$rowId)->delete();
+        }else{
+            Cart::remove($rowId);
+        }
         return redirect()->back()->with('success', 'Xóa sản phẩm thành công');
     }
     public function destroy()
     {
-        Cart::destroy();
+        if(Auth::check()){
+            ShoppingCart::where('user_id',Auth::id())->delete();
+        }else{
+            Cart::destroy();
+        }
         return redirect()->back()->with('success', 'Đã xóa toàn bộ giỏ hàng');
     }
     public function update(Request $request)
     {
         $data = $request->get('qty');
-
-        foreach ($data as $rowId => $qty) {
-            $cartItem = Cart::get($rowId);
-
-            if (!$cartItem) {
-                return redirect()->back()->with('error', 'Không tìm thấy mục giỏ hàng.');
+        if(!Auth::check()){
+            foreach ($data as $rowId => $qty) {
+                $cartItem = Cart::get($rowId);
+                if (!$cartItem) {
+                    return redirect()->back()->with('error', 'Không tìm thấy mục giỏ hàng.');
+                }
+                $product = Products::find($cartItem->id);
+                if (!$product) {
+                    return redirect()->back()->with('error', 'Không tìm thấy sản phẩm trong cơ sở dữ liệu.');
+                }
+                // dd($product->so_luong_ton);
+                if ($product->so_luong_ton < $qty) {
+                    return redirect()->back()->with('warning', 'Số lượng tồn kho không đủ cho sản phẩm: ' . $product->ten_san_pham);
+                }
+                Cart::update($rowId, $qty);
             }
-            $product = Products::find($cartItem->id);
-
-            if (!$product) {
-                return redirect()->back()->with('error', 'Không tìm thấy sản phẩm trong cơ sở dữ liệu.');
+        }else{
+            foreach ($data as $id => $qty) {
+                $cartItem = ShoppingCart::find($id);
+                if (!$cartItem) {
+                    return redirect()->back()->with('error', 'Không tìm thấy mục giỏ hàng.');
+                }
+                $product = Products::find($cartItem->maSP);
+                if (!$product) {
+                    return redirect()->back()->with('error', 'Không tìm thấy sản phẩm trong cơ sở dữ liệu.');
+                }
+                if ($product->so_luong_ton < $qty) {
+                    return redirect()->back()->with('warning', 'Số lượng tồn kho không đủ cho sản phẩm: ' . $product->ten_san_pham);
+                }
+                $cartItem->qty = $qty;
+                $cartItem->save();
             }
-            // dd($product->so_luong_ton);
-            if ($product->so_luong_ton < $qty) {
-                return redirect()->back()->with('warning', 'Số lượng tồn kho không đủ cho sản phẩm: ' . $product->ten_san_pham);
-            }
-            Cart::update($rowId, $qty);
         }
         return redirect()->back()->with('success', 'Cập nhật giỏ hàng thành công!');
     }

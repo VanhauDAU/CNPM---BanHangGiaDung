@@ -209,6 +209,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js" integrity="sha512-eP8DK17a+MOcKHXC5Yrqzd8WI5WKh6F1TIk5QZ/8Lbv+8ssblcz7oGC8ZmQ/ZSAPa7ZmsCU4e/hcovqR8jfJqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        // ajax cập nhật số điện thoại
+        $('#updatePhoneBtn').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let so_dien_thoai_update = $('#so_dien_thoai_update').val();
+
+            $.ajax({
+                url: '{{ route("update-phone") }}',
+                type: 'POST',
+                data: {
+                    so_dien_thoai_update: so_dien_thoai_update,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    alert(response.success);
+                    location.reload();
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);  // Kiểm tra chi tiết lỗi
+                    alert('Cập nhật số điện thoại thất bại!');
+                }
+            });
+        });
         $(document).ready(function(){
         $('.product-list-home').slick({
             centerMode: true,

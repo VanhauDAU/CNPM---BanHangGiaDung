@@ -182,7 +182,7 @@ Route::prefix('/')->name('home.')->group(function(){
     Route::get('bai-viet',[PostController::class,'post'])->name('bai-viet');
     Route::get('bai-viet/{id}',[PostController::class,'get_detail_post'])->name('get_bai_viet');
     Route::prefix('tai-khoan')->name('account.')->group(function(){
-        Route::get('',[UserControllerClients::class,'get_info_user'])->name('info-user');
+        Route::get('',[UserControllerClients::class,'index'])->name('index');
         Route::get('/edit', [UserControllerClients::class,'edit'])->name('info-user.edit');
         Route::post('/edit', [UserControllerClients::class,'update']);
 
@@ -192,6 +192,7 @@ Route::prefix('/')->name('home.')->group(function(){
         Route::post('doi-mat-khau', [UserControllerClients::class,'password_update']);
 
         Route::get('don-hang-cua-toi',[UserControllerClients::class,'myOrder'])->name('myOrder');
+        Route::get('don-hang-cua-toi/{id}',[UserControllerClients::class,'getDetailOrder'])->name('getDetailOrder');
 
     });
     Route::prefix('gio-hang')->name('cart.')->group(function(){
@@ -225,6 +226,8 @@ Route::get('/fetch-chuyen-muc/{maNSX}/{id_danh_muc}',  [ProductController::class
 Route::get('/getDanhMuc/{id}', [ProductController::class, 'getDanhMuc'])->name('getDanhMuc');
 Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts'])->name('getDistricts');
 Route::get('/wards/{district_id}', [LocationController::class, 'getWards'])->name('getWards');
+Route::post('/update-phone', [UserControllerClients::class, 'updatePhone'])->name('update-phone');
+
 //Học model
 Route::prefix('posts')->name('posts.')->group(function(){
     Route::get('/', [PostController::class,'index'])->name('index');

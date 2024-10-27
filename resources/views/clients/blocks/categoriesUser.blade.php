@@ -11,7 +11,7 @@
         <h4 class="mt-2">{{ Auth::user()->ho_ten }}</h4>
     </div>
     <div class="list-group">
-        <a href="{{route('home.account.info-user')}}" class="list-group-item list-group-item-action {{request()->routeIs('home.account.info-user') || request()->routeIs('home.info-user.edit') ? 'active' : '' }}">Thông tin tài khoản</a>
+        <a href="{{route('home.account.index')}}" class="list-group-item list-group-item-action {{request()->routeIs('home.account.index') || request()->routeIs('home.info-user.edit') ? 'active' : '' }}">Thông tin tài khoản</a>
         <a href="{{route('home.account.info-user-address')}}" class="list-group-item list-group-item-action {{request()->routeIs('home.account.info-user-address') ? 'active' : '' }}">Địa chỉ</a>
         <a href="{{route('home.account.myOrder')}}" class="list-group-item list-group-item-action {{request()->routeIs('home.account.myOrder') ? 'active' : ''}}">Đơn hàng của tôi</a>
         <a href="#" class="list-group-item list-group-item-action ">Sản phẩm đã xem</a>

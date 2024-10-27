@@ -51,35 +51,59 @@ class PaymentController extends Controller
                 'address_detail.required' => 'Vui lòng nhập địa chỉ chi tiết.',
                 'payment_method.required' => 'Vui lòng chọn phương thức thanh toán.',
             ]);   
+                $order = new Payment();
+                $order->user_id = "KHVL";
+                $order->ho_ten = $request->ho_ten_VL;
+                $order->email = $request->email_VL;
+                $order->tong_tien = $request->total_pay;
+                $order->province_id = $request->province;
+                $order->district_id = $request->district;
+                $order->wards_id = $request->ward;
+                $order->so_dien_thoai = $request->so_dien_thoai_VL;
+                $order->dia_chi = $request->address_detail;
+                $order->phuongthuc = $request->payment_method;
+                $order->ghi_chu = $request->note;
+                $order->save();
+                $newBillId = $order->id;
+                $sum_bill  = $order->tong_tien;
+            foreach (Cart::content() as $item) {
+                $billDetail = new ShoppingCartDetail();
+                $billDetail->id_don_hang = $newBillId;
+                $billDetail->maSP = $item->id;
+                $billDetail->so_luong = $item->qty;
+                $billDetail->gia = $item->price;
+                $billDetail->tong_tien_sp = $item->price * $item->qty;
+                $billDetail->save();
+            }
+            // dd($order);
+            Mail::to($request->email_VL)->send(new OrderShipped($order));
+        }else{
             $order = new Payment();
-            $order->user_id = "KHVL";
-            $order->ho_ten = $request->ho_ten_VL;
-            $order->email = $request->email_VL;
+            $order->user_id = Auth::id();
             $order->tong_tien = $request->total_pay;
             $order->province_id = $request->province;
             $order->district_id = $request->district;
             $order->wards_id = $request->ward;
-            $order->so_dien_thoai = $request->so_dien_thoai_VL;
             $order->dia_chi = $request->address_detail;
             $order->phuongthuc = $request->payment_method;
             $order->ghi_chu = $request->note;
             $order->save();
             $newBillId = $order->id;
             $sum_bill  = $order->tong_tien;
-        }
-        foreach (Cart::content() as $item) {
-            $billDetail = new ShoppingCartDetail();
-            $billDetail->id_don_hang = $newBillId;
-            $billDetail->maSP = $item->id;
-            $billDetail->so_luong = $item->qty;
-            $billDetail->gia = $item->price;
-            $billDetail->tong_tien_sp = $item->price * $item->qty;
-            $billDetail->save();
+
+            foreach (Cart::content() as $item) {
+                $billDetail = new ShoppingCartDetail();
+                $billDetail->id_don_hang = $newBillId;
+                $billDetail->maSP = $item->id;
+                $billDetail->so_luong = $item->qty;
+                $billDetail->gia = $item->price;
+                $billDetail->tong_tien_sp = $item->price * $item->qty;
+                $billDetail->save();
+            }
+            Mail::to(Auth::user()->email)->send(new OrderShipped($order));
         }
 
-        // dd($order);
-        Mail::to($request->email_VL)->send(new OrderShipped($order));
-
+        
         if($request->payment_method == "vnpay"){
             return $this->vnpay_payment($newBillId, $sum_bill);
         }elseif($request->payment_method == "cash"){
@@ -87,6 +111,7 @@ class PaymentController extends Controller
         }else{
             return redirect()->back();
         }
+        
     }
     public function done() {
         $amount = request()->get('vnp_Amount');

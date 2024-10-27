@@ -106,14 +106,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($order->products as $product)
+                    {{-- @foreach($order->products as $product)
                     <tr>
                         <td>{{$product->name}}</td>
                         <td>{{$product->pivot->quantity}}</td>
                         <td>{{ number_format($product->pivot->price, 0, ',', '.') }} VND</td>
                         <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 0, ',', '.') }} VND</td>
                     </tr>
-                    @endforeach
+                    @endforeach --}}
                 </tbody>
             </table>
         </div>
@@ -127,11 +127,11 @@
                 </tr>
                 <tr>
                     <th>Phí vận chuyển</th>
-                    <td>{{ number_format($order->shipping_fee, 0, ',', '.') }} VND</td>
+                    {{-- <td>{{ number_format($order->shipping_fee, 0, ',', '.') }} VND</td> --}}
                 </tr>
                 <tr>
                     <th>Tổng cộng</th>
-                    <td>{{ number_format($order->total + $order->shipping_fee, 0, ',', '.') }} VND</td>
+                    {{-- <td>{{ number_format($order->total + $order->shipping_fee, 0, ',', '.') }} VND</td> --}}
                 </tr>
             </table>
         </div>

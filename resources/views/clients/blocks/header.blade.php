@@ -60,7 +60,7 @@
                                     @endif
                                 </table>
                                 <div class="row mt-3">
-                                    @if(session('cart') && count(session('cart')) > 0)
+                                    @if($cart && count($cart) > 0)
                                     <h5 class="col-8">Tổng tiền: <span id="total-price" style="color: #28a745;">
                                         {{ number_format($cartTotal,0,',','.')}} đ</span>
                                     </h5>
@@ -68,7 +68,7 @@
                                     @endif
                                 </div>
                                 <div class="payment d-flex align-items-center justify-content-between">
-                                    @if(session('cart') && count(session('cart')) > 0)
+                                    @if($cart && count($cart) > 0)
                                         <a class="btn btn-warning col-12" href="{{Route('home.cart.index')}}">Xem Giỏ Hàng</a>
                                     @else
                                         <a class="btn btn-primary col-12" href="{{Route('home.products.index')}}">Xem Thêm Sản Phẩm</a>
@@ -173,7 +173,7 @@
                             
                         @else
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('home.findOrder.index') }}">Tra cứu đơn hàng</a></li>
-                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.account.info-user')}}">Thông tin tài khoản</a></li>
+                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.account.index')}}">Thông tin tài khoản</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -424,8 +424,8 @@
                             
                         @else
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('register') }}">Tra cứu đơn hàng</a></li>
-                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.account.info-user')}}">Thông tin tài khoản</a></li>
-                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.account.info-user')}}">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.account.index')}}">Thông tin tài khoản</a></li>
+                            <li><a class="dropdown-item user-dropdown-item" href="{{route('home.account.index')}}">Lịch sử mua hàng</a></li>
                             <li><a class="dropdown-item user-dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         
     }
-    public function get_info_user(){
+    public function index(){
         $title = 'THÔNG TIN CÁ NHÂN';
         return view('clients.account.index', compact('title')); 
     }
@@ -94,5 +94,23 @@ class UserController extends Controller
         ->where('user_id', Auth::id())
         ->get();
         return view('clients.account.myOrder', compact('Orders', 'trang_thai'));
+    }
+    public function getDetailOrder($id){
+        $title = 'CHI TIẾT ĐƠN HÀNG';
+        $order = Orders::findOrFail($id);
+        return view('clients.account.detailOrder', compact('order', 'title'));
+    }
+
+    // Update số điện thoại User khi đặt hàng
+    public function updatePhone(Request $request)
+    {
+        $request->validate([
+            'so_dien_thoai_update' => 'required|numeric',
+        ]);
+        $user = Auth::user();
+        $user->so_dien_thoai = $request->so_dien_thoai_update;
+        $user->save();
+
+        return response()->json(['success' => 'Số điện thoại đã được cập nhật thành công.']);
     }
 }

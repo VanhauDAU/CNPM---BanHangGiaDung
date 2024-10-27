@@ -64,25 +64,29 @@
                         @endforeach
                     </div>
                     @endif
+
                     @if(Auth::check())
                         {{-- Đã đăng nhập, lấy tên, sđt người đang đăng nhập --}}
-                        <div class="bg-white p-3 mb-3" style="border-radius: 20px;">
-                            <h6 class="fw-bold">Người đặt hàng</h6>
+                        <div class="bg-white p-3 mb-3 infoUserPay" style="border-radius: 20px;">
+                            <h6 class="fw-bold titlecontentUser">Người đặt hàng</h6>
                             <div class="form-person-order border rounded p-2">
                                 <input type="hidden" class="form-control mb-2" name="ho_ten" value="{{Auth::user()->ho_ten}}">
                                 <input type="hidden" class="form-control mb-2" name="so_dien_thoai" value="{{Auth::user()->so_dien_thoai}}">
-                                <h6>{{ Auth::user()->ho_ten }}</h6>
+                                <input type="hidden" class="form-control mb-2" name="email" value="{{Auth::user()->email}}">
+                                <h6>Họ tên: {{ Auth::user()->ho_ten }}</h6>
+                                <h6>Email: {{ Auth::user()->email }}</h6>
                                 @if(empty(Auth::user()->so_dien_thoai))
-                                    Cần cập nhật số điện thoại
+                                    <input type="text" id="so_dien_thoai_update" style="border-radius: 15px; padding: 5px 10px; border: 1px solid #ccc" placeholder="Nhập số điện thoại...">
+                                    <button type="button" class="btn btn-primary btn-sm ms-2" id="updatePhoneBtn">Cập Nhật</button>
                                 @else
-                                    <h6 class="m-0">{{ Auth::user()->so_dien_thoai }}</h6>
+                                    <h6 class="m-0">Số điện thoại: {{ Auth::user()->so_dien_thoai }}</h6>
                                 @endif
                             </div>
                         </div>
                     @else
                         {{-- Nếu chưa đăng nhập thì hiển thị form người đặt hàng --}}
-                        <div class="bg-white p-3 mb-3" style="border-radius: 20px;">
-                            <h6 class="fw-bold">Người đặt hàng</h6>
+                        <div class="bg-white p-3 mb-3 infoUserPay" style="border-radius: 20px;">
+                            <h6 class="fw-bold titlecontentUser">Người đặt hàng</h6>
                             <div class="form-person-order">
                                 @error('ho_ten_VL')
                                     <small class="text-danger ms-2">{{$message}}</small>
@@ -100,7 +104,7 @@
                     
                     {{-- Hình thức nhận hàng (cả chưa đăng nhập và đã đăng nhập) --}}
                     <div class="bg-white p-3 mb-3" style="border-radius: 20px">
-                        <h6 class="fw-bold">Địa chỉ nhận hàng</h6>
+                        <h6 class="fw-bold ">Địa chỉ nhận hàng</h6>
                         <div class="row">
                             <div class="col-4">
                                 <label for="province" class="fw-bold fst-italic">Tỉnh/Thành Phố</label>
@@ -306,6 +310,17 @@
         .custom-radio {
             width: 20px;
             height: 20px;
-            }
+        }
+        .infoUserPay:hover {
+            transition: all .5s;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .titlecontentUser {
+            transition: all .4s ease;
+        }
+        .infoUserPay:hover .titlecontentUser {
+            color: red;
+        }
     </style>
 @endsection

@@ -76,7 +76,7 @@
                         </div>
                         <div class="order-body mt-2 border-bottom pb-2">
                             @foreach($order->OrderDetail as $orderProduct)
-                            <div class="order-products d-flex justify-content-between mb-2">
+                            <div class="order-products d-flex justify-content-between mb-4">
                                 <div class="product-info d-flex">
                                     <div class="product-img border rounded me-2" style="min-width: 60px; max-height: 60px">
                                         <img width="60" src="{{asset('storage/products/img/'.$orderProduct->Product->anh)}}" alt="">
@@ -92,7 +92,7 @@
                             </div>
                             @endforeach
                             <div class="viewDetail mt-2 d-flex justify-content-between">
-                                <a href="" style="color: blue; font-size: 15px">Xem chi tiết ></a>
+                                <a href="{{route('home.account.getDetailOrder',['id'=>$order->id])}}" style="color: blue; font-size: 15px">Xem chi tiết ></a>
                                 <div class="totalOrder">
                                     <span>Thành tiền: <strong style="color:red">{{number_format($order->tong_tien,0,',','.')}}đ</strong></span>
                                 </div>
