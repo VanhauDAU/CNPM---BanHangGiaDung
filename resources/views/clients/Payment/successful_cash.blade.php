@@ -18,7 +18,7 @@
                     <i class="fa-solid fa-circle-check" style="color: green; font-size: 70px; margin-bottom: 20px;"></i>
                     <h2 class="mb-3">Đặt hàng thành công!</h2>
                     <p>Cảm ơn bạn đã đặt hàng! Đơn hàng của bạn đã được đặt hàng thành công.</p>
-                    <p>Bạn có thể xem chi tiết trong <a href="" style="color: #1E88E5">Đơn hàng của tôi</a></p>
+                    <p>Bạn có thể xem chi tiết trong <a href="{{route("home.account.myOrder")}}" style="color: #1E88E5">Đơn hàng của tôi</a></p>
                     <a href="{{ route('home.products.index') }}" class="btn btn-primary mt-3">Tiếp tục mua sắm</a>
                 </div>
             </div>
@@ -29,10 +29,10 @@
                             <h5>Thông tin đơn hàng</h5>
                         </div>
                         <div class="card-body">
-                            <p><strong>Mã giao dịch:</strong> {{ $transactionNo }}</p>
+                            {{-- <p><strong>Mã giao dịch:</strong> {{ $transactionNo }}</p>
                             <p><strong>Số tiền:</strong> {{ number_format($amount, 0, ',', '.') }} VND</p>
                             <p><strong>Phương thức thanh toán:</strong> {{ $phuongthuc }}</p>
-                            <p><strong>Thông tin đơn hàng:</strong> {{ $orderInfo }}</p>
+                            <p><strong>Thông tin đơn hàng:</strong> {{ $orderInfo }}</p> --}}
                         </div>
                     </div>
                 </div>

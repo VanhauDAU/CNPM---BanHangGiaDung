@@ -7,58 +7,89 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f5f6fa;
             margin: 0;
             padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            text-align: center;
-            padding: 10px 0;
-        }
-        .header img {
-            max-width: 150px;
-        }
-        .header h1 {
-            margin: 0;
             color: #333;
         }
-        .order-details, .product-details {
-            margin: 20px 0;
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            color: #555;
         }
-        .order-details table, .product-details table {
+        .header {
+            background-color: #4E9F3D;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header img {
+            max-width: 140px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+        }
+        .content {
+            padding: 20px;
+        }
+        .section-title {
+            color: #4E9F3D;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 2px solid #4E9F3D;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #333;
         }
-        .order-details th, .order-details td, .product-details th, .product-details td {
-            padding: 10px;
-            border: 1px solid #ddd;
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eaeaea;
         }
-        .order-details th, .product-details th {
-            background-color: #f4f4f4;
+        th {
+            background-color: #f0f5f3;
+            color: #333;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #fafafa;
         }
         .footer {
+            background-color: #4E9F3D;
+            color: #fff;
+            padding: 15px;
             text-align: center;
-            padding: 20px 0;
-            color: #777;
+            font-size: 12px;
+            border-radius: 0 0 10px 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header Section -->
         <div class="header">
             <img src="https://i.imgur.com/alKWkWB.png" alt="Logo">
-            <h1>Chi tiết hóa đơn</h1>
+            <h1>Hóa Đơn Điện Tử</h1>
         </div>
 
-        <div class="order-details">
+        <!-- Order Information Section -->
+        <div class="content">
+            <h2 class="section-title">Thông tin đơn hàng</h2>
             <table>
                 <tr>
                     <th>Mã Hóa Đơn</th>
@@ -66,20 +97,15 @@
                 </tr>
                 <tr>
                     <th>Tên Khách Hàng</th>
-                    <td>{{$order->ho_ten}}</td>
+                    <td>{{ Auth::check() ? $order->user->ho_ten : $order->ho_ten }}</td>
                 </tr>
                 <tr>
                     <th>Số Điện Thoại</th>
-                    <td>{{$order->so_dien_thoai}}</td>
+                    <td>{{ Auth::check() ? $order->user->so_dien_thoai : $order->so_dien_thoai }}</td>
                 </tr>
                 <tr>
                     <th>Địa Chỉ Nhận Hàng</th>
-                    <td>
-                        {{$order->dia_chi}}, 
-                        {{$order->ward->name}}, 
-                        {{$order->district->name}}, 
-                        {{$order->province->name}}
-                    </td>
+                    <td>{{$order->dia_chi}}, {{$order->ward->name}}, {{$order->district->name}}, {{$order->province->name}}</td>
                 </tr>
                 @if(!empty($order->ghi_chu))
                 <tr>
@@ -88,14 +114,15 @@
                 </tr>
                 @endif
                 <tr>
-                    <th>Thời Gian Mua Hàng</th>
+                    <th>Thời Gian Đặt Hàng</th>
                     <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y H:i') }}</td>
                 </tr>
             </table>
         </div>
 
-        <div class="product-details">
-            <h2>Chi tiết sản phẩm</h2>
+        <!-- Product Details Section -->
+        <div class="content">
+            <h2 class="section-title">Chi tiết sản phẩm</h2>
             <table>
                 <thead>
                     <tr>
@@ -106,40 +133,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach($order->products as $product)
+                    @foreach($listProduct as $product)
                     <tr>
-                        <td>{{$product->name}}</td>
-                        <td>{{$product->pivot->quantity}}</td>
-                        <td>{{ number_format($product->pivot->price, 0, ',', '.') }} VND</td>
-                        <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 0, ',', '.') }} VND</td>
+                        <td>{{$product->ten_san_pham}}</td>
+                        <td>{{$product->so_luong}}</td>
+                        <td>{{ number_format($product->gia, 0, ',', '.') }} VND</td>
+                        <td>{{ number_format($product->so_luong * $product->gia, 0, ',', '.') }} VND</td>
                     </tr>
-                    @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
-        <div class="order-summary">
-            <h2>Tổng kết đơn hàng</h2>
+        <!-- Order Summary Section -->
+        <div class="content">
+            <h2 class="section-title">Tổng kết đơn hàng</h2>
             <table>
                 <tr>
                     <th>Tổng tiền sản phẩm</th>
-                    <td>{{ number_format($order->total, 0, ',', '.') }} VND</td>
+                    <td>{{ number_format($order->tong_tien, 0, ',', '.') }} VND</td>
                 </tr>
                 <tr>
                     <th>Phí vận chuyển</th>
-                    {{-- <td>{{ number_format($order->shipping_fee, 0, ',', '.') }} VND</td> --}}
+                    <td>0đ</td>
                 </tr>
                 <tr>
                     <th>Tổng cộng</th>
-                    {{-- <td>{{ number_format($order->total + $order->shipping_fee, 0, ',', '.') }} VND</td> --}}
+                    <td>{{ number_format($order->tong_tien, 0, ',', '.') }} VND</td>
                 </tr>
             </table>
         </div>
 
+        <!-- Footer Section -->
         <div class="footer">
-            <p>Cảm ơn bạn đã tin tưởng và lựa chọn chúng tôi! Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi.</p>
-            <br>
-            <p>{{ config('app.name') }}</p>
+            <p>Cảm ơn bạn đã mua sắm tại {{ config('app.name') }}! Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi.</p>
         </div>
     </div>
 </body>

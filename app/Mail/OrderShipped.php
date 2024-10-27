@@ -17,10 +17,12 @@ class OrderShipped extends Mailable
      * Create a new message instance.
      */
     public $order;
-    public function __construct($order)
+    public $listProduct;
+    public function __construct($order, $listProducts)
     {
         //
         $this->order = $order;
+        $this->listProduct = $listProducts;
     }
 
     /**
@@ -55,6 +57,8 @@ class OrderShipped extends Mailable
     public function build()
     {
         return $this->markdown('emails.orders.shipped')
-                    ->with(['order' => $this->order]);
+                    ->with(['order' => $this->order,
+                            'listProduct' => $this->listProduct      
+                        ]);
     }
 }

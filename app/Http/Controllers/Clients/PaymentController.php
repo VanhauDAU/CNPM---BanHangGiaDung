@@ -9,6 +9,7 @@ use App\Models\clients\Payment;
 use App\Models\admin\ShoppingCart;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\admin\Orders;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -29,6 +30,10 @@ class PaymentController extends Controller
         return view('clients.Payment.index', compact('title','province','district','ward','products','totalPrice'));
     }
     public function postPayment(Request $request){
+        if($request->total_pay == 0){
+            toastr()->warning('Kiểm tra lại', 'Giỏ hàng của bạn đang trống');
+            return redirect()->back();
+        }
         if(!Auth::check()){
             $request->validate([
                 'ho_ten_VL' => 'required|min:5',
@@ -75,9 +80,24 @@ class PaymentController extends Controller
                 $billDetail->tong_tien_sp = $item->price * $item->qty;
                 $billDetail->save();
             }
-            // dd($order);
-            Mail::to($request->email_VL)->send(new OrderShipped($order));
+            $listProduct = ShoppingCartDetail::where('id_don_hang', $newBillId)
+            ->join('sanpham', 'chitietdonhang.maSP', '=', 'sanpham.maSP')
+            ->get();
+            Mail::to($request->email_VL)->send(new OrderShipped($order,$listProduct));
         }else{
+            $request->validate([
+                'province' => 'required',
+                'district' => 'required',
+                'ward' => 'required',
+                'address_detail' => 'required',
+                'payment_method' => 'required',
+            ], [
+                'province.required' => 'Vui lòng chọn tỉnh.',
+                'district.required' => 'Vui lòng chọn huyện.',
+                'ward.required' => 'Vui lòng chọn xã.',
+                'address_detail.required' => 'Vui lòng nhập địa chỉ chi tiết.',
+                'payment_method.required' => 'Vui lòng chọn phương thức thanh toán.',
+            ]);   
             $order = new Payment();
             $order->user_id = Auth::id();
             $order->tong_tien = $request->total_pay;
@@ -90,17 +110,21 @@ class PaymentController extends Controller
             $order->save();
             $newBillId = $order->id;
             $sum_bill  = $order->tong_tien;
-
-            foreach (Cart::content() as $item) {
+            $listProduct = ShoppingCart::where('user_id', Auth::id())->get();
+            foreach ($listProduct as $item) {
+                // dd($item);
                 $billDetail = new ShoppingCartDetail();
                 $billDetail->id_don_hang = $newBillId;
-                $billDetail->maSP = $item->id;
+                $billDetail->maSP = $item->maSP;
                 $billDetail->so_luong = $item->qty;
                 $billDetail->gia = $item->price;
                 $billDetail->tong_tien_sp = $item->price * $item->qty;
                 $billDetail->save();
             }
-            Mail::to(Auth::user()->email)->send(new OrderShipped($order));
+            $listProduct = ShoppingCartDetail::where('id_don_hang', $newBillId)
+            ->join('sanpham', 'chitietdonhang.maSP', '=', 'sanpham.maSP')
+            ->get();
+            Mail::to(Auth::user()->email)->send(new OrderShipped($order,$listProduct));
         }
 
         
@@ -114,17 +138,15 @@ class PaymentController extends Controller
         
     }
     public function done() {
-        $amount = request()->get('vnp_Amount');
-        $phuongthuc = "Thanh Toán Khi Nhận Hàng";
-        $bankCode = request()->get('vnp_BankCode');
-        $orderInfo = request()->get('vnp_OrderInfo');
-        $transactionNo = request()->get('vnp_TransactionNo');
-        $transactionStatus = request()->get('vnp_TransactionStatus');
-        $amount = $amount / 100;
-        Cart::destroy();
-        return view('clients.Payment.successful_cash', compact(
-            'amount', 'orderInfo', 'transactionNo', 'transactionStatus','phuongthuc'
-        ));
+        if(!Auth::check()){
+            Cart::destroy();
+            return view('clients.Payment.successful_cash');
+        }else{
+            ShoppingCart::where('user_id', Auth::id())->delete();
+            return view('clients.Payment.successful_cash');
+        }
+        
+        return view('clients.Payment.successful');
     }
     public function doneVNPay() {
         // Trích xuất thông tin từ URL

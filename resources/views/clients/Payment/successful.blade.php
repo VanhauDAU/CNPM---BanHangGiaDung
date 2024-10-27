@@ -18,7 +18,7 @@
                     <i class="fa-solid fa-circle-check" style="color: green; font-size: 70px; margin-bottom: 20px;"></i>
                     <h2 class="mb-3">Thanh toán thành công!</h2>
                     <p>Cảm ơn bạn đã mua hàng! Đơn hàng của bạn đã được thanh toán thành công.</p>
-                    <p>Bạn có thể xem chi tiết trong <a href="" style="color: #1E88E5">Đơn hàng của tôi</a></p>
+                    <p>Bạn có thể xem chi tiết trong <a href="{{route('home.account.myOrder')}}" style="color: #1E88E5">Đơn hàng của tôi</a></p>
                     <a href="{{ route('home.products.index') }}" class="btn btn-primary mt-3">Tiếp tục mua sắm</a>
                 </div>
             </div>

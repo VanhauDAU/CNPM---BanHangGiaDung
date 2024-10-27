@@ -92,6 +92,7 @@ class UserController extends Controller
             return $query->where('trang_thai', $trang_thai);
         })
         ->where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
         ->get();
         return view('clients.account.myOrder', compact('Orders', 'trang_thai'));
     }
